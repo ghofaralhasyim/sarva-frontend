@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #BA9F6A;
+  --color-primary-darker: #9e824a;
+  --color-sarva-green: #0C3635;
+
+  --font-latin: 'Cormorant Garamond', serif;
+  --font-sans: 'Lato', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: 'Lato', sans-serif;
+}
