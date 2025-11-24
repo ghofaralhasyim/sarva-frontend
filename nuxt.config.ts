@@ -22,4 +22,8 @@ export default defineNuxtConfig({
     preconnect: true,
     preload: true,
   },
+
+  modules: [
+    'nuxt-keen-slider'
+  ]
 })

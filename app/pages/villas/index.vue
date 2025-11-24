@@ -8,6 +8,7 @@ interface Villa {
   guest: string;
   facilities: string;
   image: string;
+  slug: string;
 }
 
 const villas: Villa[] = [
@@ -21,6 +22,7 @@ const villas: Villa[] = [
     guest: "2 Adults",
     facilities: "Private Garden & Pool",
     image: "img/villas/1.jpg",
+    slug: "one-bedroom-private-pool-villa",
   },
   {
     title: "Two Bedroom",
@@ -32,6 +34,7 @@ const villas: Villa[] = [
     guest: "4 Adults",
     facilities: "Private Garden & Pool",
     image: "img/villas/2.jpg",
+    slug: "two-bedroom-private-pool-villa",
   },
   {
     title: "Three-Bedroom",
@@ -46,6 +49,7 @@ const villas: Villa[] = [
     guest: "4 Adults",
     facilities: "Private Garden & Pool",
     image: "img/villas/2.jpg",
+    slug: "three-bedroom-private-pool-villa",
   },
 ];
 </script>
@@ -119,7 +123,7 @@ const villas: Villa[] = [
               >Book Now</NuxtLink
             >
             <NuxtLink
-              to="#"
+              :to="`/villas/${item.slug}`"
               class="bg-white border-2 border-primary text-primary font-medium text-center px-10 py-2 mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
               >Show Details</NuxtLink
             >

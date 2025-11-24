@@ -4,10 +4,10 @@ const { $gsap, $lenis } = useNuxtApp();
 const menus = [
   { text: "Villas", url: "/villas" },
   { text: "Facilities", url: "/services-and-facilities" },
-  { text: "Wellness", url: "/wellness" },
-  { text: "Dining", url: "/dining" },
+  { text: "Wellness", url: "/spa-and-wellness" },
+  { text: "Dining", url: "/restaurant" },
   { text: "Gallery", url: "/gallery" },
-  { text: "Special Offers", url: "/special offers" },
+  { text: "Special Offers", url: "/special-offers" },
 ];
 
 const showNav = () => {

@@ -57,47 +57,51 @@ const facilities: Facilities[] = [
     slug: "tour-desk",
   },
 ];
+
+const route = useRoute();
+
+function getRandomItems<T>(array: T[], count: number): T[] {
+  const shuffled = [...array].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
+}
+
+const dataOther: Facilities[] = getRandomItems(
+  facilities.filter((item) => item.slug !== route.name),
+  3
+);
 </script>
 
 <template>
-  <section class="relative py-20 min-h-[520px]">
-    <img
-      src="@/assets/img/service-header.jpg"
-      class="w-full h-full absolute inset-0 object-cover"
-      alt=""
-    />
-    <div
-      class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
-    >
-      <h2 class="font-latin text-[64px]">Services & Facilities</h2>
-      <p class="text-xl mt-4">
-        Discover the quiet side of Bali with a luxurious stay at Sarva Ubud
-        where nature, comfort, and serenity meet.
-      </p>
+  <section class="relative pt-16 pb-46">
+    <div class="container px-5 2xl:px-0 mx-auto max-w-[1256px]">
+      <h3 class="font-latin font-medium text-[40px] mb-6">Other Facilities</h3>
+      <ul class="grid grid-cols-3 gap-5">
+        <li v-for="item in dataOther" class="">
+          <NuxtLink :to="`/${item.slug}`">
+            <div class="w-full h-[405px] overflow-hidden">
+              <img
+                :src="item.image"
+                class="w-full h-full object-cover"
+                :alt="item.name"
+              />
+            </div>
+            <h4 class="font-latin font-medium text-[28px] my-4">
+              {{ item.name }}
+            </h4>
+            <p class="min-h-32 line-clamp-5">{{ item.description }}</p>
+            <p class="mt-6 text-xl">
+              Operation Hours: {{ item.operationHours }}
+            </p>
+            <div class="mt-10">
+              <NuxtLink
+                :to="`/${item.slug}`"
+                class="bg-white border-2 border-primary text-primary font-medium text-center px-10 py-3 mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
+                >View Details</NuxtLink
+              >
+            </div>
+          </NuxtLink>
+        </li>
+      </ul>
     </div>
   </section>
-  <section class="py-46 text-black container px-5 2xl:px-0 mx-auto max-w-7xl">
-    <ul class="grid grid-cols-3 gap-x-5 gap-y-20">
-      <li v-for="(item, index) in facilities" :key="index" class="relative">
-        <div class="aspect-square min-h-[400px]">
-          <img :src="item.image" alt="" class="object-cover w-full h-full" />
-        </div>
-        <p class="font-latin text-[28px] mt-4">
-          {{ item.name }}
-        </p>
-        <p class="mt-4 min-h-32">
-          {{ item.description }}
-        </p>
-        <p class="mt-6 text-xl">Operation Hours: {{ item.operationHours }}</p>
-        <div class="mt-10">
-          <NuxtLink
-            to="#"
-            class="bg-white border-2 border-primary text-primary font-medium text-center px-10 py-3 mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
-            >View Details</NuxtLink
-          >
-        </div>
-      </li>
-    </ul>
-  </section>
-  <CTASection />
 </template>
