@@ -74,7 +74,7 @@ const dataOther: Facilities[] = getRandomItems(
 <template>
   <section class="relative pt-16 pb-46">
     <div class="container px-5 2xl:px-0 mx-auto max-w-[1256px]">
-      <h3 class="font-latin font-medium text-[40px] mb-6">Other Facilities</h3>
+      <h3 class="font-serif font-medium text-[40px] mb-6">Other Facilities</h3>
       <ul class="grid grid-cols-3 gap-5">
         <li v-for="item in dataOther" class="">
           <NuxtLink :to="`/${item.slug}`">
@@ -85,7 +85,7 @@ const dataOther: Facilities[] = getRandomItems(
                 :alt="item.name"
               />
             </div>
-            <h4 class="font-latin font-medium text-[28px] my-4">
+            <h4 class="font-serif font-medium text-[28px] my-4">
               {{ item.name }}
             </h4>
             <p class="min-h-32 line-clamp-5">{{ item.description }}</p>

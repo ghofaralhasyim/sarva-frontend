@@ -69,7 +69,7 @@ const facilities: Facilities[] = [
     <div
       class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-latin text-[64px]">Services & Facilities</h2>
+      <h2 class="font-serif text-[64px]">Services & Facilities</h2>
       <p class="text-xl mt-4">
         Discover the quiet side of Bali with a luxurious stay at Sarva Ubud
         where nature, comfort, and serenity meet.
@@ -82,7 +82,7 @@ const facilities: Facilities[] = [
         <div class="aspect-square min-h-[400px]">
           <img :src="item.image" alt="" class="object-cover w-full h-full" />
         </div>
-        <p class="font-latin text-[28px] mt-4">
+        <p class="font-serif text-[28px] mt-4">
           {{ item.name }}
         </p>
         <p class="mt-4 min-h-32">

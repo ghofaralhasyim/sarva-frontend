@@ -24,7 +24,7 @@
         data-aos-duration="1000"
         data-aos-once="true"
       >
-        <p class="font-latin text-2xl italic mb-8">Welcome to</p>
+        <p class="font-serif text-2xl italic mb-8">Welcome to</p>
         <img
           src="@/assets/img/sarva-ubud-text.png"
           class="h-[55px]"

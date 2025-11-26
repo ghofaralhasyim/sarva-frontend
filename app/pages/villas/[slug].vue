@@ -213,7 +213,7 @@ function selectImage(img: string) {
       v-if="data"
       class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[920px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-latin text-[64px]">{{ data.title }}</h2>
+      <h2 class="font-serif text-[64px]">{{ data.title }}</h2>
       <p class="text-xl mt-6 text-center max-w-[680px]">
         {{ data.subTitle }}
       </p>
@@ -272,9 +272,9 @@ function selectImage(img: string) {
       />
     </div>
     <div class="w-full">
-      <h3 class="italic font-latin font-medium text-[32px]">Description</h3>
+      <h3 class="italic font-serif font-medium text-[32px]">Description</h3>
       <div class="mt-3" v-html="data?.description"></div>
-      <h3 class="italic font-latin font-medium text-[32px] mt-14">
+      <h3 class="italic font-serif font-medium text-[32px] mt-14">
         Villa Features
       </h3>
       <ul class="list-disc pl-5 mt-3">
@@ -296,7 +296,7 @@ function selectImage(img: string) {
   </section>
   <section class="pt-26 pb-32 bg-sarva-green text-white">
     <div class="container px-5 2xl:px-0 mx-auto max-w-[1256px]">
-      <h3 class="italic font-latin font-medium text-[#D1B377] text-[40px]">
+      <h3 class="italic font-serif font-medium text-[#D1B377] text-[40px]">
         Villa Amenities
       </h3>
       <ul class="grid grid-cols-4 gap-y-6 gap-x-8 mt-12">

@@ -64,7 +64,7 @@ const villas: Villa[] = [
     <div
       class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-latin text-[64px]">Our Villas</h2>
+      <h2 class="font-serif text-[64px]">Our Villas</h2>
       <p class="text-xl mt-4">
         Each villa at Sarva is thoughtfully designed to bring you closer to
         Ubud’s serene beauty — with warm touches, soft luxury, and complete
@@ -83,9 +83,9 @@ const villas: Villa[] = [
           <img :src="item.image" alt="" class="object-cover w-full h-full" />
         </div>
         <div class="w-full">
-          <p class="font-latin text-[42px] mt-4 leading-[42px]">
-            <span>{{ item.title }}</span>
-            <span class="font-sans text-[24px] ml-4">{{ item.subTitle }}</span>
+          <p class="font-serif text-[42px] mt-4 leading-[42px]">
+            <span class="italic text-sarva-green">{{ item.title }}</span>
+            <span class="font-serif text-[24px] ml-4">{{ item.subTitle }}</span>
           </p>
           <p class="mt-4 max-w-[550px]">
             {{ item.description }}

@@ -10,7 +10,7 @@
     <div
       class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-latin text-[64px]">Tour Desk</h2>
+      <h2 class="font-serif text-[64px]">Tour Desk</h2>
       <p class="text-xl mt-4">
         From thrilling adventures to cultural journeys, we’ll plan every detail
         so you can simply enjoy the experience.
@@ -21,7 +21,7 @@
     class="pt-32 pb-20 text-black container px-5 2xl:px-0 mx-auto max-w-[1256px] flex gap-16 items-center relative"
   >
     <div class="w-full">
-      <h3 class="italic font-latin font-medium text-[32px]">
+      <h3 class="italic font-serif font-medium text-[32px]">
         Unlock Your Ubud Adventure Here!
       </h3>
       <div class="mt-3">

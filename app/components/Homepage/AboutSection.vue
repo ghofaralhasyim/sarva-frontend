@@ -2,7 +2,7 @@
 
 <template>
   <section class="py-32 text-black container px-5 2xl:px-0 mx-auto max-w-7xl">
-    <h2 class="font-latin text-[40px]">Your Serene Escape in Ubud</h2>
+    <h2 class="font-serif text-[40px]">Your Serene Escape in Ubud</h2>
     <div class="grid grid-cols-2 gap-12 mt-10">
       <div class="grid grid-cols-2 gap-6">
         <img src="@/assets/img/ubud-1.png" alt="Ubud picture" class="w-full" />

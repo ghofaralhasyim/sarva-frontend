@@ -10,7 +10,7 @@
     <div
       class="container px-5 2xl:px-0 mx-auto max-w-[640px] text-center relative text-white flex flex-col items-center"
     >
-      <h2 class="font-latin text-[40px]">Ready to Embrace the Calm?</h2>
+      <h2 class="font-serif text-[40px]">Ready to Embrace the Calm?</h2>
       <p class="text-xl mt-4">
         Discover the quiet side of Bali with a luxurious stay at Sarva Ubud
         where nature, comfort, and serenity meet.

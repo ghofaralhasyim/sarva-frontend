@@ -3,7 +3,7 @@
 <template>
   <section class="bg-white">
     <div class="pt-32 pb-46 container px-5 2xl:px-0 mx-auto max-w-7xl">
-      <h2 class="font-latin text-[40px]">Your Private Sanctuary in Ubud</h2>
+      <h2 class="font-serif text-[40px]">Your Private Sanctuary in Ubud</h2>
       <p class="max-w-[680px] text-xl mt-6">
         After a day of discovery, retreat to your Ubud private pool villa to
         relax and recharge. Sarva Ubud Villa offers the ideal location for an

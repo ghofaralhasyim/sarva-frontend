@@ -4,7 +4,7 @@
   <section
     class="pt-12 pb-46 text-black container px-5 2xl:px-0 mx-auto max-w-7xl"
   >
-    <h2 class="font-latin text-[40px]">
+    <h2 class="font-serif text-[40px]">
       Welcomed by Culture, Surrounded by Serenity
     </h2>
     <p class="max-w-[680px] text-xl mt-4">
@@ -22,7 +22,7 @@
             class="object-cover w-full h-full"
           />
         </div>
-        <p class="font-latin text-[28px] mt-4">
+        <p class="font-serif text-[28px] mt-4">
           One-Bedroom Private Pool Villa
         </p>
         <p class="mt-3">
@@ -64,7 +64,7 @@
             class="object-cover w-full h-full"
           />
         </div>
-        <p class="font-latin text-[28px] mt-4">
+        <p class="font-serif text-[28px] mt-4">
           Two-Bedroom Private Pool Villa
         </p>
         <p class="mt-3">
@@ -106,7 +106,7 @@
             class="object-cover w-full h-full"
           />
         </div>
-        <p class="font-latin text-[28px] mt-4">
+        <p class="font-serif text-[28px] mt-4">
           Three-Bedroom Private Pool Villa
         </p>
         <p class="mt-3">

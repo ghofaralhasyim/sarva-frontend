@@ -57,7 +57,7 @@ const data: RestaurantPackage[] = [
     <div
       class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-latin text-[64px]">Restaurant</h2>
+      <h2 class="font-serif text-[64px]">Restaurant</h2>
       <p class="text-xl mt-4">
         Savor a thoughtfully prepared selection of local and international
         cuisine, made with fresh, seasonal ingredients.
@@ -68,7 +68,7 @@ const data: RestaurantPackage[] = [
     class="pt-32 pb-26 text-black container px-5 2xl:px-0 mx-auto max-w-[1256px] flex gap-16 items-center relative"
   >
     <div class="w-full">
-      <h3 class="italic font-latin font-medium text-[32px]">
+      <h3 class="italic font-serif font-medium text-[32px]">
         An Oasis of Flavor and Serenity
       </h3>
       <div class="mt-3">
@@ -106,7 +106,7 @@ const data: RestaurantPackage[] = [
       <img :src="item.image" class="w-full h-full object-cover" alt="" />
     </div>
     <div class="w-full">
-      <h3 class="italic font-latin font-medium text-[32px]">
+      <h3 class="italic font-serif font-medium text-[32px]">
         {{ item.title }}
       </h3>
       <p class="mt-4">{{ item.description }}</p>

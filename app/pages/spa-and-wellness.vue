@@ -37,7 +37,7 @@ const data: SpaPackage[] = [
     <div
       class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-latin text-[64px]">Spa & Wellness</h2>
+      <h2 class="font-serif text-[64px]">Spa & Wellness</h2>
       <p class="text-xl mt-4">
         Sarva offers curated wellness experiences to help you reconnect and
         restore balance in body, mind, and soul.
@@ -48,7 +48,7 @@ const data: SpaPackage[] = [
     class="pt-32 pb-26 text-black container px-5 2xl:px-0 mx-auto max-w-[1256px] flex gap-16 items-center relative"
   >
     <div class="w-full">
-      <h3 class="italic font-latin font-medium text-[32px]">
+      <h3 class="italic font-serif font-medium text-[32px]">
         Ubud Spa Sanctuary: A Journey to Bliss
       </h3>
       <div class="mt-3">
@@ -88,7 +88,7 @@ const data: SpaPackage[] = [
       <img :src="item.image" class="w-full h-full object-cover" alt="" />
     </div>
     <div class="w-full">
-      <h3 class="italic font-latin font-medium text-[32px]">
+      <h3 class="italic font-serif font-medium text-[32px]">
         {{ item.title }}
       </h3>
       <p class="mt-4">{{ item.description }}</p>

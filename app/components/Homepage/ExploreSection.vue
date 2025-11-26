@@ -5,7 +5,7 @@
     <div
       class="pt-32 pb-46 text-white container px-5 2xl:px-0 mx-auto max-w-7xl"
     >
-      <h2 class="font-latin text-[40px]">Explore the Wonders of Ubud</h2>
+      <h2 class="font-serif text-[40px]">Explore the Wonders of Ubud</h2>
       <p class="max-w-[680px] text-xl mt-6">
         Adventure awaits just moments away from this family villa Ubud, whether
         you’re visiting the iconic Monkey Forest eco-tourism site or seeking

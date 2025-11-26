@@ -56,7 +56,7 @@ const data: SpecialOffers[] = [
     <div
       class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-latin text-[64px]">Special Offers</h2>
+      <h2 class="font-serif text-[64px]">Special Offers</h2>
       <p class="text-xl mt-4">
         Discover exclusive offers and limited-time deals to make your Ubud
         getaway even more memorable. Enjoy added value, special rates, and
@@ -71,11 +71,11 @@ const data: SpecialOffers[] = [
         :key="index"
         class="grid grid-cols-2 gap-12"
       >
-        <div class="w-full relative min-h-[500px]">
+        <div class="w-full relative min-h-[410px]">
           <img :src="item.image" alt="" class="object-cover w-full h-full" />
         </div>
         <div class="w-full">
-          <h2 class="font-latin text-[42px] mt-4 leading-[42px] italic">
+          <h2 class="font-serif text-[42px] mt-4 leading-[42px] italic">
             {{ item.title }}
           </h2>
 
