@@ -105,6 +105,13 @@
           class="py-2.5 px-4 w-full bg-white/50 focus:outline-none mt-2"
         ></textarea>
       </div>
+      <div class="flex w-full mt-8">
+        <NuxtLink
+          to="#"
+          class="bg-primary text-center py-4 w-full cursor-pointer hover:bg-primary-darker transition-colors ease-in duration-150"
+          >Submit</NuxtLink
+        >
+      </div>
     </div>
   </section>
   <CTASection />

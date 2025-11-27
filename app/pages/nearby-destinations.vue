@@ -46,7 +46,7 @@ const data: Destination[] = [
 </script>
 
 <template>
-  <section class="relative pt-20 pb-16 min-h-[520px]">
+  <section class="relative py-20 min-h-[520px]">
     <img
       src="@/assets/img/destination-header.jpg"
       class="w-full h-full absolute inset-0 object-cover"
