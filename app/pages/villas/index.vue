@@ -64,38 +64,44 @@ const villas: Villa[] = [
     <div
       class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-serif text-[64px]">Our Villas</h2>
-      <p class="text-xl mt-4">
+      <h2 class="font-serif text-[52px] lg:text-[64px]">Our Villas</h2>
+      <p class="text-lg lg:text-xl mt-4">
         Each villa at Sarva is thoughtfully designed to bring you closer to
         Ubud’s serene beauty — with warm touches, soft luxury, and complete
         privacy.
       </p>
     </div>
   </section>
-  <section class="py-46 text-black container px-5 2xl:px-0 mx-auto max-w-7xl">
+  <section
+    class="py-32 lg:py-46 text-black container px-5 2xl:px-0 mx-auto max-w-7xl"
+  >
     <ul class="flex flex-col gap-24">
       <li
         v-for="(item, index) in villas"
         :key="index"
-        class="grid grid-cols-2 gap-12"
+        class="grid lg:grid-cols-2 gap-12"
       >
-        <div class="w-full relative min-h-[500px]">
+        <div class="w-full relative min-h-[300px] lg:min-h-[500px]">
           <img :src="item.image" alt="" class="object-cover w-full h-full" />
         </div>
         <div class="w-full">
-          <p class="font-serif text-[42px] mt-4 leading-[42px]">
+          <p
+            class="flex flex-col font-serif text-[42px] mt-2 lg:mt-4 leading-[42px]"
+          >
             <span class="italic text-sarva-green">{{ item.title }}</span>
-            <span class="font-serif text-[24px] ml-4">{{ item.subTitle }}</span>
+            <span class="font-serif text-[24px] lg:ml-4">{{
+              item.subTitle
+            }}</span>
           </p>
           <p class="mt-4 max-w-[550px]">
             {{ item.description }}
           </p>
           <div class="grid grid-cols-6 mt-8 gap-y-8">
-            <div class="col-span-2 flex flex-col gap-2">
+            <div class="col-span-6 lg:col-span-2 flex flex-col gap-2">
               <p class="text-black/50">Size</p>
               <p class="text-xl">{{ item.size }}</p>
             </div>
-            <div class="col-span-4 flex flex-col gap-2">
+            <div class="col-span-6 lg:col-span-4 flex flex-col gap-2">
               <p class="text-black/50">Bed</p>
               <div class="flex flex-col gap-1">
                 <p
@@ -107,11 +113,11 @@ const villas: Villa[] = [
                 </p>
               </div>
             </div>
-            <div class="col-span-2 flex flex-col gap-2">
+            <div class="col-span-6 lg:col-span-2 flex flex-col gap-2">
               <p class="text-black/50">Guest</p>
               <p class="text-xl">{{ item.guest }}</p>
             </div>
-            <div class="col-span-2 flex flex-col gap-2">
+            <div class="col-span-6 lg:col-span-2 flex flex-col gap-2">
               <p class="text-black/50">Facilities</p>
               <p class="text-xl">{{ item.facilities }}</p>
             </div>
@@ -119,12 +125,12 @@ const villas: Villa[] = [
           <div class="flex gap-4 mt-8">
             <NuxtLink
               to="#"
-              class="bg-primary border-2 border-primary text-white font-medium text-center px-10 py-2 mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
+              class="bg-primary border-2 w-full lg:w-fit border-primary text-white font-medium text-center px-10 py-2 mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
               >Book Now</NuxtLink
             >
             <NuxtLink
               :to="`/villas/${item.slug}`"
-              class="bg-white border-2 border-primary text-primary font-medium text-center px-10 py-2 mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
+              class="bg-white border-2 w-full lg:w-fit border-primary text-primary font-medium text-center px-10 py-2 mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
               >Show Details</NuxtLink
             >
           </div>

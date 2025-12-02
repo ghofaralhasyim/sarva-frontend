@@ -3,10 +3,10 @@
 <template>
   <footer class="bg-sarva-green text-white">
     <div
-      class="container py-16 px-5 2xl:px-0 mx-auto max-w-7xl flex justify-between gap-12"
+      class="container py-16 px-5 2xl:px-0 mx-auto max-w-7xl flex flex-col justify-center lg:flex-row lg:justify-between gap-12"
     >
       <div
-        class="w-fit flex flex-col text-white gap-6 lg:gap-4 mt-2 lg:max-w-[45%] 2xl:max-w-[40%] text-sm lg:text-base"
+        class="w-full lg:w-fit flex flex-col item-center text-white gap-6 lg:gap-4 mt-2 lg:max-w-[45%] 2xl:max-w-[40%] text-sm lg:text-base"
       >
         <div class="h-24 w-full">
           <img
@@ -17,7 +17,7 @@
         </div>
       </div>
 
-      <div class="flex gap-24 w-fit">
+      <div class="flex flex-col lg:flex-row gap-16 lg:gap-24 w-full lg:w-fit">
         <div class="">
           <p class="text-xl mb-6 font-bold">Menu</p>
           <ul class="grid grid-cols-2 gap-x-24 gap-y-4">
@@ -34,7 +34,7 @@
 
         <div class="">
           <p class="text-xl mb-6 font-bold">Menu</p>
-          <ul class="flex flex-col gap-4 max-w-60">
+          <ul class="flex flex-col gap-4 lg:max-w-60">
             <li class="">
               Address Here Lorem ipsum dolor sit amet consectetur.
             </li>
@@ -43,7 +43,9 @@
           </ul>
         </div>
 
-        <div class="h-[200px] w-full max-w-[350px] rounded-md overflow-hidden">
+        <div
+          class="h-[200px] w-full lg:max-w-[350px] rounded-md overflow-hidden"
+        >
           <img
             src="@/assets/img/maps.jpg"
             class="w-full h-full object-cover"

@@ -56,40 +56,44 @@ const data: SpecialOffers[] = [
     <div
       class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-serif text-[64px]">Special Offers</h2>
-      <p class="text-xl mt-4">
+      <h2 class="font-serif text-[52px] lg:text-[64px]">Special Offers</h2>
+      <p class="text-lg lg:text-xl mt-4">
         Discover exclusive offers and limited-time deals to make your Ubud
         getaway even more memorable. Enjoy added value, special rates, and
         unforgettable experiences at Sarva Ubud Villa.
       </p>
     </div>
   </section>
-  <section class="py-46 text-black container px-5 2xl:px-0 mx-auto max-w-7xl">
+  <section
+    class="py-32 lg:py-46 text-black container px-5 2xl:px-0 mx-auto max-w-7xl"
+  >
     <ul class="flex flex-col gap-24">
       <li
         v-for="(item, index) in data"
         :key="index"
-        class="grid grid-cols-2 gap-12"
+        class="grid lg:grid-cols-2 gap-8 lg:gap-12"
       >
         <div class="w-full relative min-h-[410px]">
           <img :src="item.image" alt="" class="object-cover w-full h-full" />
         </div>
         <div class="w-full">
-          <h2 class="font-serif text-[42px] mt-4 leading-[42px] italic">
+          <h2
+            class="font-serif text-[36px] lg:text-[42px] mt-2 lg:mt-4 leading-[42px] italic"
+          >
             {{ item.title }}
           </h2>
 
           <div class="mt-6 max-w-[550px]" v-html="item.description"></div>
 
-          <div class="flex gap-4 mt-8">
+          <div class="flex gap-4 mt-4 lg:mt-8">
             <NuxtLink
               :to="item.url"
-              class="bg-primary border-2 border-primary text-white font-medium text-center px-10 py-2 mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
+              class="w-full lg:w-fit bg-primary border-2 border-primary text-white font-medium text-center lg:px-10 py-2 mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
               >Make Reservation</NuxtLink
             >
             <NuxtLink
               :to="item.url"
-              class="bg-white border-2 border-primary text-primary font-medium text-center px-10 py-2 mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
+              class="w-full lg:w-fit bg-white border-2 border-primary text-primary font-medium text-center lg:px-10 py-2 mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
               >Show Details</NuxtLink
             >
           </div>

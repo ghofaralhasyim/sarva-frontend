@@ -69,26 +69,32 @@ const facilities: Facilities[] = [
     <div
       class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-serif text-[64px]">Services & Facilities</h2>
-      <p class="text-xl mt-4">
+      <h2 class="font-serif text-[52px] lg:text-[64px]">
+        Services & Facilities
+      </h2>
+      <p class="text-lg lg:text-xl mt-4">
         Discover the quiet side of Bali with a luxurious stay at Sarva Ubud
         where nature, comfort, and serenity meet.
       </p>
     </div>
   </section>
-  <section class="py-46 text-black container px-5 2xl:px-0 mx-auto max-w-7xl">
-    <ul class="grid grid-cols-3 gap-x-5 gap-y-20">
+  <section
+    class="py-32 lg:py-46 text-black container px-5 2xl:px-0 mx-auto max-w-7xl"
+  >
+    <ul class="grid grid-cols-1 lg:grid-cols-3 gap-x-5 gap-y-20">
       <li v-for="(item, index) in facilities" :key="index" class="relative">
-        <div class="aspect-square min-h-[400px]">
+        <div class="aspect-square lg:min-h-[400px] overflow-hidden">
           <img :src="item.image" alt="" class="object-cover w-full h-full" />
         </div>
         <p class="font-serif text-[28px] mt-4">
           {{ item.name }}
         </p>
-        <p class="mt-4 min-h-32">
+        <p class="mt-4 lg:min-h-32">
           {{ item.description }}
         </p>
-        <p class="mt-6 text-xl">Operation Hours: {{ item.operationHours }}</p>
+        <p class="mt-6 text-lg lg:text-xl">
+          Operation Hours: {{ item.operationHours }}
+        </p>
         <div class="mt-10">
           <NuxtLink
             to="#"

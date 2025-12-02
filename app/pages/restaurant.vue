@@ -57,15 +57,15 @@ const data: RestaurantPackage[] = [
     <div
       class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-serif text-[64px]">Restaurant</h2>
-      <p class="text-xl mt-4">
+      <h2 class="font-serif text-[52px] lg:text-[64px]">Restaurant</h2>
+      <p class="text-lg lg:text-xl mt-4">
         Savor a thoughtfully prepared selection of local and international
         cuisine, made with fresh, seasonal ingredients.
       </p>
     </div>
   </section>
   <section
-    class="pt-32 pb-26 text-black container px-5 2xl:px-0 mx-auto max-w-[1256px] flex gap-16 items-center relative"
+    class="pt-28 lg:pt-32 pb-26 text-black container px-5 2xl:px-0 mx-auto max-w-[1256px] flex flex-col lg:flex-row gap-16 items-center relative"
   >
     <div class="w-full">
       <h3 class="italic font-serif font-medium text-[32px]">
@@ -90,7 +90,7 @@ const data: RestaurantPackage[] = [
         </p>
       </div>
     </div>
-    <div class="max-w-[580px] h-[650px] w-full">
+    <div class="max-w-[580px] h-[250px] lg:h-[650px] w-full">
       <img
         src="@/assets/img/resto.jpg"
         class="w-full h-full object-cover"
@@ -100,7 +100,7 @@ const data: RestaurantPackage[] = [
   </section>
   <section
     v-for="item in data"
-    class="py-16 text-black container px-5 2xl:px-0 mx-auto max-w-[1256px] flex gap-16 items-center"
+    class="py-16 text-black container px-5 2xl:px-0 mx-auto max-w-[1256px] flex flex-col lg:flex-row gap-8 lg:gap-16 items-center"
   >
     <div class="max-w-[580px] h-[400px] w-full">
       <img :src="item.image" class="w-full h-full object-cover" alt="" />
@@ -114,16 +114,16 @@ const data: RestaurantPackage[] = [
       <ul class="list-disc pl-5 mt-3">
         <li v-for="y in item.includes" class="">{{ y }}</li>
       </ul>
-      <div class="flex gap-4 mt-8">
+      <div class="flex gap-4 mt-4 lg:mt-8">
         <NuxtLink
-          to="#"
-          class="w-full bg-primary border-2 border-primary text-white font-medium text-center px-10 py-3 mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
+          :to="item.url"
+          class="w-full lg:w-fit bg-primary border-2 border-primary text-white font-medium text-center lg:px-10 py-2 mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
           >Make Reservation</NuxtLink
         >
         <NuxtLink
-          to="#"
-          class="w-full bg-white border-2 border-primary text-primary font-medium text-center px-10 py-3 mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
-          >View Details</NuxtLink
+          :to="item.url"
+          class="w-full lg:w-fit bg-white border-2 border-primary text-primary font-medium text-center lg:px-10 py-2 mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
+          >Show Details</NuxtLink
         >
       </div>
     </div>
