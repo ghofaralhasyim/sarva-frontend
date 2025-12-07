@@ -27,11 +27,11 @@
         <p class="font-serif text-2xl italic mb-8">Welcome to</p>
         <img
           src="@/assets/img/sarva-ubud-text.png"
-          class="h-[55px]"
+          class="h-[55px] object-contain"
           alt="sarva ubud"
         />
         <p
-          class="mt-5 lg:mt-10 text-lg leading-7 lg:text-xl text-center max-w-[620px]"
+          class="mt-5 lg:mt-10 leading-7 lg:text-xl text-center max-w-[420px] lg:max-w-[620px]"
         >
           Nestled in Bali’s lush highlands, Sarva Villa offers an elegant escape
           where luxury meets nature’s serene embrace.
@@ -43,7 +43,7 @@
         data-aos-duration="1000"
         data-aos-once="true"
         to="/#activities"
-        class="bg-primary px-10 text-white mt-[100px] lg:mt-32 py-3 lg:text-lg cursor-pointer hover:bg-primary-darker hover:transition-color duration-300"
+        class="bg-primary px-14 lg:px-10 text-white mt-[100px] lg:mt-32 py-3 lg:text-lg cursor-pointer hover:bg-primary-darker hover:transition-color duration-300"
       >
         Booking Now
       </NuxtLink>

@@ -1,13 +1,15 @@
 <script lang="ts" setup>
-const { $gsap, $lenis } = useNuxtApp();
+const { $gsap } = useNuxtApp();
 
 const menus = [
   { text: "Villas", url: "/villas" },
   { text: "Facilities", url: "/services-and-facilities" },
   { text: "Wellness", url: "/spa-and-wellness" },
   { text: "Dining", url: "/restaurant" },
+  { text: "Events", url: "/events" },
   { text: "Gallery", url: "/gallery" },
   { text: "Special Offers", url: "/special-offers" },
+  { text: "Contact Us", url: "/contact-us" },
 ];
 
 const showNav = () => {
@@ -48,19 +50,17 @@ const closeNav = () => {
 
       <!-- Desktop menu -->
       <ul class="hidden lg:flex gap-14 items-center">
-        <li
-          v-for="item in menus"
-          :key="item.text"
-          class="uppercase text-nowrap"
-        >
-          <NuxtLink :to="item.url">{{ item.text }}</NuxtLink>
-        </li>
+        <template v-for="item in menus" :key="item.text">
+          <li v-if="item.url !== '/contact-us'" class="text-nowrap">
+            <NuxtLink :to="item.url">{{ item.text }}</NuxtLink>
+          </li>
+        </template>
       </ul>
       <ul class="hidden lg:flex items-center gap-10 text-sm">
         <li>
           <NuxtLink
-            to="/login"
-            class="uppercase py-3 px-8 border text-white border-primary bg-primary hover:bg-primary-darker transition-colors ease-in duration-150"
+            to="#"
+            class="py-3 px-8 border text-white border-primary bg-primary hover:bg-primary-darker transition-colors ease-in duration-150"
           >
             Check Availabillity
           </NuxtLink>
@@ -81,7 +81,7 @@ const closeNav = () => {
     <!-- Mobile nav -->
     <nav
       id="nav"
-      class="hidden flex-col fixed z-50 w-full left-0 top-0 h-screen bg-black"
+      class="hidden flex-col fixed z-50 w-full left-0 top-0 h-screen bg-sarva-green"
     >
       <div
         id="bgNav"
@@ -90,9 +90,7 @@ const closeNav = () => {
       ></div>
 
       <!-- Top bar -->
-      <div
-        class="opacity-0 nav-item relative flex justify-between items-center px-5 py-6"
-      >
+      <div class="opacity-0 nav-item relative flex justify-between px-5 py-6">
         <NuxtLink to="/" @click="closeNav">
           <img
             src="assets/img/sarva-ubud-logo.png"
@@ -108,18 +106,20 @@ const closeNav = () => {
       </div>
 
       <!-- Menu list -->
-      <ul class="relative flex flex-col items-start px-5 pt-6">
+      <ul class="relative flex flex-col items-start px-5 pt-6 h-full">
         <li
           v-for="item in menus"
           :key="item.text"
-          class="nav-item opacity-0 text-2xl uppercase w-full text-center border-b border-white/10 py-4"
+          class="nav-item opacity-0 text-2xl w-full py-6"
         >
           <NuxtLink :to="item.url" @click="closeNav">{{ item.text }}</NuxtLink>
         </li>
-        <li class="nav-item opacity-0 my-4 w-full text-center flex">
+        <li
+          class="nav-item opacity-0 my-4 flex text-center absolute bottom-5 left-5 right-5"
+        >
           <NuxtLink
-            to="/login"
-            class="uppercase py-3 w-full rounded-full border text-black bg-primary hover:text-black transition-colors ease-in duration-150"
+            to="#"
+            class="py-3 w-full text-white bg-primary transition-colors ease-in duration-150"
             @click="closeNav"
           >
             Check Availabillity

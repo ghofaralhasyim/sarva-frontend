@@ -37,21 +37,21 @@ const data: SpaPackage[] = [
     <div
       class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-serif text-[64px]">Spa & Wellness</h2>
-      <p class="text-xl mt-4">
+      <h2 class="font-serif text-[52px] lg:text-[64px]">Spa & Wellness</h2>
+      <p class="lg:text-xl mt-4 max-w-[320px] md:max-w-none">
         Sarva offers curated wellness experiences to help you reconnect and
         restore balance in body, mind, and soul.
       </p>
     </div>
   </section>
   <section
-    class="pt-32 pb-26 text-black container px-5 2xl:px-0 mx-auto max-w-[1256px] flex gap-16 items-center relative"
+    class="pt-26 lg:pt-32 pb-20 lg:pb-26 text-black container px-5 2xl:px-0 mx-auto max-w-[1256px] flex flex-col lg:flex-row gap-12 lg:gap-16 items-center relative"
   >
     <div class="w-full">
-      <h3 class="italic font-serif font-medium text-[32px]">
+      <h3 class="italic font-serif font-medium text-[32px] text-sarva-green">
         Ubud Spa Sanctuary: A Journey to Bliss
       </h3>
-      <div class="mt-3">
+      <div class="mt-6 lg:mt-3 text-sm lg:text-base">
         <p class="">
           Step into a sanctuary of serenity nestled within our lush private
           villa grounds. Our exclusive Ubud Spa offers an escape from the
@@ -72,7 +72,7 @@ const data: SpaPackage[] = [
         </p>
       </div>
     </div>
-    <div class="max-w-[580px] h-[650px] w-full">
+    <div class="max-w-[580px] h-[280px] lg:h-[650px] w-full">
       <img
         src="@/assets/img/spa.jpg"
         class="w-full h-full object-cover"
@@ -82,27 +82,37 @@ const data: SpaPackage[] = [
   </section>
   <section
     v-for="item in data"
-    class="py-16 text-black container px-5 2xl:px-0 mx-auto max-w-[1256px] flex gap-16 items-center"
+    class="py-16 text-black container px-5 2xl:px-0 mx-auto max-w-[1256px] flex flex-col lg:flex-row gap-6 lg:gap-16 items-center"
   >
-    <div class="max-w-[580px] h-[400px] w-full">
+    <div class="max-w-[580px] h-[250px] lg:h-[400px] w-full">
       <img :src="item.image" class="w-full h-full object-cover" alt="" />
     </div>
     <div class="w-full">
-      <h3 class="italic font-serif font-medium text-[32px]">
+      <h3
+        class="italic font-serif font-medium text-[28px] lg:text-[32px] text-sarva-green"
+      >
         {{ item.title }}
       </h3>
-      <p class="mt-4">{{ item.description }}</p>
-      <p class="text-black/50 mt-4">Opening Hours:</p>
-      <p class="text-xl">{{ item.openingHours }}</p>
-      <div class="flex gap-4 mt-8">
+      <p class="mt-4 text-sm lg:text-base">
+        {{ item.description }}
+      </p>
+      <div class="flex lg:flex-col mt-4 gap-2">
+        <p class="font-serif-secondary text-lg lg:text-black/50">
+          Opening Hours:
+        </p>
+        <p class="font-serif-secondary text-lg lg:text-xl">
+          {{ item.openingHours }}
+        </p>
+      </div>
+      <div class="flex gap-4 mt-6 lg:mt-8">
         <NuxtLink
           to="#"
-          class="w-full bg-primary border-2 border-primary text-white font-medium text-center px-10 py-3 mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
+          class="w-full bg-primary border-2 border-primary text-white font-medium text-center lg:px-10 py-3 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
           >Make Reservation</NuxtLink
         >
         <NuxtLink
           to="#"
-          class="w-full bg-white border-2 border-primary text-primary font-medium text-center px-10 py-3 mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
+          class="w-full bg-white border-2 border-primary text-primary font-medium text-center lg:px-10 py-3 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
           >View Details</NuxtLink
         >
       </div>

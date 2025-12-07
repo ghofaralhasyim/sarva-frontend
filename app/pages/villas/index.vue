@@ -75,7 +75,7 @@ const villas: Villa[] = [
   <section
     class="py-32 lg:py-46 text-black container px-5 2xl:px-0 mx-auto max-w-7xl"
   >
-    <ul class="flex flex-col gap-24">
+    <ul class="flex flex-col gap-36 lg:gap-24">
       <li
         v-for="(item, index) in villas"
         :key="index"
@@ -86,43 +86,49 @@ const villas: Villa[] = [
         </div>
         <div class="w-full">
           <p
-            class="flex flex-col font-serif text-[42px] mt-2 lg:mt-4 leading-[42px]"
+            class="flex flex-col text-sarva-green font-serif text-[40px] lg:text-[42px] mt-2 lg:mt-4 leading-[42px]"
           >
-            <span class="italic text-sarva-green">{{ item.title }}</span>
-            <span class="font-serif text-[24px] lg:ml-4">{{
+            <span class="italic">{{ item.title }}</span>
+            <span class="font-serif text-[24px] mt-3 lg:mt-0 lg:ml-4">{{
               item.subTitle
             }}</span>
           </p>
           <p class="mt-4 max-w-[550px]">
             {{ item.description }}
           </p>
-          <div class="grid grid-cols-6 mt-8 gap-y-8">
+          <div class="grid grid-cols-6 mt-8 gap-y-4 lg:gap-y-8">
             <div class="col-span-6 lg:col-span-2 flex flex-col gap-2">
-              <p class="text-black/50">Size</p>
-              <p class="text-xl">{{ item.size }}</p>
+              <p class="text-sm lg:text-base text-black/50">Size</p>
+              <p class="lg:text-xl italic font-serif-secondary">
+                {{ item.size }}
+              </p>
             </div>
             <div class="col-span-6 lg:col-span-4 flex flex-col gap-2">
-              <p class="text-black/50">Bed</p>
+              <p class="text-sm lg:text-base text-black/50">Bed</p>
               <div class="flex flex-col gap-1">
                 <p
                   v-for="(bed, index) in item.bed"
                   :key="index"
-                  class="text-xl"
+                  class="lg:text-xl italic font-serif-secondary"
                 >
                   {{ bed }}
                 </p>
               </div>
             </div>
             <div class="col-span-6 lg:col-span-2 flex flex-col gap-2">
-              <p class="text-black/50">Guest</p>
-              <p class="text-xl">{{ item.guest }}</p>
+              <p class="text-sm lg:text-base text-black/50">Guest</p>
+              <p class="lg:text-xl italic font-serif-secondary">
+                {{ item.guest }}
+              </p>
             </div>
             <div class="col-span-6 lg:col-span-2 flex flex-col gap-2">
-              <p class="text-black/50">Facilities</p>
-              <p class="text-xl">{{ item.facilities }}</p>
+              <p class="text-sm lg:text-base text-black/50">Facilities</p>
+              <p class="lg:text-xl italic font-serif-secondary">
+                {{ item.facilities }}
+              </p>
             </div>
           </div>
-          <div class="flex gap-4 mt-8">
+          <div class="flex gap-4 mt-4 lg:mt-8">
             <NuxtLink
               to="#"
               class="bg-primary border-2 w-full lg:w-fit border-primary text-white font-medium text-center px-10 py-2 mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
