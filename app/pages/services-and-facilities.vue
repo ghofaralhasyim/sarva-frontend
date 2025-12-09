@@ -56,6 +56,14 @@ const facilities: Facilities[] = [
     image: "img/facilities/tour.jpg",
     slug: "tour-desk",
   },
+  {
+    name: "Nearby Destinations",
+    description:
+      "Discover Ubud’s nearby destinations, each offering unique natural beauty, cultural richness, and unforgettable experiences just moments from your stay.",
+    operationHours: "",
+    image: "img/facilities/nearby.jpg",
+    slug: "nearby-destinations",
+  },
 ];
 </script>
 
@@ -67,9 +75,9 @@ const facilities: Facilities[] = [
       alt=""
     />
     <div
-      class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
+      class="container min-h-[520px] px-5 xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-serif text-[52px] lg:text-[64px]">
+      <h2 class="font-serif text-[52px] lg:text-[64px] font-bold">
         Services & Facilities
       </h2>
       <p class="text-lg lg:text-xl mt-4">
@@ -79,25 +87,35 @@ const facilities: Facilities[] = [
     </div>
   </section>
   <section
-    class="py-32 lg:py-46 text-black container px-5 2xl:px-0 mx-auto max-w-7xl"
+    class="py-32 lg:py-46 text-black container px-5 xl:px-0 mx-auto max-w-324"
   >
     <ul class="grid grid-cols-1 lg:grid-cols-3 gap-x-5 gap-y-20">
       <li v-for="(item, index) in facilities" :key="index" class="relative">
         <div class="aspect-square lg:min-h-[400px] overflow-hidden">
           <img :src="item.image" alt="" class="object-cover w-full h-full" />
         </div>
-        <p class="font-serif text-[28px] mt-4 font-medium">
+        <p class="font-serif text-[32px] font-semibold mt-4 tracking-tight">
           {{ item.name }}
         </p>
-        <p class="mt-4 lg:min-h-32">
+        <p
+          class="mt-4"
+          :class="
+            index % 3 === 0 && index + 1 == facilities.length
+              ? ''
+              : 'lg:min-h-32'
+          "
+        >
           {{ item.description }}
         </p>
-        <p class="mt-6 text-lg lg:text-xl">
+        <p
+          v-if="item.operationHours"
+          class="mt-6 text-lg lg:text-xl font-medium"
+        >
           Operation Hours: {{ item.operationHours }}
         </p>
         <div class="mt-10">
           <NuxtLink
-            to="#"
+            :to="item.slug"
             class="bg-white border-2 border-primary text-primary font-medium text-center px-10 py-3 mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
             >View Details</NuxtLink
           >

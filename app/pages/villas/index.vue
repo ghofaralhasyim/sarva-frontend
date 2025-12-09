@@ -25,7 +25,7 @@ const villas: Villa[] = [
     slug: "one-bedroom-private-pool-villa",
   },
   {
-    title: "Two Bedroom",
+    title: "Two-Bedroom",
     subTitle: "Private Pool Villa",
     description:
       "This spacious and serene villa offers two comfortable bedrooms, warm modern design, and a shared living space ideal for slow mornings and relaxed evenings.",
@@ -62,9 +62,11 @@ const villas: Villa[] = [
       alt=""
     />
     <div
-      class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
+      class="container min-h-[520px] px-5 xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-serif text-[52px] lg:text-[64px]">Our Villas</h2>
+      <h2 class="font-serif text-[52px] lg:text-[64px] font-bold">
+        Our Villas
+      </h2>
       <p class="text-lg lg:text-xl mt-4">
         Each villa at Sarva is thoughtfully designed to bring you closer to
         Ubud’s serene beauty — with warm touches, soft luxury, and complete
@@ -73,7 +75,7 @@ const villas: Villa[] = [
     </div>
   </section>
   <section
-    class="py-32 lg:py-46 text-black container px-5 2xl:px-0 mx-auto max-w-7xl"
+    class="py-32 lg:py-46 text-black container px-5 xl:px-0 mx-auto max-w-324"
   >
     <ul class="flex flex-col gap-36 lg:gap-24">
       <li
@@ -86,9 +88,12 @@ const villas: Villa[] = [
         </div>
         <div class="w-full">
           <p
-            class="flex flex-col lg:flex-row lg:items-end text-sarva-green font-serif text-[40px] lg:text-[42px] mt-2 lg:mt-4 leading-[42px]"
+            class="flex flex-col lg:flex-row lg:items-end text-sarva-green font-serif mt-2 lg:mt-4"
           >
-            <span class="font-serif italic font-medium">{{ item.title }}</span>
+            <span
+              class="font-serif italic font-medium text-[40px] lg:text-[48px] lg:leading-12"
+              >{{ item.title }}</span
+            >
             <span
               class="font-serif font-semibold text-[24px] lg:text[32px] leading-6 lg:leading-[30px] mt-3 lg:mt-0 lg:ml-4"
               >{{ item.subTitle }}</span
@@ -100,7 +105,7 @@ const villas: Villa[] = [
           <div class="grid grid-cols-6 mt-8 gap-y-4 lg:gap-y-8">
             <div class="col-span-6 lg:col-span-2 flex flex-col gap-2">
               <p class="text-sm lg:text-base text-black/50">Size</p>
-              <p class="lg:text-xl italic font-secondary">
+              <p class="lg:text-xl italic font-sans">
                 {{ item.size }}
               </p>
             </div>
@@ -110,7 +115,7 @@ const villas: Villa[] = [
                 <p
                   v-for="(bed, index) in item.bed"
                   :key="index"
-                  class="lg:text-xl italic font-secondary"
+                  class="lg:text-xl italic font-sans"
                 >
                   {{ bed }}
                 </p>
@@ -118,13 +123,13 @@ const villas: Villa[] = [
             </div>
             <div class="col-span-6 lg:col-span-2 flex flex-col gap-2">
               <p class="text-sm lg:text-base text-black/50">Guest</p>
-              <p class="lg:text-xl italic font-secondary">
+              <p class="lg:text-xl italic font-sans">
                 {{ item.guest }}
               </p>
             </div>
             <div class="col-span-6 lg:col-span-2 flex flex-col gap-2">
               <p class="text-sm lg:text-base text-black/50">Facilities</p>
-              <p class="lg:text-xl italic font-secondary">
+              <p class="lg:text-xl italic font-sans">
                 {{ item.facilities }}
               </p>
             </div>

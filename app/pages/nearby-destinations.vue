@@ -53,37 +53,37 @@ const data: Destination[] = [
       alt=""
     />
     <div
-      class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
+      class="container min-h-[520px] px-5 xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-serif text-[64px]">Nearby Destinations</h2>
+      <h2 class="font-serif text-[64px] font-bold">Nearby Destinations</h2>
       <p class="text-xl mt-4">
         Sarva offers curated wellness experiences to help you reconnect and
         restore balance in body, mind, and soul.
       </p>
     </div>
   </section>
-  <section class="py-46 text-black container px-5 2xl:px-0 mx-auto max-w-7xl">
+  <section class="py-46 text-black container px-5 xl:px-0 mx-auto max-w-324">
     <ul class="">
       <li
         v-for="(item, idx) in data"
         :key="idx"
-        class="grid grid-cols-2 gap-x-16 items-center relative not-first:mt-20"
+        class="flex flex-col lg:flex-row gap-x-16 items-center relative not-first:mt-24"
       >
         <div
-          class="w-full relative min-h-[500px]"
-          :class="idx % 2 === 1 ? 'order-2' : 'order-1'"
+          class="w-full max-w-[646px] relative lg:min-h-[500px] max-h-[500px] overflow-hidden"
+          :class="idx % 2 === 1 ? 'lg:order-2' : 'lg:order-1'"
         >
           <img :src="item.image" alt="" class="object-cover w-full h-full" />
         </div>
 
-        <div :class="idx % 2 === 1 ? 'order-1' : 'order-2'">
+        <div :class="idx % 2 === 1 ? 'lg:order-1' : 'lg:order-2'">
           <p
-            class="font-serif text-[42px] mt-4 leading-[42px] italic text-sarva-green"
+            class="font-serif text-[36px] lg:text-[42px] mt-4 leading-[42px] italic text-sarva-green font-medium tracking-tight"
           >
             {{ item.title }}
           </p>
 
-          <p class="mt-4 max-w-[550px]">
+          <p class="mt-4 text-sm lg:text-base max-w-[550px]">
             {{ item.description }}
           </p>
         </div>

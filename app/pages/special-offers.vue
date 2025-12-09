@@ -54,9 +54,11 @@ const data: SpecialOffers[] = [
       alt=""
     />
     <div
-      class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
+      class="container min-h-[520px] px-5 xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-serif text-[52px] lg:text-[64px]">Special Offers</h2>
+      <h2 class="font-serif text-[52px] lg:text-[64px] font-bold">
+        Special Offers
+      </h2>
       <p class="text-lg lg:text-xl mt-4">
         Discover exclusive offers and limited-time deals to make your Ubud
         getaway even more memorable. Enjoy added value, special rates, and
@@ -65,7 +67,7 @@ const data: SpecialOffers[] = [
     </div>
   </section>
   <section
-    class="py-32 lg:py-46 text-black container px-5 2xl:px-0 mx-auto max-w-7xl"
+    class="py-32 lg:py-46 text-black container px-5 xl:px-0 mx-auto max-w-324"
   >
     <ul class="flex flex-col gap-24">
       <li
@@ -78,7 +80,7 @@ const data: SpecialOffers[] = [
         </div>
         <div class="w-full">
           <h2
-            class="font-serif text-[36px] lg:text-[42px] mt-2 lg:mt-4 leading-[42px] italic"
+            class="font-serif text-[36px] lg:text-[42px] mt-2 lg:mt-4 leading-[42px] italic font-medium text-sarva-green"
           >
             {{ item.title }}
           </h2>
@@ -88,13 +90,13 @@ const data: SpecialOffers[] = [
           <div class="flex gap-4 mt-4 lg:mt-8">
             <NuxtLink
               :to="item.url"
-              class="w-full lg:w-fit bg-primary border-2 border-primary text-white font-medium text-center lg:px-10 py-2 mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
-              >Make Reservation</NuxtLink
+              class="w-full bg-primary border-2 border-primary text-white font-medium text-center lg:w-[220px] py-2 mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
+              >Book Now</NuxtLink
             >
             <NuxtLink
               :to="item.url"
-              class="w-full lg:w-fit bg-white border-2 border-primary text-primary font-medium text-center lg:px-10 py-2 mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
-              >Show Details</NuxtLink
+              class="w-full bg-white border-2 border-primary text-primary font-medium text-center lg:w-[220px] py-2 mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
+              >View Details</NuxtLink
             >
           </div>
         </div>

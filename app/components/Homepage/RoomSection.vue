@@ -23,7 +23,7 @@ const villasData: Villa[] = [
   {
     title: "One-Bedroom Private Pool Villa",
     subTitle:
-      "Perfect for families or friends, these spacious villas offer comfort and connection.",
+      "Perfect for couples or solo travelers, these exclusive units offer privacy and serenity. Indulge in pure Balinese bliss.",
     space: 224,
     capacity: 2,
     bedType: "1 Queen-size Bed",
@@ -74,7 +74,7 @@ const villasData: Villa[] = [
   {
     title: "Two-Bedroom Private Pool Villa",
     subTitle:
-      "Perfect for couples or solo travelers, these 15 exclusive units offer privacy and serenity. Indulge in pure Balinese bliss.",
+      "Perfect for families or friends, these spacious villas offer comfort and connection.",
     space: 224,
     capacity: 2,
     bedType: "1 Queen-size Bed",
@@ -232,7 +232,7 @@ const goToSlide = (i: number) => {
 
 <template>
   <section
-    class="pt-12 pb-40 lg:pb-46 text-black container px-5 2xl:px-0 mx-auto max-w-7xl"
+    class="pt-12 pb-40 lg:pb-46 text-black container px-5 xl:px-0 mx-auto max-w-324"
   >
     <h2 class="font-serif text-[36px] lg:text-[40px] font-medium">
       Welcomed by Culture, Surrounded by Serenity

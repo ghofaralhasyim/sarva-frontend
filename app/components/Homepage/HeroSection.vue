@@ -16,7 +16,7 @@
       </picture>
     </div>
     <div
-      class="container mx-auto px-5 xl:px-0 flex flex-col items-center justify-center text-center relative text-white h-full z-10"
+      class="container mx-auto px-5 xl:px-0 flex flex-col items-center justify-center pt-10 text-center relative text-white h-full z-10"
     >
       <div
         data-aos="fade"
@@ -43,7 +43,7 @@
         data-aos-duration="1000"
         data-aos-once="true"
         to="/#activities"
-        class="bg-primary px-14 lg:px-10 text-white mt-[100px] lg:mt-32 py-3 lg:text-lg cursor-pointer hover:bg-primary-darker hover:transition-color duration-300"
+        class="bg-primary px-14 lg:px-10 text-white mt-[100px] lg:mt-20 py-3 lg:text-lg cursor-pointer hover:bg-primary-darker hover:transition-color duration-300"
       >
         Booking Now
       </NuxtLink>

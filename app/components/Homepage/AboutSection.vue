@@ -2,7 +2,7 @@
 
 <template>
   <section
-    class="py-26 lg:py-32 text-black container px-5 2xl:px-0 mx-auto max-w-7xl"
+    class="py-26 lg:py-32 text-black container px-5 xl:px-0 mx-auto max-w-324"
   >
     <h2 class="font-serif font-medium text-[36px] lg:text-[40px]">
       Your Serene Escape in Ubud

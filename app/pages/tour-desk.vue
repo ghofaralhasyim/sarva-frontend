@@ -8,9 +8,9 @@
       alt=""
     />
     <div
-      class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
+      class="container min-h-[520px] px-5 xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-serif text-[64px]">Tour Desk</h2>
+      <h2 class="font-serif text-[64px] font-bold">Tour Desk</h2>
       <p class="text-xl mt-4">
         From thrilling adventures to cultural journeys, we’ll plan every detail
         so you can simply enjoy the experience.
@@ -18,10 +18,12 @@
     </div>
   </section>
   <section
-    class="pt-32 pb-20 text-black container px-5 2xl:px-0 mx-auto max-w-[1256px] flex gap-16 items-center relative"
+    class="pt-32 pb-12 lg:pb-20 text-black container px-5 xl:px-0 mx-auto max-w-324 flex flex-col lg:flex-row gap-16 items-center relative"
   >
     <div class="w-full">
-      <h3 class="italic font-serif font-medium text-[32px]">
+      <h3
+        class="italic font-serif font-medium text-[32px] lg:text-[40px] tracking-tight text-sarva-green"
+      >
         Unlock Your Ubud Adventure Here!
       </h3>
       <div class="mt-3">
@@ -30,7 +32,7 @@
           visit our dedicated Tour Desk. We’re your one-stop spot for
           unforgettable Ubud experiences! We feature the best local adventures:
         </p>
-        <ul class="pl-4 list-disc">
+        <ul class="pl-4 list-disc mt-6">
           <li class="">
             Heart-Pounding Rafting on the Ayung River or Cycling Tour around
             Ubud to Kintamani
@@ -51,7 +53,7 @@
         </p>
       </div>
     </div>
-    <div class="max-w-[580px] h-[650px] w-full">
+    <div class="max-w-[580px] h-[435px] lg:h-[650px] w-full">
       <img
         src="@/assets/img/tour-desk.jpg"
         class="w-full h-full object-cover"

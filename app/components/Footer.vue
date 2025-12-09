@@ -3,18 +3,47 @@
 <template>
   <footer class="bg-sarva-green text-white">
     <div
-      class="container py-16 px-5 2xl:px-0 mx-auto max-w-8xl flex flex-col justify-center lg:flex-row lg:justify-between gap-12"
+      class="container py-16 px-5 xl:px-0 mx-auto max-w-324 flex flex-col justify-center lg:flex-row lg:justify-between gap-16 lg:gap-16"
     >
       <div
-        class="w-full lg:w-fit flex flex-col item-center text-white gap-6 lg:gap-4 mt-2 lg:max-w-[45%] 2xl:max-w-[40%] text-sm lg:text-base"
+        class="w-full lg:w-fit flex flex-col item-center text-white gap-10 mt-2 lg:max-w-[45%] 2xl:max-w-[40%] text-sm lg:text-base"
       >
-        <div class="h-24 w-full">
+        <div class="h-20 w-full">
           <img
             src="@/assets/img/sarva-ubud-logo-white.png"
             alt="sarva ubund"
-            class="w-full h-24 object-contain"
+            class="w-full h-20 object-contain"
           />
         </div>
+        <ul class="flex gap-8 justify-center items-center">
+          <li class="">
+            <NuxtLink to="#">
+              <img
+                src="@/assets/img/icon/ig-white.png"
+                alt="instagram"
+                class="h-[30px] w-[30px] aspect-square"
+              />
+            </NuxtLink>
+          </li>
+          <li class="">
+            <NuxtLink to="#">
+              <img
+                src="@/assets/img/icon/fb-white.png"
+                alt="instagram"
+                class="h-[30px] w-[30px] aspect-square"
+              />
+            </NuxtLink>
+          </li>
+          <li class="">
+            <NuxtLink to="#">
+              <img
+                src="@/assets/img/icon/yt-white.png"
+                alt="instagram"
+                class="h-9 w-9 aspect-square"
+              />
+            </NuxtLink>
+          </li>
+        </ul>
       </div>
 
       <div class="flex flex-col lg:flex-row gap-16 lg:gap-24 w-full lg:w-fit">
@@ -33,7 +62,7 @@
         </div>
 
         <div class="">
-          <p class="text-xl mb-6 font-bold">Menu</p>
+          <p class="text-xl mb-6 font-bold">Contact</p>
           <ul class="flex flex-col gap-4 lg:max-w-60">
             <li class="">
               Address Here Lorem ipsum dolor sit amet consectetur.
@@ -54,5 +83,8 @@
         </div>
       </div>
     </div>
+    <p class="mx-auto text-center pt-6 pb-10 font-medium font-sans">
+      © Copyright 2025 Sarva Ubud Villa. All rights reserved.
+    </p>
   </footer>
 </template>

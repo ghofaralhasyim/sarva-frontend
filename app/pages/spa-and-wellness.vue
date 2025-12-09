@@ -35,9 +35,11 @@ const data: SpaPackage[] = [
       alt=""
     />
     <div
-      class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
+      class="container min-h-[520px] px-5 xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-serif text-[52px] lg:text-[64px]">Spa & Wellness</h2>
+      <h2 class="font-serif text-[52px] lg:text-[64px] font-bold">
+        Spa & Wellness
+      </h2>
       <p class="lg:text-xl mt-4 max-w-[320px] md:max-w-none">
         Sarva offers curated wellness experiences to help you reconnect and
         restore balance in body, mind, and soul.
@@ -45,13 +47,15 @@ const data: SpaPackage[] = [
     </div>
   </section>
   <section
-    class="pt-26 lg:pt-32 pb-20 lg:pb-26 text-black container px-5 2xl:px-0 mx-auto max-w-[1256px] flex flex-col lg:flex-row gap-12 lg:gap-16 items-center relative"
+    class="pt-26 lg:pt-32 pb-20 lg:pb-26 text-black container px-5 xl:px-0 mx-auto max-w-324 flex flex-col lg:flex-row gap-12 lg:gap-16 items-center relative"
   >
     <div class="w-full">
-      <h3 class="italic font-serif font-medium text-[32px] text-sarva-green">
+      <h3
+        class="italic font-serif font-medium text-[32px] lg:text-[40px] text-sarva-green tracking-tight"
+      >
         Ubud Spa Sanctuary: A Journey to Bliss
       </h3>
-      <div class="mt-6 lg:mt-3 text-sm lg:text-base">
+      <div class="mt-6 lg:mt-5 text-sm lg:text-base">
         <p class="">
           Step into a sanctuary of serenity nestled within our lush private
           villa grounds. Our exclusive Ubud Spa offers an escape from the
@@ -82,7 +86,7 @@ const data: SpaPackage[] = [
   </section>
   <section
     v-for="item in data"
-    class="py-16 text-black container px-5 2xl:px-0 mx-auto max-w-[1256px] flex flex-col lg:flex-row gap-6 lg:gap-16 items-center"
+    class="py-16 text-black container px-5 xl:px-0 mx-auto max-w-324 flex flex-col lg:flex-row gap-6 lg:gap-16 items-center"
   >
     <div class="max-w-[580px] h-[250px] lg:h-[400px] w-full">
       <img :src="item.image" class="w-full h-full object-cover" alt="" />
@@ -97,21 +101,16 @@ const data: SpaPackage[] = [
         {{ item.description }}
       </p>
       <div class="flex lg:flex-col mt-4 gap-2">
-        <p class="font-secondary text-lg lg:text-black/50">Opening Hours:</p>
-        <p class="font-secondary text-lg lg:text-xl">
+        <p class="font-sans text-lg lg:text-black/50">Opening Hours:</p>
+        <p class="font-sans text-lg lg:text-xl">
           {{ item.openingHours }}
         </p>
       </div>
       <div class="flex gap-4 mt-6 lg:mt-8">
         <NuxtLink
-          to="#"
-          class="w-full bg-primary border-2 border-primary text-white font-medium text-center lg:px-10 py-3 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
+          to="https://wa.me"
+          class="w-fit bg-primary border-2 border-primary text-white font-medium text-center px-10 py-3 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
           >Make Reservation</NuxtLink
-        >
-        <NuxtLink
-          to="#"
-          class="w-full bg-white border-2 border-primary text-primary font-medium text-center lg:px-10 py-3 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
-          >View Details</NuxtLink
         >
       </div>
     </div>

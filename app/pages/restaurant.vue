@@ -55,9 +55,11 @@ const data: RestaurantPackage[] = [
       alt=""
     />
     <div
-      class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
+      class="container min-h-[520px] px-5 xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-serif text-[52px] lg:text-[64px]">Restaurant</h2>
+      <h2 class="font-serif text-[52px] lg:text-[64px] font-bold">
+        Restaurant
+      </h2>
       <p class="text-lg lg:text-xl mt-4">
         Savor a thoughtfully prepared selection of local and international
         cuisine, made with fresh, seasonal ingredients.
@@ -65,10 +67,12 @@ const data: RestaurantPackage[] = [
     </div>
   </section>
   <section
-    class="pt-28 lg:pt-32 pb-26 text-black container px-5 2xl:px-0 mx-auto max-w-[1256px] flex flex-col lg:flex-row gap-16 items-center relative"
+    class="pt-28 lg:pt-32 pb-26 text-black container px-5 xl:px-0 mx-auto max-w-324 flex flex-col lg:flex-row gap-16 items-center relative"
   >
     <div class="w-full">
-      <h3 class="italic font-serif font-medium text-[32px]">
+      <h3
+        class="italic font-serif text-[32px] text-sarva-green font-medium tracking-tight"
+      >
         An Oasis of Flavor and Serenity
       </h3>
       <div class="mt-3">
@@ -100,30 +104,32 @@ const data: RestaurantPackage[] = [
   </section>
   <section
     v-for="item in data"
-    class="py-16 text-black container px-5 2xl:px-0 mx-auto max-w-[1256px] flex flex-col lg:flex-row gap-8 lg:gap-16 items-center"
+    class="py-16 text-black container px-5 xl:px-0 mx-auto max-w-324 flex flex-col lg:flex-row gap-8 lg:gap-16 items-center"
   >
-    <div class="max-w-[580px] h-[400px] w-full">
+    <div class="max-w-[646px] h-[400px] w-full">
       <img :src="item.image" class="w-full h-full object-cover" alt="" />
     </div>
     <div class="w-full">
-      <h3 class="italic font-serif font-medium text-[32px]">
+      <h3
+        class="italic font-serif font-medium text-[32px] text-sarva-green tracking-tight"
+      >
         {{ item.title }}
       </h3>
       <p class="mt-4">{{ item.description }}</p>
       <p class="text-black/50 mt-4">Includes</p>
-      <ul class="list-disc pl-5 mt-3">
+      <ul class="list-disc pl-5 mt-3 italic">
         <li v-for="y in item.includes" class="">{{ y }}</li>
       </ul>
       <div class="flex gap-4 mt-4 lg:mt-8">
         <NuxtLink
           :to="item.url"
-          class="w-full lg:w-fit bg-primary border-2 border-primary text-white font-medium text-center lg:px-10 py-2 mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
+          class="w-full bg-primary border-2 border-primary text-white font-medium text-center lg:w-[220px] py-2 mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
           >Make Reservation</NuxtLink
         >
         <NuxtLink
           :to="item.url"
-          class="w-full lg:w-fit bg-white border-2 border-primary text-primary font-medium text-center lg:px-10 py-2 mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
-          >Show Details</NuxtLink
+          class="w-full bg-white border-2 border-primary text-primary font-medium text-center lg:w-[220px] py-2 mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
+          >View Menu</NuxtLink
         >
       </div>
     </div>

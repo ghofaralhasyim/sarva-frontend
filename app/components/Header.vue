@@ -13,6 +13,14 @@ const menus = [
   { text: "Contact Us", url: "/contact-us" },
 ];
 
+const isScrolled = ref(false);
+
+onMounted(() => {
+  window.addEventListener("scroll", () => {
+    isScrolled.value = window.scrollY > 20;
+  });
+});
+
 const showNav = () => {
   const tl = $gsap.timeline();
   tl.fromTo(
@@ -34,9 +42,16 @@ const closeNav = () => {
 </script>
 
 <template>
-  <header class="absolute top-0 left-0 w-full text-white z-9999 bg-transparent">
+  <header
+    :class="[
+      'fixed top-0 left-0 w-full z-9999 transition-all duration-300 flex items-center',
+      isScrolled
+        ? 'bg-sarva-green text-white shadow-md h-20 lg:h-24'
+        : 'bg-transparent text-white h-32 lg:h-28',
+    ]"
+  >
     <div
-      class="container px-5 2xl:px-0 mx-auto max-w-8xl h-20 lg:h-28 flex justify-between items-center relative"
+      class="container px-5 xl:px-0 mx-auto max-w-324 flex justify-between items-center relative"
     >
       <!-- Logo -->
       <NuxtLink to="/" aria-label="Go to homepage">
@@ -56,7 +71,9 @@ const closeNav = () => {
             v-if="item.url !== '/contact-us' && item.url !== '/'"
             class="text-nowrap"
           >
-            <NuxtLink :to="item.url">{{ item.text }}</NuxtLink>
+            <NuxtLink :to="item.url" active-class="text-primary">{{
+              item.text
+            }}</NuxtLink>
           </li>
         </template>
       </ul>

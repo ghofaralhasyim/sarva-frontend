@@ -5,7 +5,10 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
 
-  css: ['~/assets/stylesheets/main.css'],
+  css: [
+    '~/assets/stylesheets/fonts.css',
+    '~/assets/stylesheets/main.css'
+  ],
 
   vite: {
     plugins: [
@@ -15,10 +18,11 @@ export default defineNuxtConfig({
 
   googleFonts: {
     families: {
-      'Cormorant Garamond': {
-        wght:  [400, 500, 600, 700],
-        ital: [400,500]
-      },
+      // 'Cormorant Garamond': {
+      //   wght: [300, 400, 600, 700],
+      //   ital: [300, 400],
+      //   variable: false,
+      // },
       'Lato': [300, 400, 700],
     },
     display: 'swap',

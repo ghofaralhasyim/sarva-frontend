@@ -26,8 +26,7 @@ const villasData: Villa[] = [
     capacity: 2,
     bedType: "1 Queen-size Bed",
     pool: "Private Garden & Pool",
-    description:
-      "<p>Escape to your intimate Ubud sanctuary! Our One-Bedroom Villa features a plush double bed and a sparkling private pool just steps from your door. Enjoy cozy meals in the dining area with kitchenette. The luxurious bathroom is a retreat with an air-conditioned bathtub for the ultimate soak.</p>",
+    description: `<p class="leading-[25px]">Escape to your intimate Ubud sanctuary! Our One-Bedroom Villa features a plush double bed and a sparkling private pool just steps from your door. Enjoy cozy meals in the dining area with kitchenette. The luxurious bathroom is a retreat with an air-conditioned bathtub for the ultimate soak.</p>`,
     features: [
       "Private swimming pool with tropical surroundings",
       "Elegant single bedroom with premium bedding",
@@ -78,8 +77,8 @@ const villasData: Villa[] = [
     bedType: "1 Queen-size Bed",
     pool: "Private Garden & Pool",
     description: `
-        <p>Unwind with family or friends in our spacious Two-Bedroom Villa. With only 3 units available, secure your perfect group getaway. Each villa boasts a large private pool and a shared dining area with kitchenette for easy entertaining. Both bedrooms feature a comfortable double bed. </p>
-        <p class="mt-4">After a day exploring, relax in the elegant bathroom, complete with an air-conditioned bathtub. Experience luxury and togetherness in your private Ubud residence.</p>
+        <p class="leading-[25px]">Unwind with family or friends in our spacious Two-Bedroom Villa. With only 3 units available, secure your perfect group getaway. Each villa boasts a large private pool and a shared dining area with kitchenette for easy entertaining. Both bedrooms feature a comfortable double bed. </p>
+        <p class="mt-4 leading-[25px]">After a day exploring, relax in the elegant bathroom, complete with an air-conditioned bathtub. Experience luxury and togetherness in your private Ubud residence.</p>
     `,
     features: [
       "Private swimming pool with tropical surroundings",
@@ -131,8 +130,8 @@ const villasData: Villa[] = [
     bedType: "1 Queen-size Bed",
     pool: "Private Garden & Pool",
     description: `
-        <p>Experience the pinnacle of luxury in our singular Three-Bedroom Villa. This one-of-a-kind residence is your grand home away from home. Gather around the expansive private pool or share meals in the large dining area with kitchenette. Each of the three bedrooms has a double bed for ultimate comfort.</p>
-        <p class="mt-4">The master bathroom features a lavish air-conditioned bathtub. Perfect for large families or groups seeking unparalleled space and exclusivity.</p>
+        <p class="leading-[25px]">Experience the pinnacle of luxury in our singular Three-Bedroom Villa. This one-of-a-kind residence is your grand home away from home. Gather around the expansive private pool or share meals in the large dining area with kitchenette. Each of the three bedrooms has a double bed for ultimate comfort.</p>
+        <p class="mt-4 leading-[25px]">The master bathroom features a lavish air-conditioned bathtub. Perfect for large families or groups seeking unparalleled space and exclusivity.</p>
     `,
     features: [
       "Private swimming pool with tropical surroundings",
@@ -211,9 +210,9 @@ function selectImage(img: string) {
     />
     <div
       v-if="data"
-      class="container min-h-[520px] px-5 2xl:px-0 mx-auto max-w-[920px] text-center relative text-white flex flex-col justify-center items-center"
+      class="container min-h-[520px] px-5 xl:px-0 mx-auto max-w-[920px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-serif text-[64px]">{{ data.title }}</h2>
+      <h2 class="font-serif text-[64px] font-bold">{{ data.title }}</h2>
       <p class="text-xl mt-6 text-center max-w-[680px]">
         {{ data.subTitle }}
       </p>
@@ -262,7 +261,7 @@ function selectImage(img: string) {
     </div>
   </section>
   <section
-    class="py-36 text-black container px-5 2xl:px-0 mx-auto max-w-[1256px] flex gap-16 items-center"
+    class="py-36 text-black container px-5 xl:px-0 mx-auto max-w-324 flex gap-16 items-center"
   >
     <div class="max-w-[580px] h-[650px] w-full">
       <img
@@ -272,9 +271,13 @@ function selectImage(img: string) {
       />
     </div>
     <div class="w-full">
-      <h3 class="italic font-serif font-medium text-[32px]">Description</h3>
+      <h3 class="italic font-serif font-semibold text-sarva-green text-[32px]">
+        Description
+      </h3>
       <div class="mt-3" v-html="data?.description"></div>
-      <h3 class="italic font-serif font-medium text-[32px] mt-14">
+      <h3
+        class="italic font-serif text-[32px] mt-14 font-semibold text-sarva-green"
+      >
         Villa Features
       </h3>
       <ul class="list-disc pl-5 mt-3">
@@ -295,8 +298,8 @@ function selectImage(img: string) {
     </div>
   </section>
   <section class="pt-26 pb-32 bg-sarva-green text-white">
-    <div class="container px-5 2xl:px-0 mx-auto max-w-[1256px]">
-      <h3 class="italic font-serif font-medium text-[#D1B377] text-[40px]">
+    <div class="container px-5 xl:px-0 mx-auto max-w-324">
+      <h3 class="italic font-serif font-semibold text-[#D1B377] text-[40px]">
         Villa Amenities
       </h3>
       <ul class="grid grid-cols-4 gap-y-6 gap-x-8 mt-12">
@@ -305,7 +308,7 @@ function selectImage(img: string) {
     </div>
   </section>
   <section
-    class="py-36 text-black container px-5 2xl:px-0 mx-auto max-w-[1256px] relative"
+    class="py-36 text-black container px-5 xl:px-0 mx-auto max-w-324 relative"
   >
     <div class="w-full h-[650px] overflow-hidden mb-4">
       <img

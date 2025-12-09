@@ -73,8 +73,8 @@ const dataOther: Facilities[] = getRandomItems(
 
 <template>
   <section class="relative pt-16 pb-46">
-    <div class="container px-5 2xl:px-0 mx-auto max-w-[1256px]">
-      <h3 class="font-serif font-medium text-[36px] lg:text-[40px] mb-6">
+    <div class="container px-5 xl:px-0 mx-auto max-w-324">
+      <h3 class="font-serif text-[36px] lg:text-[40px] mb-6 font-medium">
         Other Facilities
       </h3>
       <ul class="grid lg:grid-cols-3 gap-5 gap-y-20 lg:gap-y-0">
@@ -87,11 +87,11 @@ const dataOther: Facilities[] = getRandomItems(
                 :alt="item.name"
               />
             </div>
-            <h4 class="font-serif font-medium text-[28px] my-4">
+            <h4 class="font-serif font-semibold text-[28px] my-4">
               {{ item.name }}
             </h4>
-            <p class="min-h-32 line-clamp-5">{{ item.description }}</p>
-            <p class="mt-6 text-xl">
+            <p class="lg:min-h-32 line-clamp-5">{{ item.description }}</p>
+            <p class="mt-6 text-xl font-medium">
               Operation Hours: {{ item.operationHours }}
             </p>
             <div class="mt-10">

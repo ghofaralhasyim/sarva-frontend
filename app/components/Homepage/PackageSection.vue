@@ -2,7 +2,7 @@
 
 <template>
   <section class="bg-white">
-    <div class="pt-32 pb-40 lg:pb-46 container px-5 2xl:px-0 mx-auto max-w-7xl">
+    <div class="pt-32 pb-40 lg:pb-46 container px-5 xl:px-0 mx-auto max-w-324">
       <h2 class="font-serif text-[36px] lg:text-[40px] font-medium">
         Your Private Sanctuary in Ubud
       </h2>

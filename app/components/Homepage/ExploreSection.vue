@@ -77,18 +77,18 @@ onBeforeUnmount(() => {
 
 <template>
   <section class="bg-sarva-green">
-    <div class="pt-32 text-white container px-5 2xl:px-0 mx-auto max-w-7xl">
+    <div class="pt-32 text-white container px-5 xl:px-0 mx-auto max-w-324">
       <h2 class="font-serif text-[36px] lg:text-[40px] font-medium">
         Explore the Wonders of Ubud
       </h2>
-      <p class="max-w-[680px] lg:text-xl mt-6">
+      <p class="max-w-[686px] lg:text-xl mt-6">
         Adventure awaits just moments away from this family villa Ubud, whether
         you’re visiting the iconic Monkey Forest eco-tourism site or seeking
         thrills with a whitewater rafting adventure or bicycle tour exploring
         villages to Kintamani.
       </p>
     </div>
-    <div class="pb-46 pl-5 container md:px-5 md:mx-auto 2xl:px-0 max-w-7xl">
+    <div class="pb-46 pl-5 container md:px-5 md:mx-auto xl:px-0 max-w-324">
       <ul ref="sliderRef" class="keen-slider mt-10">
         <li
           v-for="(item, idx) in images"

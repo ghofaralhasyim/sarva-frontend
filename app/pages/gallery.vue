@@ -128,7 +128,7 @@ watch(activeTab, () => {
     <div
       class="container min-h-[520px] px-5 mx-auto max-w-[900px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-serif text-[52px] lg:text-[64px]">Gallery</h2>
+      <h2 class="font-serif text-[52px] lg:text-[64px] font-bold">Gallery</h2>
       <p class="lg:text-xl mt-4">
         Step into our Gallery and visually experience the beauty of our property
         and location. Browse stunning images of our pools, tranquil river views,
@@ -139,7 +139,7 @@ watch(activeTab, () => {
   </section>
 
   <section
-    class="pt-20 lg:pt-26 pb-32 lg:pb-42 text-black container px-5 mx-auto max-w-7xl"
+    class="pt-20 lg:pt-26 pb-32 lg:pb-42 text-black container px-5 mx-auto max-w-324"
   >
     <!-- MOBILE CUSTOM DROPDOWN -->
     <div class="relative block md:hidden mt-8">
