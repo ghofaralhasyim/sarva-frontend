@@ -97,10 +97,8 @@ const data: SpaPackage[] = [
         {{ item.description }}
       </p>
       <div class="flex lg:flex-col mt-4 gap-2">
-        <p class="font-serif-secondary text-lg lg:text-black/50">
-          Opening Hours:
-        </p>
-        <p class="font-serif-secondary text-lg lg:text-xl">
+        <p class="font-secondary text-lg lg:text-black/50">Opening Hours:</p>
+        <p class="font-secondary text-lg lg:text-xl">
           {{ item.openingHours }}
         </p>
       </div>

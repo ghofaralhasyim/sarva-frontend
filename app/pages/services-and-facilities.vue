@@ -86,7 +86,7 @@ const facilities: Facilities[] = [
         <div class="aspect-square lg:min-h-[400px] overflow-hidden">
           <img :src="item.image" alt="" class="object-cover w-full h-full" />
         </div>
-        <p class="font-serif text-[28px] mt-4">
+        <p class="font-serif text-[28px] mt-4 font-medium">
           {{ item.name }}
         </p>
         <p class="mt-4 lg:min-h-32">

@@ -4,7 +4,7 @@
   <section
     class="py-26 lg:py-32 text-black container px-5 2xl:px-0 mx-auto max-w-7xl"
   >
-    <h2 class="font-serif text-[36px] lg:text-[40px]">
+    <h2 class="font-serif font-medium text-[36px] lg:text-[40px]">
       Your Serene Escape in Ubud
     </h2>
     <div class="flex flex-col lg:flex-row gap-10 mt-8">

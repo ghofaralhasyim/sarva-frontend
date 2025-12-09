@@ -79,27 +79,28 @@ const villas: Villa[] = [
       <li
         v-for="(item, index) in villas"
         :key="index"
-        class="grid lg:grid-cols-2 gap-12"
+        class="grid lg:grid-cols-2 gap-4 lg:gap-12"
       >
         <div class="w-full relative min-h-[300px] lg:min-h-[500px]">
           <img :src="item.image" alt="" class="object-cover w-full h-full" />
         </div>
         <div class="w-full">
           <p
-            class="flex flex-col text-sarva-green font-serif text-[40px] lg:text-[42px] mt-2 lg:mt-4 leading-[42px]"
+            class="flex flex-col lg:flex-row lg:items-end text-sarva-green font-serif text-[40px] lg:text-[42px] mt-2 lg:mt-4 leading-[42px]"
           >
-            <span class="italic">{{ item.title }}</span>
-            <span class="font-serif text-[24px] mt-3 lg:mt-0 lg:ml-4">{{
-              item.subTitle
-            }}</span>
+            <span class="font-serif italic font-medium">{{ item.title }}</span>
+            <span
+              class="font-serif font-semibold text-[24px] lg:text[32px] leading-6 lg:leading-[30px] mt-3 lg:mt-0 lg:ml-4"
+              >{{ item.subTitle }}</span
+            >
           </p>
-          <p class="mt-4 max-w-[550px]">
+          <p class="mt-3 lg:mt-5 max-w-[550px]">
             {{ item.description }}
           </p>
           <div class="grid grid-cols-6 mt-8 gap-y-4 lg:gap-y-8">
             <div class="col-span-6 lg:col-span-2 flex flex-col gap-2">
               <p class="text-sm lg:text-base text-black/50">Size</p>
-              <p class="lg:text-xl italic font-serif-secondary">
+              <p class="lg:text-xl italic font-secondary">
                 {{ item.size }}
               </p>
             </div>
@@ -109,7 +110,7 @@ const villas: Villa[] = [
                 <p
                   v-for="(bed, index) in item.bed"
                   :key="index"
-                  class="lg:text-xl italic font-serif-secondary"
+                  class="lg:text-xl italic font-secondary"
                 >
                   {{ bed }}
                 </p>
@@ -117,13 +118,13 @@ const villas: Villa[] = [
             </div>
             <div class="col-span-6 lg:col-span-2 flex flex-col gap-2">
               <p class="text-sm lg:text-base text-black/50">Guest</p>
-              <p class="lg:text-xl italic font-serif-secondary">
+              <p class="lg:text-xl italic font-secondary">
                 {{ item.guest }}
               </p>
             </div>
             <div class="col-span-6 lg:col-span-2 flex flex-col gap-2">
               <p class="text-sm lg:text-base text-black/50">Facilities</p>
-              <p class="lg:text-xl italic font-serif-secondary">
+              <p class="lg:text-xl italic font-secondary">
                 {{ item.facilities }}
               </p>
             </div>
@@ -131,12 +132,12 @@ const villas: Villa[] = [
           <div class="flex gap-4 mt-4 lg:mt-8">
             <NuxtLink
               to="#"
-              class="bg-primary border-2 w-full lg:w-fit border-primary text-white font-medium text-center px-10 py-2 mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
+              class="bg-primary border-2 w-full lg:w-fit border-primary text-white font-medium text-center px-10 lg:min-w-[220px] py-2 mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-in duration-150"
               >Book Now</NuxtLink
             >
             <NuxtLink
               :to="`/villas/${item.slug}`"
-              class="bg-white border-2 w-full lg:w-fit border-primary text-primary font-medium text-center px-10 py-2 mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
+              class="bg-white border-2 w-full lg:w-fit border-primary text-primary font-medium text-center px-10 py-2 lg:min-w-[220px] mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-in duration-150"
               >Show Details</NuxtLink
             >
           </div>

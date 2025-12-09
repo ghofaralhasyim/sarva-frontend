@@ -31,7 +31,7 @@
           alt="sarva ubud"
         />
         <p
-          class="mt-5 lg:mt-10 leading-7 lg:text-xl text-center max-w-[420px] lg:max-w-[620px]"
+          class="mt-5 lg:mt-10 leading-7 lg:text-xl text-center max-w-[420px] lg:max-w-[620px] mx-auto"
         >
           Nestled in Bali’s lush highlands, Sarva Villa offers an elegant escape
           where luxury meets nature’s serene embrace.

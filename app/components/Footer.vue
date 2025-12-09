@@ -3,7 +3,7 @@
 <template>
   <footer class="bg-sarva-green text-white">
     <div
-      class="container py-16 px-5 2xl:px-0 mx-auto max-w-7xl flex flex-col justify-center lg:flex-row lg:justify-between gap-12"
+      class="container py-16 px-5 2xl:px-0 mx-auto max-w-8xl flex flex-col justify-center lg:flex-row lg:justify-between gap-12"
     >
       <div
         class="w-full lg:w-fit flex flex-col item-center text-white gap-6 lg:gap-4 mt-2 lg:max-w-[45%] 2xl:max-w-[40%] text-sm lg:text-base"

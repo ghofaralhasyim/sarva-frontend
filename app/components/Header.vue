@@ -2,6 +2,7 @@
 const { $gsap } = useNuxtApp();
 
 const menus = [
+  { text: "Homepage", url: "/" },
   { text: "Villas", url: "/villas" },
   { text: "Facilities", url: "/services-and-facilities" },
   { text: "Wellness", url: "/spa-and-wellness" },
@@ -35,7 +36,7 @@ const closeNav = () => {
 <template>
   <header class="absolute top-0 left-0 w-full text-white z-9999 bg-transparent">
     <div
-      class="container px-5 2xl:px-0 mx-auto max-w-7xl h-20 lg:h-28 flex justify-between items-center relative"
+      class="container px-5 2xl:px-0 mx-auto max-w-8xl h-20 lg:h-28 flex justify-between items-center relative"
     >
       <!-- Logo -->
       <NuxtLink to="/" aria-label="Go to homepage">
@@ -51,7 +52,10 @@ const closeNav = () => {
       <!-- Desktop menu -->
       <ul class="hidden lg:flex gap-14 items-center">
         <template v-for="item in menus" :key="item.text">
-          <li v-if="item.url !== '/contact-us'" class="text-nowrap">
+          <li
+            v-if="item.url !== '/contact-us' && item.url !== '/'"
+            class="text-nowrap"
+          >
             <NuxtLink :to="item.url">{{ item.text }}</NuxtLink>
           </li>
         </template>
@@ -106,17 +110,21 @@ const closeNav = () => {
       </div>
 
       <!-- Menu list -->
-      <ul class="relative flex flex-col items-start px-5 pt-6 h-full">
-        <li
-          v-for="item in menus"
-          :key="item.text"
-          class="nav-item opacity-0 text-2xl w-full py-6"
-        >
-          <NuxtLink :to="item.url" @click="closeNav">{{ item.text }}</NuxtLink>
-        </li>
-        <li
-          class="nav-item opacity-0 my-4 flex text-center absolute bottom-5 left-5 right-5"
-        >
+      <div
+        class="relative flex flex-col items-start justify-between px-5 pt-6 h-full"
+      >
+        <ul class="flex flex-col items-start justify-between h-full">
+          <li
+            v-for="item in menus"
+            :key="item.text"
+            class="nav-item opacity-0 text-2xl w-full"
+          >
+            <NuxtLink :to="item.url" @click="closeNav">{{
+              item.text
+            }}</NuxtLink>
+          </li>
+        </ul>
+        <div class="nav-item opacity-0 my-4 flex text-center w-full pt-6">
           <NuxtLink
             to="#"
             class="py-3 w-full text-white bg-primary transition-colors ease-in duration-150"
@@ -124,8 +132,8 @@ const closeNav = () => {
           >
             Check Availabillity
           </NuxtLink>
-        </li>
-      </ul>
+        </div>
+      </div>
     </nav>
   </header>
 </template>

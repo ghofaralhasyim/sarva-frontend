@@ -20,7 +20,6 @@ export default defineNuxtConfig({
         ital: [400,500]
       },
       'Lato': [300, 400, 700],
-      'Roboto': [300,400,500],
     },
     display: 'swap',
     preconnect: true,

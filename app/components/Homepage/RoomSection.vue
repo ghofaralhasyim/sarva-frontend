@@ -234,7 +234,7 @@ const goToSlide = (i: number) => {
   <section
     class="pt-12 pb-40 lg:pb-46 text-black container px-5 2xl:px-0 mx-auto max-w-7xl"
   >
-    <h2 class="font-serif text-[36px] lg:text-[40px]">
+    <h2 class="font-serif text-[36px] lg:text-[40px] font-medium">
       Welcomed by Culture, Surrounded by Serenity
     </h2>
     <p class="max-w-[680px] lg:text-xl mt-6 lg:mt-4">
