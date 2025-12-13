@@ -39,6 +39,12 @@ const closeNav = () => {
     .to("#bgNav", { opacity: 0, duration: 0.3 }, "<")
     .to("#nav", { opacity: 0, display: "none", duration: 0.3 });
 };
+
+const route = useRoute();
+
+function isActive(url: string) {
+  return route.path === url || route.path.startsWith(url + "/");
+}
 </script>
 
 <template>

@@ -31,6 +31,7 @@ export default defineNuxtConfig({
   },
 
   modules: [
-    'nuxt-keen-slider'
+    'nuxt-keen-slider',
+    '@nuxt/icon'
   ]
 })

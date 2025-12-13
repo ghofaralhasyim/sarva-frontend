@@ -95,7 +95,7 @@ const villas: Villa[] = [
               >{{ item.title }}</span
             >
             <span
-              class="font-serif font-semibold text-[24px] lg:text[32px] leading-6 lg:leading-[30px] mt-3 lg:mt-0 lg:ml-4"
+              class="font-serif font-semibold text-[24px] lg:text-[28px] leading-6 lg:leading-[30px] mt-3 lg:mt-0 lg:ml-4"
               >{{ item.subTitle }}</span
             >
           </p>

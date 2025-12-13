@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import KeenSlider from "keen-slider";
+import type { KeenSliderInstance } from "keen-slider";
 
 interface Villa {
   title: string;
@@ -177,21 +178,31 @@ const villasData: Villa[] = [
 ];
 
 const route = useRoute();
-let dataIdx = villasData.findIndex((item) => item.slug == route.params.slug);
-let data: Villa | undefined = undefined;
-if (dataIdx != -1) {
-  data = villasData[dataIdx];
-}
 
-const activeImage = ref(data?.images[0] || "1.jpg");
+const data = computed(() =>
+  villasData.find((item) => item.slug === route.params.slug)
+);
+
+const activeImage = ref(data?.value?.images[0] || "1.jpg");
 const sliderRef = ref<HTMLElement | null>(null);
-let slider: typeof KeenSlider | null = null;
+let slider: KeenSliderInstance | null = null;
 
-onMounted(() => {
+onMounted(async () => {
+  await nextTick();
+
   if (sliderRef.value) {
     slider = new KeenSlider(sliderRef.value, {
       loop: true,
-      slides: { perView: 5, spacing: 10 },
+      slides: { perView: 2.3, spacing: 8 },
+      breakpoints: {
+        "(min-width: 768px)": {
+          slides: { perView: 5, spacing: 10 },
+        },
+      },
+    });
+
+    window.addEventListener("resize", () => {
+      slider?.update();
     });
   }
 });
@@ -199,139 +210,169 @@ onMounted(() => {
 function selectImage(img: string) {
   activeImage.value = img;
 }
+
+function prevSlide() {
+  if (slider) slider.prev();
+}
+
+function nextSlide() {
+  if (slider) slider.next();
+}
 </script>
 
 <template>
-  <section class="relative pt-24 pb-16 min-h-[520px]">
-    <img
-      src="@/assets/img/villas-header.jpg"
-      class="w-full h-full absolute inset-0 object-cover"
-      alt=""
-    />
-    <div
-      v-if="data"
-      class="container min-h-[520px] px-5 xl:px-0 mx-auto max-w-[920px] text-center relative text-white flex flex-col justify-center items-center"
-    >
-      <h2 class="font-serif text-[64px] font-bold">{{ data.title }}</h2>
-      <p class="text-xl mt-6 text-center max-w-[680px]">
-        {{ data.subTitle }}
-      </p>
-      <ul class="flex gap-12 mt-16">
-        <li class="flex flex-col justify-center items-center">
-          <div class="w-8 h-8 aspect-square">
-            <img
-              src="@/assets/img/icon/square-white.png"
-              class="w-full h-full object-cover"
-              alt=""
-            />
-          </div>
-          <span>{{ data.space }} sqm</span>
-        </li>
-        <li class="flex flex-col justify-center items-center">
-          <div class="w-[35px] h-[35px] aspect-square">
-            <img
-              src="@/assets/img/icon/users-white.png"
-              class="w-full h-full object-cover"
-              alt=""
-            />
-          </div>
-          <span>{{ data.capacity }} Adults</span>
-        </li>
-        <li class="flex flex-col justify-center items-center">
-          <div class="w-[35px] h-[35px] aspect-square">
-            <img
-              src="@/assets/img/icon/bed-white.png"
-              class="w-full h-full object-cover"
-              alt=""
-            />
-          </div>
-          <span>{{ data.bedType }}</span>
-        </li>
-        <li class="flex flex-col justify-center items-center">
-          <div class="w-[35px] h-[35px] aspect-square">
-            <img
-              src="@/assets/img/icon/pool-white.png"
-              class="w-full h-full object-cover"
-              alt=""
-            />
-          </div>
-          <span>{{ data.pool }}</span>
-        </li>
-      </ul>
-    </div>
-  </section>
-  <section
-    class="py-36 text-black container px-5 xl:px-0 mx-auto max-w-324 flex gap-16 items-center"
-  >
-    <div class="max-w-[580px] h-[650px] w-full">
+  <ClientOnly>
+    <section class="relative pt-24 pb-16 min-h-[520px]">
       <img
-        src="@/assets/img/room-1.png"
-        class="w-full h-full object-cover"
+        src="@/assets/img/villas-header.jpg"
+        class="w-full h-full absolute inset-0 object-cover"
         alt=""
       />
-    </div>
-    <div class="w-full">
-      <h3 class="italic font-serif font-semibold text-sarva-green text-[32px]">
-        Description
-      </h3>
-      <div class="mt-3" v-html="data?.description"></div>
-      <h3
-        class="italic font-serif text-[32px] mt-14 font-semibold text-sarva-green"
-      >
-        Villa Features
-      </h3>
-      <ul class="list-disc pl-5 mt-3">
-        <li v-for="item in data?.features" class="">{{ item }}</li>
-      </ul>
-      <div class="flex gap-4 mt-14">
-        <NuxtLink
-          to="#"
-          class="w-full bg-primary border-2 border-primary text-white font-medium text-center px-10 py-3 mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
-          >Book Now</NuxtLink
-        >
-        <NuxtLink
-          to="#"
-          class="w-full bg-white border-2 border-primary text-primary font-medium text-center px-10 py-3 mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
-          >Villa Terms & Conditions</NuxtLink
-        >
-      </div>
-    </div>
-  </section>
-  <section class="pt-26 pb-32 bg-sarva-green text-white">
-    <div class="container px-5 xl:px-0 mx-auto max-w-324">
-      <h3 class="italic font-serif font-semibold text-[#D1B377] text-[40px]">
-        Villa Amenities
-      </h3>
-      <ul class="grid grid-cols-4 gap-y-6 gap-x-8 mt-12">
-        <li v-for="item in data?.amenities" class="">{{ item }}</li>
-      </ul>
-    </div>
-  </section>
-  <section
-    class="py-36 text-black container px-5 xl:px-0 mx-auto max-w-324 relative"
-  >
-    <div class="w-full h-[650px] overflow-hidden mb-4">
-      <img
-        :src="`/img/villas/sliders/${activeImage}`"
-        class="w-full h-full object-cover transition-all duration-300"
-        alt="Main Villa Image"
-      />
-    </div>
-
-    <div ref="sliderRef" class="keen-slider">
       <div
-        v-for="(img, index) in data?.images"
-        :key="index"
-        class="keen-slider__slide max-w-60 h-[140px] cursor-pointer"
-        @click="selectImage(img)"
+        class="container min-h-dvh lg:min-h-[520px] px-5 xl:px-0 mx-auto max-w-[920px] text-center relative text-white flex flex-col justify-center items-center pb-28 lg:pb-0"
       >
+        <h2
+          class="font-serif font-bold tracking-tight text-[52px] leading-[62px] lg:text-[64px] lg:leading-[74px]"
+        >
+          {{ data?.title }}
+        </h2>
+        <p class="lg:text-xl mt-6 text-center max-w-[680px]">
+          {{ data?.subTitle }}
+        </p>
+        <ul class="grid grid-cols-2 lg:flex gap-12 mt-16">
+          <li class="flex flex-col justify-center items-center">
+            <div class="w-8 h-8 aspect-square">
+              <img
+                src="@/assets/img/icon/square-white.png"
+                class="w-full h-full object-cover"
+                alt=""
+              />
+            </div>
+            <span>{{ data?.space }} sqm</span>
+          </li>
+          <li class="flex flex-col justify-center items-center">
+            <div class="w-[35px] h-[35px] aspect-square">
+              <img
+                src="@/assets/img/icon/users-white.png"
+                class="w-full h-full object-cover"
+                alt=""
+              />
+            </div>
+            <span>{{ data?.capacity }} Adults</span>
+          </li>
+          <li class="flex flex-col justify-center items-center">
+            <div class="w-[35px] h-[35px] aspect-square">
+              <img
+                src="@/assets/img/icon/bed-white.png"
+                class="w-full h-full object-cover"
+                alt=""
+              />
+            </div>
+            <span>{{ data?.bedType }}</span>
+          </li>
+          <li class="flex flex-col justify-center items-center">
+            <div class="w-[35px] h-[35px] aspect-square">
+              <img
+                src="@/assets/img/icon/pool-white.png"
+                class="w-full h-full object-cover"
+                alt=""
+              />
+            </div>
+            <span>{{ data?.pool }}</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+    <section
+      class="py-36 text-black container px-5 xl:px-0 mx-auto max-w-324 flex flex-col lg:flex-row gap-6 lg:gap-16 items-center"
+    >
+      <div class="max-w-[580px] lg:h-[650px] w-full">
         <img
-          :src="`/img/villas/sliders/${img}`"
-          class="w-full h-full object-cover border-2 border-transparent hover:border-black transition"
+          src="@/assets/img/room-1.png"
+          class="w-full h-full object-cover"
           alt=""
         />
       </div>
-    </div>
-  </section>
-  <CTASection />
+      <div class="w-full">
+        <h3
+          class="italic font-serif font-semibold text-sarva-green text-[32px]"
+        >
+          Description
+        </h3>
+        <div class="mt-3" v-html="data?.description"></div>
+        <h3
+          class="italic font-serif text-[32px] mt-14 font-semibold text-sarva-green"
+        >
+          Villa Features
+        </h3>
+        <ul class="list-disc pl-5 mt-3">
+          <li v-for="item in data?.features" class="">{{ item }}</li>
+        </ul>
+        <div class="flex flex-col gap-6 lg:gap-4 mt-18 lg:mt-14">
+          <NuxtLink
+            to="#"
+            class="w-full bg-primary border-2 border-primary text-white font-medium text-center px-10 py-3 lg:mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
+            >Book Now</NuxtLink
+          >
+          <NuxtLink
+            to="#"
+            class="w-full bg-white border-2 border-primary text-primary font-medium text-center px-10 py-3 lg:mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-out"
+            >Villa Terms & Conditions</NuxtLink
+          >
+        </div>
+      </div>
+    </section>
+    <section class="pt-26 pb-32 bg-sarva-green text-white">
+      <div class="container px-5 xl:px-0 mx-auto max-w-324">
+        <h3 class="italic font-serif font-semibold text-[#D1B377] text-[40px]">
+          Villa Amenities
+        </h3>
+        <ul class="grid lg:grid-cols-4 gap-y-4 lg:gap-y-6 gap-x-8 mt-12">
+          <li v-for="item in data?.amenities" class="">{{ item }}</li>
+        </ul>
+      </div>
+    </section>
+    <section
+      class="py-36 text-black container px-5 xl:px-0 mx-auto max-w-324 relative"
+    >
+      <div class="w-full h-[250px] lg:h-[650px] overflow-hidden mb-4">
+        <img
+          :src="`/img/villas/sliders/${activeImage}`"
+          class="w-full h-full object-cover transition-all duration-300"
+          alt="Main Villa Image"
+        />
+      </div>
+
+      <div class="relative">
+        <button
+          @click="prevSlide"
+          class="hidden lg:flex h-12 w-12 bg-white rounded-full absolute z-10 left-4 top-1/2 -translate-y-1/2 items-center justify-center"
+        >
+          <Icon name="mynaui:chevron-left" size="1.5rem" />
+        </button>
+        <button
+          @click="nextSlide"
+          class="hidden h-12 w-12 bg-white rounded-full absolute z-10 right-4 top-1/2 -translate-y-1/2 lg:flex items-center justify-center"
+        >
+          <Icon name="mynaui:chevron-right" size="1.5rem" />
+        </button>
+
+        <div ref="sliderRef" class="keen-slider">
+          <div
+            v-for="(img, index) in data?.images"
+            :key="index"
+            class="keen-slider__slide max-w-60 h-[100px] lg:h-[140px] cursor-pointer"
+            @click="selectImage(img)"
+          >
+            <img
+              :src="`/img/villas/sliders/${img}`"
+              class="w-full h-full object-cover border-2 border-transparent hover:border-black transition"
+              alt=""
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+    <CTASection />
+  </ClientOnly>
 </template>
