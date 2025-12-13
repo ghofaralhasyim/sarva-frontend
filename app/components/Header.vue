@@ -77,9 +77,11 @@ function isActive(url: string) {
             v-if="item.url !== '/contact-us' && item.url !== '/'"
             class="text-nowrap"
           >
-            <NuxtLink :to="item.url" :class="{ 'text-primary': isActive }">{{
-              item.text
-            }}</NuxtLink>
+            <NuxtLink
+              :to="item.url"
+              :class="{ 'text-primary': isActive(item.url) }"
+              >{{ item.text }}</NuxtLink
+            >
           </li>
         </template>
       </ul>

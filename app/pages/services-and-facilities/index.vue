@@ -38,7 +38,7 @@ const facilities: Facilities[] = [
       "Find your power at our state-of-the-art fitness center, conveniently located just behind the lobby. Get a refreshing workout before your day begins or after a long flight. Fully equipped with modern machines to help you stay on track. Your daily boost awaits!",
     operationHours: "07:00 - 19:00",
     image: "img/facilities/gym.jpg",
-    slug: "fitness-center",
+    slug: "services-and-facilities/fitness-center",
   },
   {
     name: "Spa & Wellness",
@@ -54,7 +54,7 @@ const facilities: Facilities[] = [
       "Discover the best of Bali with ease at our Tour Desk. From thrilling adventures to cultural journeys, we’ll plan every detail so you can simply enjoy the experience.",
     operationHours: "09:00 - 18:00",
     image: "img/facilities/tour.jpg",
-    slug: "tour-desk",
+    slug: "services-and-facilities/tour-desk",
   },
   {
     name: "Nearby Destinations",
@@ -62,7 +62,7 @@ const facilities: Facilities[] = [
       "Discover Ubud’s nearby destinations, each offering unique natural beauty, cultural richness, and unforgettable experiences just moments from your stay.",
     operationHours: "",
     image: "img/facilities/nearby.jpg",
-    slug: "nearby-destinations",
+    slug: "services-and-facilities/nearby-destinations",
   },
 ];
 </script>

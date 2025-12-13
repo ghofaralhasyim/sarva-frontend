@@ -13,7 +13,7 @@ const facilities: Facilities[] = [
     description:
       "Escape the bustle at Lobby Lounge. Unwind with a refreshing drink while awaiting your room, or relax after check-out. It’s your tranquil oasis for rest and relaxation, nestled discreetly behind the lobby. Settle in and recharge.",
     operationHours: "07:00 - 22:00",
-    image: "img/facilities/lobby.jpg",
+    image: "/img/facilities/lobby.jpg",
     slug: "lobby-lounge",
   },
   {
@@ -21,7 +21,7 @@ const facilities: Facilities[] = [
     description:
       "Discover our hidden gem, tucked away behind the villa units. Enjoy exquisite cuisine and handcrafted cocktails with a stunning, tranquil view of the Oos River. It’s the perfect setting for a romantic dinner or a peaceful evening escape. Taste the tranquility.",
     operationHours: "07:00 - 20:00",
-    image: "img/facilities/resto.jpg",
+    image: "/img/facilities/resto.jpg",
     slug: "restaurant",
   },
   {
@@ -29,7 +29,7 @@ const facilities: Facilities[] = [
     description:
       "Five into our main pool and soak in the jacuzzi, offering breathtaking, uninterrupted views of the lush green valley and the serene Oos River. This is your stunning oasis for ultimate relaxation. Enjoy a swim and let the natural beauty refresh your soul.",
     operationHours: "07:00 - 19:00",
-    image: "img/facilities/pool.jpg",
+    image: "/img/facilities/pool.jpg",
     slug: "green-valley-view-infinity-pool",
   },
   {
@@ -37,7 +37,7 @@ const facilities: Facilities[] = [
     description:
       "Find your power at our state-of-the-art fitness center, conveniently located just behind the lobby. Get a refreshing workout before your day begins or after a long flight. Fully equipped with modern machines to help you stay on track. Your daily boost awaits!",
     operationHours: "07:00 - 19:00",
-    image: "img/facilities/gym.jpg",
+    image: "/img/facilities/gym.jpg",
     slug: "fitness-center",
   },
   {
@@ -45,7 +45,7 @@ const facilities: Facilities[] = [
     description:
       "Relax and recharge at our intimate Spa Sanctuary, just steps away from your villa. Enjoy traditional Balinese massages and rejuvenating treatments designed to restore balance.",
     operationHours: "09:00 - 18:00",
-    image: "img/facilities/spa.jpg",
+    image: "/img/facilities/spa.jpg",
     slug: "spa-and-wellness",
   },
   {
@@ -53,7 +53,7 @@ const facilities: Facilities[] = [
     description:
       "Discover the best of Bali with ease at our Tour Desk. From thrilling adventures to cultural journeys, we’ll plan every detail so you can simply enjoy the experience.",
     operationHours: "09:00 - 18:00",
-    image: "img/facilities/tour.jpg",
+    image: "/img/facilities/tour.jpg",
     slug: "tour-desk",
   },
 ];

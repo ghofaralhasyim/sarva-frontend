@@ -19,7 +19,7 @@
       </p>
       <NuxtLink
         to="#"
-        class="bg-primary text-center py-3 px-10 lg:w-full max-w-[370px] mt-12"
+        class="bg-primary text-center py-3 px-10 lg:w-full max-w-[370px] mt-12 hover:bg-primary-darker transition-colors ease-in duration-150"
         >Check Availability</NuxtLink
       >
     </div>

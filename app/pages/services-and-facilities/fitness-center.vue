@@ -10,8 +10,10 @@
     <div
       class="container min-h-[520px] px-5 xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
-      <h2 class="font-serif text-[64px]">Fitness Center</h2>
-      <p class="text-xl mt-4">
+      <h2 class="font-serif text-[52px] lg:text-[64px] font-bold">
+        Fitness Center
+      </h2>
+      <p class="text-base lg:text-xl mt-4">
         Find your power at our state-of-the-art fitness center, conveniently
         located just behind the lobby. Get a refreshing workout before your day
         begins or after a long flight. Fully equipped with modern machines to
@@ -20,13 +22,15 @@
     </div>
   </section>
   <section
-    class="pt-32 pb-20 text-black container px-5 xl:px-0 mx-auto max-w-324 flex gap-16 items-center relative"
+    class="pt-28 lg:pt-32 pb-12 text-black container px-5 xl:px-0 mx-auto max-w-324 flex flex-col lg:flex-row gap-16 items-center relative"
   >
     <div class="w-full">
-      <h3 class="italic font-serif font-medium text-[32px]">
+      <h3
+        class="italic font-serif text-[28px] lg:text-[32px] text-sarva-green tracking-tight font-semibold"
+      >
         Your Ubud Wellness Escape Starts Here
       </h3>
-      <div class="mt-3">
+      <div class="mt-3 text-sm lg:text-base">
         <p class="">
           Don’t let your holiday interrupt your healthy rhythm! Discreetly
           located right behind the joglo tropical house style lobby, our
@@ -45,7 +49,7 @@
         </p>
       </div>
     </div>
-    <div class="max-w-[580px] h-[650px] w-full">
+    <div class="max-w-[580px] h-[300px] lg:h-[650px] w-full">
       <img
         src="@/assets/img/fitness.jpg"
         class="w-full h-full object-cover"

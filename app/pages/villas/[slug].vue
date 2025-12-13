@@ -308,7 +308,7 @@ function nextSlide() {
         <ul class="list-disc pl-5 mt-3">
           <li v-for="item in data?.features" class="">{{ item }}</li>
         </ul>
-        <div class="flex flex-col gap-6 lg:gap-4 mt-18 lg:mt-14">
+        <div class="flex flex-col lg:flex-row gap-6 lg:gap-4 mt-18 lg:mt-6">
           <NuxtLink
             to="#"
             class="w-full bg-primary border-2 border-primary text-white font-medium text-center px-10 py-3 lg:mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-out"
