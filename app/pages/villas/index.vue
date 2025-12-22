@@ -137,12 +137,12 @@ const villas: Villa[] = [
           <div class="flex gap-4 mt-4 lg:mt-8">
             <NuxtLink
               to="#"
-              class="bg-primary border-2 w-full lg:w-fit border-primary text-white font-medium text-center px-10 lg:min-w-[220px] py-2 mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-in duration-150"
+              class="bg-primary border-2 w-full lg:w-fit border-primary text-white font-medium text-center lg:px-10 lg:min-w-[220px] py-2 mt-7 cursor-pointer hover:bg-primary-darker transition-colors ease-in duration-150"
               >Book Now</NuxtLink
             >
             <NuxtLink
               :to="`/villas/${item.slug}`"
-              class="bg-white border-2 w-full lg:w-fit border-primary text-primary font-medium text-center px-10 py-2 lg:min-w-[220px] mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-in duration-150"
+              class="bg-white border-2 w-full lg:w-fit border-primary text-primary font-medium text-center lg:px-10 py-2 lg:min-w-[220px] mt-7 cursor-pointer hover:bg-primary hover:text-white transition-colors ease-in duration-150"
               >Show Details</NuxtLink
             >
           </div>

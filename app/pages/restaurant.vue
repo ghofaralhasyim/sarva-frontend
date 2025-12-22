@@ -60,7 +60,7 @@ const data: RestaurantPackage[] = [
       <h2 class="font-serif text-[52px] lg:text-[64px] font-bold">
         Restaurant
       </h2>
-      <p class="text-lg lg:text-xl mt-4">
+      <p class="text-sm lg:text-base mt-4">
         Savor a thoughtfully prepared selection of local and international
         cuisine, made with fresh, seasonal ingredients.
       </p>
@@ -71,11 +71,11 @@ const data: RestaurantPackage[] = [
   >
     <div class="w-full">
       <h3
-        class="italic font-serif text-[32px] text-sarva-green font-medium tracking-tight"
+        class="font-serif text-[36px] leading-[36px] lg:leading-[40px] lg:text-[40px] text-sarva-green font-medium tracking-tight"
       >
         An Oasis of Flavor and Serenity
       </h3>
-      <div class="mt-3">
+      <div class="mt-7 text-sm lg:text-base font-sans">
         <p class="">
           Imagine savoring exquisite cuisine while overlooking a lush valley
           shaped by the gentle Oos River. At Sarva Resto Ubud, every meal is a
@@ -111,13 +111,13 @@ const data: RestaurantPackage[] = [
     </div>
     <div class="w-full">
       <h3
-        class="italic font-serif font-medium text-[32px] text-sarva-green tracking-tight"
+        class="font-serif text-[36px] lg:text-[48px] text-sarva-green font-medium tracking-tight italic"
       >
         {{ item.title }}
       </h3>
       <p class="mt-4">{{ item.description }}</p>
       <p class="text-black/50 mt-4">Includes</p>
-      <ul class="list-disc pl-5 mt-3 italic">
+      <ul class="list-disc pl-5 mt-3 font-sans italic text-xl leading-[30px]">
         <li v-for="y in item.includes" class="">{{ y }}</li>
       </ul>
       <div class="flex gap-4 mt-4 lg:mt-8">

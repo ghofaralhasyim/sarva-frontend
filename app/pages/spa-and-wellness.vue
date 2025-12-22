@@ -40,7 +40,7 @@ const data: SpaPackage[] = [
       <h2 class="font-serif text-[52px] lg:text-[64px] font-bold">
         Spa & Wellness
       </h2>
-      <p class="lg:text-xl mt-4 max-w-[320px] md:max-w-none">
+      <p class="text-sm lg:text-base mt-4 max-w-[320px] md:max-w-none">
         Sarva offers curated wellness experiences to help you reconnect and
         restore balance in body, mind, and soul.
       </p>
@@ -51,11 +51,11 @@ const data: SpaPackage[] = [
   >
     <div class="w-full">
       <h3
-        class="italic font-serif font-medium text-[32px] lg:text-[40px] text-sarva-green tracking-tight"
+        class="font-serif text-[36px] leading-[36px] lg:leading-[40px] lg:text-[40px] text-sarva-green font-medium tracking-tight"
       >
         Ubud Spa Sanctuary: A Journey to Bliss
       </h3>
-      <div class="mt-6 lg:mt-5 text-sm lg:text-base">
+      <div class="mt-7 text-sm lg:text-base font-sans">
         <p class="">
           Step into a sanctuary of serenity nestled within our lush private
           villa grounds. Our exclusive Ubud Spa offers an escape from the
@@ -93,7 +93,7 @@ const data: SpaPackage[] = [
     </div>
     <div class="w-full">
       <h3
-        class="italic font-serif font-medium text-[28px] lg:text-[32px] text-sarva-green"
+        class="font-serif text-[36px] lg:text-[48px] text-sarva-green font-medium tracking-tight italic"
       >
         {{ item.title }}
       </h3>

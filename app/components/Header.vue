@@ -142,6 +142,7 @@ function isActive(url: string) {
           <li
             v-for="item in menus"
             :key="item.text"
+            :class="{ 'text-primary': isActive(item.url) }"
             class="nav-item opacity-0 text-2xl w-full"
           >
             <NuxtLink :to="item.url" @click="closeNav">{{
