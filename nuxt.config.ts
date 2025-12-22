@@ -7,8 +7,15 @@ export default defineNuxtConfig({
 
   css: [
     '~/assets/stylesheets/fonts.css',
-    '~/assets/stylesheets/main.css'
+    '~/assets/stylesheets/main.css',
+    '@vuepic/vue-datepicker/dist/main.css'
   ],
+
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: '',
+    },
+  },
 
   vite: {
     plugins: [
@@ -18,11 +25,6 @@ export default defineNuxtConfig({
 
   googleFonts: {
     families: {
-      // 'Cormorant Garamond': {
-      //   wght: [300, 400, 600, 700],
-      //   ital: [300, 400],
-      //   variable: false,
-      // },
       'Lato': [300, 400, 700],
     },
     display: 'swap',

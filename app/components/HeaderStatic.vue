@@ -13,14 +13,6 @@ const menus = [
   { text: "Contact Us", url: "/contact-us" },
 ];
 
-const isScrolled = ref(false);
-
-onMounted(() => {
-  window.addEventListener("scroll", () => {
-    isScrolled.value = window.scrollY > 20;
-  });
-});
-
 const showNav = () => {
   const tl = $gsap.timeline();
   tl.fromTo(
@@ -49,12 +41,7 @@ function isActive(url: string) {
 
 <template>
   <header
-    :class="[
-      'fixed top-0 left-0 w-full z-9999 transition-all duration-300 flex items-center',
-      isScrolled
-        ? 'bg-sarva-green text-white shadow-md h-20 lg:h-24'
-        : 'bg-transparent text-white h-32 lg:h-28',
-    ]"
+    class="fixed top-0 left-0 w-full z-9999 transition-all duration-300 flex items-center bg-sarva-green text-white shadow-md h-20 lg:h-24"
   >
     <div
       class="container px-5 xl:px-0 mx-auto max-w-324 flex justify-between items-center relative"
@@ -88,7 +75,7 @@ function isActive(url: string) {
       <ul class="hidden lg:flex items-center gap-10 text-sm">
         <li>
           <NuxtLink
-            to="/booking"
+            to="#"
             class="py-3 px-8 border text-white border-primary bg-primary hover:bg-primary-darker transition-colors ease-in duration-150"
           >
             Check Availabillity
@@ -142,7 +129,6 @@ function isActive(url: string) {
           <li
             v-for="item in menus"
             :key="item.text"
-            :class="{ 'text-primary': isActive(item.url) }"
             class="nav-item opacity-0 text-2xl w-full"
           >
             <NuxtLink :to="item.url" @click="closeNav">{{
