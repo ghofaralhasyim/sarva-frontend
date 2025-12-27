@@ -25,6 +25,10 @@ export const formatDate = (dateString: string | Date, format: string): string =>
       return `${String(day).padStart(2, '0')} ${monthName} ${year}`;
     }
 
+    if (format == 'queryDate') {
+      return `${day}-${month+1}-${year}`
+    }
+
     return '';
 };
 

@@ -10,6 +10,7 @@ export interface ApiRoom {
     price_per_night: number;
     price_with_breakfast: number;
     total_stock: number;
+    name: string;
 }
 
 export interface Villa {

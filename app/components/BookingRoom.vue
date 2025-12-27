@@ -24,6 +24,8 @@ interface Props {
   adults: number;
   children: number;
   nights: number;
+  checkIn: Date;
+  checkOut: Date;
 }
 
 const qty = ref<number>(1);
@@ -59,9 +61,11 @@ watch(qty, (newQty) => {
   emit("update:qty", newQty);
 });
 
+const router = useRouter();
 const selectRoom = (withBreakfast: boolean) => {
   emit("update:roomId", props.room.id);
   emit("update:withBreakfast", withBreakfast);
+  router.push(`/booking/confirmation?id=${props.room.id}&childer=${props.children}&adults=${props.adults}&checkIn=${formatDate(props.checkIn, 'queryDate')}&checkOut=${formatDate(props.checkOut, 'queryDate')}`)
 };
 </script>
 

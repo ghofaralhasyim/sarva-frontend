@@ -1,115 +1,178 @@
 <script lang="ts" setup>
-import type { Villa } from "~/types/types";
-import type { ApiRoom } from "~/types/types";
+import type { Villa, ApiRoom } from "~/types/types"
 
-interface Props {
-  adults: number;
-  children: number;
-  room: Villa | undefined;
-  nights: number;
-  checkIn: Date | undefined;
-  checkOut: Date | undefined;
-  isWithBreakfast: boolean;
-  qty: number;
+definePageMeta({
+  layout: "layout2",
+});
+
+type DateRange = [Date, Date] | []
+
+const route = useRoute()
+const router = useRouter()
+
+function toInt(v: unknown, fallback = 0) {
+  const n = Number(v)
+  return Number.isFinite(n) ? n : fallback
 }
 
-const props = withDefaults(defineProps<Props>(), {});
+function toBool(v: unknown, fallback = false) {
+  if (typeof v === "boolean") return v
+  if (typeof v === "string") return v.toLowerCase() === "true"
+  return fallback
+}
 
-const villa = ref<Villa>()
-type DateRange = [Date, Date] | [];
+function parseDDMMYYYY(v: unknown): Date | undefined {
+  if (typeof v !== "string") return undefined
+  const [dd, mm, yyyy] = v.split("-").map(Number)
+  if (!dd || !mm || !yyyy) return undefined
+  const d = new Date(yyyy, mm - 1, dd)
+  if (Number.isNaN(d.getTime())) return undefined
+  return d
+}
 
-const today = new Date();
-const tomorrow = new Date(today);
-tomorrow.setDate(today.getDate() + 1);
-const dateRange = ref<DateRange>([today, tomorrow]);
+function toYMD(d: Date) {
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, "0")
+  const day = String(d.getDate()).padStart(2, "0")
+  return `${y}-${m}-${day}`
+}
 
-const checkAvailability = async () => {
-  if (dateRange.value.length !== 2) return;
+function mapApiRoomToVilla(r: ApiRoom): Villa {
+  return {
+    id: r.id,
+    price: r.price_per_night,
+    priceWithBreakfast: r.price_with_breakfast,
+    capacity: r.capacity,
+    title: r.name,
+  } as unknown as Villa
+}
+
+const roomId = computed(() => toInt(route.query.id, 0))
+const adults = computed(() => toInt(route.query.adults, 1))
+const children = computed(() => toInt(route.query.children, 0))
+const qty = computed(() => Math.max(1, toInt(route.query.qty, 1)))
+const isWithBreakfast = computed(() => toBool(route.query.isWithBreakfast, false))
+
+const checkIn = computed<Date | undefined>(() => parseDDMMYYYY(route.query.checkIn))
+const checkOut = computed<Date | undefined>(() => parseDDMMYYYY(route.query.checkOut))
+
+const nights = computed(() => {
+  if (!checkIn.value || !checkOut.value) return 0
+  const ms = checkOut.value.getTime() - checkIn.value.getTime()
+  const n = Math.ceil(ms / (1000 * 60 * 60 * 24))
+  return Math.max(0, n)
+})
+
+const villa = ref<Villa | undefined>(undefined)
+
+
+const today = new Date()
+const tomorrow = new Date(today)
+tomorrow.setDate(today.getDate() + 1)
+
+const dateRange = ref<DateRange>([
+  checkIn.value ?? today,
+  checkOut.value ?? tomorrow,
+])
+
+async function loadRoomById() {
+  if (!roomId.value) return
+
+  // if query has dates, use them; else use current dateRange
+  const cin = checkIn.value ?? dateRange.value[0]
+  const cout = checkOut.value ?? dateRange.value[1]
+
+  if (!cin || !cout) return
 
   try {
-    await useCsFetch(
-      `/rooms?check_in_date=${dateRange.value[0]?.getFullYear()}-${
-        dateRange.value[0]?.getMonth() + 1
-      }-${dateRange.value[0]?.getDate()}&check_out_date=${dateRange.value[1]?.getFullYear()}-${
-        dateRange.value[1]?.getMonth() + 1
-      }-${dateRange.value[1]?.getDate()}`,
-      {
-        method: "GET",
-        onResponse({ response }) {
-          if (response.status != 200) return;
+    const res = await useCsFetch<{ data: ApiRoom[] }>(
+      `/rooms?check_in_date=${toYMD(cin)}&check_out_date=${toYMD(cout)}`,
+      { method: "GET" }
+    )
 
-          // filter filla by id
-          // if not meet the capacity / unit create notif unavailable
-        },
-      }
-    );
-  } catch (error: any) {
-    let msg = getErrorFetchMessage(error);
+    const found = res?.data?.find((r) => r.id === roomId.value)
+    villa.value = found ? mapApiRoomToVilla(found) : undefined
+
+    // optional: if not found, redirect or show message
+    // if (!villa.value) router.replace("/rooms")
+  } catch (err) {
+    console.error(err)
   }
-};
+}
 
-const bedType = ["1 Queen-size Bed", "1 King Size"];
+/** call at start + when query changes */
+await loadRoomById()
 
-const subTotal = computed<number>(() => {
-  if (!props.room) return 0;
+watch(
+  () => route.query,
+  async () => {
+    // update dateRange if query changed
+    dateRange.value = [
+      checkIn.value ?? today,
+      checkOut.value ?? tomorrow,
+    ]
+    await loadRoomById()
+  },
+  { deep: true }
+)
 
-  let totalExtra = 0;
-  addedExtra.value.forEach((item) => {
-    totalExtra += item.price;
-  });
-  if (props.isWithBreakfast) {
-    let total =
-      props.room.priceWithBreakfast * props.qty * props.nights + totalExtra;
-    return total;
-  } else {
-    let total = props.room.price * props.qty * props.nights + totalExtra;
-    return total;
-  }
-});
-
-const tax = computed<number>(() => {
-  let taxFee = (subTotal.value * 11) / 100;
-  let serviceFee = (subTotal.value * 10) / 100;
-  return taxFee + serviceFee;
-});
-
+/** -------- computed totals -------- */
 interface ExtraOption {
-  id: number;
-  name: string;
-  price: number;
+  id: number
+  name: string
+  price: number
 }
 
 const extras = ref<ExtraOption[]>([
-  {
-    id: 1,
-    name: "Airport Transfer Service",
-    price: 250000,
-  },
-  {
-    id: 2,
-    name: "Pool Flower Decoration",
-    price: 4500000,
-  },
-]);
+  { id: 1, name: "Airport Transfer Service", price: 250000 },
+  { id: 2, name: "Pool Flower Decoration", price: 4500000 },
+])
 
-const addedExtra = ref<ExtraOption[]>([]);
-const selectedBedType = ref<string>("");
-const isBookingForOther = ref<boolean>(false);
-const agreedToTerms = ref<boolean>(false);
-const etaTime = ref<string>();
+const addedExtra = ref<ExtraOption[]>([])
+
+const subTotal = computed<number>(() => {
+  if (!villa.value) return 0
+
+  const base =
+    (isWithBreakfast.value
+      ? (villa.value as any).priceWithBreakfast
+      : (villa.value as any).price) ?? 0
+
+  return base * qty.value * nights.value
+})
+
+const subTotalExtra = computed<number>(() => {
+
+  if (!villa.value) return 0
+  const totalExtra = addedExtra.value.reduce((sum, item) => sum + item.price, 0)
+  
+  return totalExtra
+})
+
+const tax = computed<number>(() => {
+  const taxFee = (subTotal.value * 11) / 100
+  const serviceFee = ((subTotal.value + subTotalExtra.value) * 10) / 100
+  return taxFee + serviceFee
+})
+
+/** -------- form + booking -------- */
+const selectedBedType = ref("")
+const isBookingForOther = ref(false)
+const agreedToTerms = ref(false)
+const etaTime = ref<string>()
 
 interface GuestPayload {
-  guest_name: string;
-  guest_last_name: string;
-  guest_email: string;
-  guest_phone: string;
-  check_in_date: Date;
-  check_out_date: Date;
+  guest_name: string
+  guest_last_name: string
+  guest_email: string
+  guest_phone: string
+  check_in_date: Date
+  check_out_date: Date
 }
 
 interface ExtraOptionPayload {
-  extra_option_id: number;
-  quantity: number;
+  extra_option_id: number
+  quantity: number
 }
 
 const formData = reactive<GuestPayload>({
@@ -117,54 +180,67 @@ const formData = reactive<GuestPayload>({
   guest_last_name: "",
   guest_email: "",
   guest_phone: "",
-  check_in_date: props.checkIn || new Date(),
-  check_out_date: props.checkOut || new Date(),
-});
+  check_in_date: checkIn.value ?? new Date(),
+  check_out_date: checkOut.value ?? new Date(),
+})
 
-const isLoading = ref<boolean>(false);
-const router = useRouter();
+watch([checkIn, checkOut], () => {
+  if (checkIn.value) formData.check_in_date = checkIn.value
+  if (checkOut.value) formData.check_out_date = checkOut.value
+})
+
+const isLoading = ref(false)
+
 const booking = async () => {
-  if (!props.room) return;
-  isLoading.value = true;
-  let extraOption: ExtraOptionPayload[] = [];
-  addedExtra.value.forEach((item) => {
-    extraOption.push({
-      extra_option_id: item.id,
-      quantity: 1,
-    });
-  });
+  if (!villa.value) return
+  if (!agreedToTerms.value) return
+
+  isLoading.value = true
+
+  const extraOption: ExtraOptionPayload[] = addedExtra.value.map((x) => ({
+    extra_option_id: x.id,
+    quantity: 1,
+  }))
 
   try {
     await useCsFetch(`/bookings`, {
       method: "POST",
       body: {
-        room_id: props.room.id,
-        room_quantity: props.qty,
-        include_breakfast: props.isWithBreakfast,
+        room_id: (villa.value as any).id,
+        room_quantity: qty.value,
+        include_breakfast: isWithBreakfast.value,
         extra_options: extraOption,
-        guest_name: `${formData.guest_name} ${formData.guest_last_name}`,
+        guest_name: `${formData.guest_name} ${formData.guest_last_name}`.trim(),
         guest_email: formData.guest_email,
         guest_phone: formData.guest_phone,
         check_in_date: formData.check_in_date,
         check_out_date: formData.check_out_date,
       },
-      onResponse({ response }) {
-        if (response.status != 201) return;
-        // router.replace(response._data.data.payment.xendit_invoice_url);
-        window.location.replace(response._data.data.payment.xendit_invoice_url);
+      onResponse({ response }: any) {
+        if (response.status !== 201) return
+        window.location.replace(response._data.data.payment.xendit_invoice_url)
       },
-    });
+    })
   } catch (error: any) {
-    let msg = getErrorFetchMessage(error);
+    console.error(error)
   } finally {
-    isLoading.value = false;
+    isLoading.value = false
   }
-};
+}
+
+const checkAvailability = async () => {
+  if (dateRange.value.length !== 2) return
+  await loadRoomById()
+}
+
+const bedType = ["1 Queen-size Bed", "1 King Size"]
 </script>
 
+
 <template>
+  <div class="bg-[#f1f1f1] pt-38">
   <section
-    class="container mt-20 px-5 xl:px-0 mx-auto max-w-[1256px] relative grid md:grid-cols-12 gap-4 pt-5 md:mt-0 pb-32"
+    class="container px-5 xl:px-0 mx-auto max-w-[1256px] relative grid md:grid-cols-12 gap-4 pt-5 md:mt-0 pb-32"
   >
     <div class="md:col-span-7 flex flex-col gap-4">
       <div
@@ -213,7 +289,7 @@ const booking = async () => {
             <label for="adult"><span class="text-gray-400">Adult</span></label>
             <input
               type="number"
-              class="bg-[#F5F5F5] py-2 px-4 outline-sarva-green"
+              class="bg-[#dedede] py-2 px-4 outline-sarva-green"
               :value="adults"
               readonly
             />
@@ -224,7 +300,7 @@ const booking = async () => {
             >
             <input
               type="number"
-              class="bg-[#F5F5F5] py-2 px-4 outline-sarva-green"
+              class="bg-[#dedede] py-2 px-4 outline-sarva-green"
               :value="children"
               readonly
             />
@@ -335,14 +411,14 @@ const booking = async () => {
     <div class="md:col-span-5 bg-sarva-green text-white h-fit">
       <div class="w-full h-[180px] md:h-[280px]">
         <img
-          :src="room?.image"
+          :src="`/img/villas/${roomId}.jpg`"
           class="w-full h-full object-cover"
           alt="image room"
         />
       </div>
       <div class="p-4 md:p-8">
         <p class="font-medium text-2xl md:text-xl">
-          {{ room?.title }}
+          {{ villa?.title }}
         </p>
         <table class="mt-6 w-full">
           <tbody>
@@ -371,9 +447,9 @@ const booking = async () => {
               </td>
             </tr>
              <tr class="">
-              <td class="text-white/50 w-fit text-nowrap">Qty<span v-if="qty>1">s</span></td>
+              <td class="text-white/50 w-fit text-nowrap">Qty</td>
               <td class="text-white/80 px-6 py-2">:</td>
-              <td class="">{{ qty }}</td>
+              <td class="">{{ qty }} Unit<span v-if="qty>1">s</span></td>
             </tr>
           </tbody>
         </table>
@@ -381,6 +457,10 @@ const booking = async () => {
           <div class="flex justify-between">
             <span>Subtotal</span>
             <span>IDR{{ formatCurrency(subTotal) }}</span>
+          </div>
+          <div v-if="subTotalExtra > 0" class="flex justify-between mt-4">
+            <span>Extra</span>
+            <span>IDR{{ formatCurrency(subTotalExtra) }}</span>
           </div>
           <div class="flex justify-between mt-4">
             <span>Tax (11%) & Service (10%)</span>
@@ -417,4 +497,5 @@ const booking = async () => {
       </div>
     </div>
   </section>
+  </div>
 </template>

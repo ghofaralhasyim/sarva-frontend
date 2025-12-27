@@ -152,7 +152,7 @@ function isActive(url: string) {
         </ul>
         <div class="nav-item opacity-0 my-4 flex text-center w-full pt-6">
           <NuxtLink
-            to="#"
+            to="/booking"
             class="py-3 w-full text-white bg-primary transition-colors ease-in duration-150"
             @click="closeNav"
           >

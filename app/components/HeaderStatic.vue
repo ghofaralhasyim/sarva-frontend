@@ -75,7 +75,7 @@ function isActive(url: string) {
       <ul class="hidden lg:flex items-center gap-10 text-sm">
         <li>
           <NuxtLink
-            to="#"
+            to="/booking"
             class="py-3 px-8 border text-white border-primary bg-primary hover:bg-primary-darker transition-colors ease-in duration-150"
           >
             Check Availabillity
@@ -138,7 +138,7 @@ function isActive(url: string) {
         </ul>
         <div class="nav-item opacity-0 my-4 flex text-center w-full pt-6">
           <NuxtLink
-            to="#"
+            to="/booking"
             class="py-3 w-full text-white bg-primary transition-colors ease-in duration-150"
             @click="closeNav"
           >

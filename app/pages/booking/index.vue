@@ -10,13 +10,6 @@ import type { ApiResponse, ApiRoom } from "~/types/types";
 
 type DateRange = [Date, Date] | [];
 
-interface BookingPayload {
-  checkIn: Date;
-  checkOut: Date;
-  adults: number;
-  children: number;
-}
-
 const today = new Date();
 const tomorrow = new Date(today);
 tomorrow.setDate(today.getDate() + 1);
@@ -242,33 +235,10 @@ onMounted(() => {
   checkAvailability();
 });
 
-const bookingStep = ref<number>(1);
 const selectedRoom = ref<Villa | undefined>(villas.value[0]);
 const selectedRoomId = ref<number>();
 const isWithBreakfast = ref<boolean>(false);
 const qty = ref<number>(1);
-
-watch(selectedRoomId, (newId) => {
-  const room = villas.value.find((item) => item.id === newId);
-
-  if (room) {
-    selectedRoom.value = room;
-    bookingStep.value = 2;
-  } else {
-    selectedRoom.value = undefined;
-  }
-});
-
-watch(selectedRoomId, (newId) => {
-  const room = villas.value.find((item) => item.id === newId);
-
-  if (room) {
-    selectedRoom.value = room;
-    bookingStep.value = 2;
-  } else {
-    selectedRoom.value = undefined;
-  }
-});
 
 watch(dateRange, (newVal) => {
   checkAvailability();
@@ -323,7 +293,7 @@ const checkAvailability = async () => {
 </script>
 
 <template>
-  <div v-if="bookingStep == 1" class="bg-[#f1f1f1] md:pt-38">
+  <div class="bg-[#f1f1f1] md:pt-38">
     <section
       class="container px-5 xl:px-0 mx-auto max-w-[1256px] relative min-h-[300px]"
     >
@@ -427,22 +397,12 @@ const checkAvailability = async () => {
               :adults="adults"
               :children="children"
               :nights="nights"
+              :check-in="dateRange[0] || today"
+              :check-out="dateRange[1] || tomorrow"
             />
           </template>
         </ClientOnly>
       </ul>
     </section>
-  </div>
-  <div v-if="bookingStep == 2" class="bg-[#f1f1f1] md:pt-38">
-    <BookingForm
-      :room="selectedRoom"
-      :adults="adults"
-      :children="children"
-      :nights="nights"
-      :check-in="dateRange[0]"
-      :check-out="dateRange[1]"
-      :is-with-breakfast="isWithBreakfast"
-      :qty="qty"
-    />
   </div>
 </template>
