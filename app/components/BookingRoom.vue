@@ -28,9 +28,9 @@ interface Props {
   checkOut: Date;
 }
 
-const qty = ref<number>(1);
-
 const props = withDefaults(defineProps<Props>(), {});
+
+const qty = ref<number>(1);
 
 const minQty = computed<number>(() => {
   if (!props.room?.capacity || props.adults <= 0) return 1;
@@ -38,24 +38,29 @@ const minQty = computed<number>(() => {
 });
 
 const maxQty = computed<number>(() => {
-  return props.room.availableRooms || minQty.value;
+  // ensure max is never below min
+  const available = props.room.availableRooms ?? 0;
+  return Math.max(available, minQty.value);
 });
-
-watch(
-  [() => props.adults, () => props.room.capacity],
-  () => {
-    if (qty.value < minQty.value) {
-      qty.value = minQty.value;
-    }
-  },
-  { immediate: true }
-);
 
 const emit = defineEmits<{
   (e: "update:qty", value: number): void;
   (e: "update:roomId", value: number): void;
   (e: "update:withBreakfast", value: boolean): void;
 }>();
+
+watch(
+  [minQty, maxQty],
+  () => {
+    const min = minQty.value;
+    const max = maxQty.value;
+
+    // clamp: min <= qty <= max
+    if (qty.value < min) qty.value = min;
+    if (qty.value > max) qty.value = max;
+  },
+  { immediate: true }
+);
 
 watch(qty, (newQty) => {
   emit("update:qty", newQty);
@@ -65,7 +70,14 @@ const router = useRouter();
 const selectRoom = (withBreakfast: boolean) => {
   emit("update:roomId", props.room.id);
   emit("update:withBreakfast", withBreakfast);
-  router.push(`/booking/confirmation?id=${props.room.id}&childer=${props.children}&adults=${props.adults}&checkIn=${formatDate(props.checkIn, 'queryDate')}&checkOut=${formatDate(props.checkOut, 'queryDate')}`)
+  router.push(
+    `/booking/confirmation?id=${props.room.id}&childer=${
+      props.children
+    }&adults=${props.adults}&checkIn=${formatDate(
+      props.checkIn,
+      "queryDate"
+    )}&checkOut=${formatDate(props.checkOut, "queryDate")}&qty=${qty.value}`
+  );
 };
 </script>
 

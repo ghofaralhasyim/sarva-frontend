@@ -26,7 +26,11 @@ export const formatDate = (dateString: string | Date, format: string): string =>
     }
 
     if (format == 'queryDate') {
-      return `${day}-${month+1}-${year}`
+      return `${String(day).padStart(2, '0')}-${String(month+1).padStart(2, '0')}-${year}`
+    }
+
+        if (format == 'queryApi') {
+      return `${year}-${String(month+1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
     }
 
     return '';

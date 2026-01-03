@@ -6,7 +6,7 @@ definePageMeta({
 import { ref, computed } from "vue";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/vue";
 import { VueDatePicker } from "@vuepic/vue-datepicker";
-import type { ApiResponse, ApiRoom } from "~/types/types";
+import type { ApiRoom } from "~/types/types";
 
 type DateRange = [Date, Date] | [];
 
@@ -27,18 +27,11 @@ const nights = computed<number>(() => {
 
 const dateLabel = computed<string>(() => {
   if (dateRange.value.length !== 2) return "Select dates";
-  return `${formatDate(dateRange.value[0])} – ${formatDate(
-    dateRange.value[1]
+  return `${formatDate(dateRange.value[0], "ddMMyyyy")} – ${formatDate(
+    dateRange.value[1],
+    "ddMMyyyy"
   )}`;
 });
-
-const formatDate = (date: Date): string =>
-  date.toLocaleDateString("en-GB", {
-    weekday: "short",
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
 
 interface Villa {
   id: number;
@@ -235,10 +228,10 @@ onMounted(() => {
   checkAvailability();
 });
 
-const selectedRoom = ref<Villa | undefined>(villas.value[0]);
 const selectedRoomId = ref<number>();
 const isWithBreakfast = ref<boolean>(false);
-const qty = ref<number>(1);
+
+const qtyByRoom = ref<Record<number, number>>({});
 
 watch(dateRange, (newVal) => {
   checkAvailability();
@@ -252,16 +245,17 @@ watch(children, (newVal) => {
   checkAvailability();
 });
 
+const isLoading = ref<boolean>(false);
 const checkAvailability = async () => {
   if (dateRange.value.length !== 2) return;
 
+  isLoading.value = true;
   try {
     await useCsFetch(
-      `/rooms?check_in_date=${dateRange.value[0]?.getFullYear()}-${
-        dateRange.value[0]?.getMonth() + 1
-      }-${dateRange.value[0]?.getDate()}&check_out_date=${dateRange.value[1]?.getFullYear()}-${
-        dateRange.value[1]?.getMonth() + 1
-      }-${dateRange.value[1]?.getDate()}`,
+      `/rooms?check_in_date=${formatDate(
+        dateRange.value[0],
+        "queryApi"
+      )}&check_out_date=${formatDate(dateRange.value[1], "queryApi")}`,
       {
         method: "GET",
         onResponse({ response }) {
@@ -282,12 +276,13 @@ const checkAvailability = async () => {
             temp.push(villa);
           }
           villas.value = temp;
-          console.log(villas.value);
         },
       }
     );
   } catch (error: any) {
     let msg = getErrorFetchMessage(error);
+  } finally {
+    isLoading.value = false;
   }
 };
 </script>
@@ -376,7 +371,7 @@ const checkAvailability = async () => {
               class="bg-primary hover:bg-primary-darker text-white px-6 py-3 cursor-pointer transition-all w-full rounded md:rounded-none"
               @click="checkAvailability"
             >
-              Check Availability
+              {{ isLoading ? "Loading..." : "Check Availability" }}
             </button>
           </div>
         </div>
@@ -386,11 +381,11 @@ const checkAvailability = async () => {
     <section
       class="container mx-auto px-5 xl:px-0 mt-5 max-w-[1256px] relative md:mt-12 pb-12"
     >
-      <ul class="flex flex-col">
+      <ul class="flex flex-col relative">
         <ClientOnly>
-          <template v-for="item in villas">
+          <template v-for="item in villas" :key="item.id">
             <BookingRoom
-              v-model-qty="qty"
+              v-model:qty="qtyByRoom[item.id]"
               v-model:room-id="selectedRoomId"
               v-model:with-breakfast="isWithBreakfast"
               :room="item"
@@ -402,6 +397,7 @@ const checkAvailability = async () => {
             />
           </template>
         </ClientOnly>
+        <div v-if="isLoading" class="inset-0 bg-black/20 absolute z-10"></div>
       </ul>
     </section>
   </div>

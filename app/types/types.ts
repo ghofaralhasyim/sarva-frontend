@@ -13,6 +13,22 @@ export interface ApiRoom {
     name: string;
 }
 
+export interface Voucher {
+  id: number
+  created_at: string
+  updated_at: string
+  code: string
+  type: "percentage" | "fixed"
+  value: number
+  max_usage: number
+  current_usage: number
+  minimum_purchase: number
+  minimum_nights: number
+  expires_at: string
+  is_active: boolean
+  description?: string
+}
+
 export interface Villa {
   id: number;
   title: string;
