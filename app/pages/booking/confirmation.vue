@@ -132,9 +132,7 @@ const extras = ref<ExtraOption[]>([
 const addedExtra = ref<ExtraOption[]>([]);
 
 const removeExtra = (id: number) => {
-  const idx = addedExtra.value.findIndex(
-    (item: ExtraOption) => item.id === id
-  );
+  const idx = addedExtra.value.findIndex((item: ExtraOption) => item.id === id);
 
   if (idx !== -1) {
     addedExtra.value.splice(idx, 1);
@@ -171,7 +169,7 @@ const tax = computed<number>(() => {
 });
 
 /** -------- form + booking -------- */
-const selectedBedType = ref("");
+const selectedBedType = ref("1 Queen-size Bed");
 const isBookingForOther = ref(false);
 const agreedToTerms = ref(false);
 const etaTime = ref<string>();
@@ -214,12 +212,115 @@ watch([checkIn, checkOut], () => {
   if (checkOut.value) formData.check_out_date = checkOut.value;
 });
 
+const errors = reactive<Record<string, string>>({
+  guest_name: "",
+  guest_last_name: "",
+  guest_phone: "",
+  guest_email: "",
+  guest_other_phone: "",
+  guest_other_email: "",
+});
+
+function isValidEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+}
+
+function onlyDigits(s: string) {
+  return (s ?? "").replace(/\D/g, "");
+}
+
+function validateField(field: keyof typeof errors) {
+  errors[field] = "";
+
+  if (field === "guest_name") {
+    if (!formData.guest_name.trim())
+      errors.guest_name = "First name is required";
+  }
+
+  if (field === "guest_last_name") {
+    if (!formData.guest_last_name.trim())
+      errors.guest_last_name = "Last name is required";
+  }
+
+  if (field === "guest_phone") {
+    formData.guest_phone = onlyDigits(formData.guest_phone);
+    if (!formData.guest_phone.trim()) errors.guest_phone = "Phone is required";
+    else if (formData.guest_phone.length < 9)
+      errors.guest_phone = "Phone number is too short";
+  }
+
+  if (field === "guest_email") {
+    if (!formData.guest_email.trim()) errors.guest_email = "Email is required";
+    else if (!isValidEmail(formData.guest_email))
+      errors.guest_email = "Email is invalid";
+  }
+
+  if (field === "guest_other_phone") {
+    formData.guest_other_phone = onlyDigits(formData.guest_other_phone);
+    if (isBookingForOther.value) {
+      if (!formData.guest_other_phone.trim())
+        errors.guest_other_phone = "Phone is required";
+      else if (formData.guest_other_phone.length < 9)
+        errors.guest_other_phone = "Phone number is too short";
+    }
+  }
+
+  if (field === "guest_other_email") {
+    if (isBookingForOther.value) {
+      if (!formData.guest_other_email.trim())
+        errors.guest_other_email = "Email is required";
+      else if (!isValidEmail(formData.guest_other_email))
+        errors.guest_other_email = "Email is invalid";
+    }
+  }
+}
+
+function validateAll() {
+  validateField("guest_name");
+  validateField("guest_last_name");
+  validateField("guest_phone");
+  validateField("guest_email");
+
+  validateField("guest_other_phone");
+  validateField("guest_other_email");
+
+  return Object.values(errors).every((v) => !v);
+}
+
+const isFormValid = computed(() => {
+  const baseOk =
+    formData.guest_name.trim() &&
+    formData.guest_last_name.trim() &&
+    onlyDigits(formData.guest_phone).length >= 9 &&
+    isValidEmail(formData.guest_email);
+
+  if (!isBookingForOther.value) return !!baseOk;
+
+  const otherOk =
+    onlyDigits(formData.guest_other_phone).length >= 9 &&
+    isValidEmail(formData.guest_other_email);
+
+  return !!baseOk && !!otherOk;
+});
+
 const isLoading = ref(false);
 const bookingError = ref<string>("");
+
+watch(isBookingForOther, (v) => {
+  if (!v) {
+    formData.guest_other_phone = "";
+    formData.guest_other_email = "";
+    errors.guest_other_phone = "";
+    errors.guest_other_email = "";
+  }
+});
 
 const booking = async () => {
   if (!villa.value) return;
   if (!agreedToTerms.value) return;
+
+  const ok = validateAll();
+  if (!ok) return;
 
   isLoading.value = true;
   bookingError.value = "";
@@ -245,10 +346,14 @@ const booking = async () => {
         notes: formData.notes,
         is_for_other: isBookingForOther.value,
         guest_other_name: isBookingForOther.value
-          ? `${formData.guest_name} ${formData.guest_last_name}`.trim()
+          ? formData.guest_other_name.trim()
           : "",
-        guest_other_email: formData.guest_email,
-        guest_other_phone: formData.guest_other_phone,
+        guest_other_email: isBookingForOther.value
+          ? formData.guest_other_email.trim()
+          : "",
+        guest_other_phone: isBookingForOther.value
+          ? formData.guest_other_phone.trim()
+          : "",
         eta: etaTime.value,
         bed_type: selectedBedType.value,
         voucher_codes: formData.voucher_codes,
@@ -259,7 +364,7 @@ const booking = async () => {
       },
     });
   } catch (error: any) {
-    bookingError.value = error.response._data.error
+    bookingError.value = error.response._data.error;
     console.error(error);
   } finally {
     isLoading.value = false;
@@ -272,18 +377,17 @@ const voucherApplied = ref<Voucher[]>([]);
 const voucherError = ref<string>("");
 const voucherCode = ref<string>("");
 
-const removeVoucher = ((code: string) => {
-   const idx = voucherApplied.value.findIndex(
+const removeVoucher = (code: string) => {
+  const idx = voucherApplied.value.findIndex(
     (item: Voucher) => item.code.toUpperCase() === code.toUpperCase()
   );
 
   if (idx !== -1) {
-    voucherApplied.value.splice(idx, 1)
+    voucherApplied.value.splice(idx, 1);
   }
-})
+};
 
 const validateVoucher = async () => {
-  
   const exists = voucherApplied.value.some(
     (item: Voucher) =>
       item.code.toUpperCase() === voucherCode.value.toUpperCase()
@@ -310,7 +414,8 @@ const validateVoucher = async () => {
           voucherError.value = response._data.data.message;
         } else {
           formData.voucher_codes.push(voucherCode.value);
-          voucherApplied.value.push(response._data.data.voucher)
+          voucherApplied.value.push(response._data.data.voucher);
+          voucherCode.value = "";
         }
       },
     });
@@ -329,14 +434,14 @@ const voucherDiscount = computed<number>(() => {
   voucherApplied.value.forEach((item: Voucher) => {
     if (item.type == "percentage") {
       let discountPercent = subTotal.value * (item.value / 100);
-      if(item.max_value != null && discountPercent > item.max_value) {
+      if (item.max_value != null && discountPercent > item.max_value) {
         discountPercent = item.max_value;
       }
-      discount += discountPercent
+      discount += discountPercent;
     } else {
       discount += Number(item.value);
     }
-  })
+  });
 
   return discount;
 });
@@ -363,7 +468,13 @@ const voucherDiscount = computed<number>(() => {
               v-model="formData.guest_name"
               type="text"
               class="bg-[#F5F5F5] py-2 px-4 outline-sarva-green"
+              :class="errors.guest_name ? 'border border-red-500' : ''"
+              @input="validateField('guest_name')"
+              @blur="validateField('guest_name')"
             />
+            <p v-if="errors.guest_name" class="text-xs text-red-500 mt-1">
+              {{ errors.guest_name }}
+            </p>
           </div>
           <div class="flex flex-col gap-2">
             <label for="lasttName"
@@ -374,18 +485,38 @@ const voucherDiscount = computed<number>(() => {
               v-model="formData.guest_last_name"
               type="text"
               class="bg-[#F5F5F5] py-2 px-4 outline-sarva-green"
+              :class="errors.guest_last_name ? 'border border-red-500' : ''"
+              @input="validateField('guest_last_name')"
+              @blur="validateField('guest_last_name')"
             />
+            <p v-if="errors.guest_last_name" class="text-xs text-red-500 mt-1">
+              {{ errors.guest_last_name }}
+            </p>
           </div>
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-col gap-2 relative">
             <label for="phone"
               ><span class="text-red-500">*</span
               ><span class="text-gray-400">Phone Number</span></label
             >
             <input
-              v-model="formData.guest_phone"
+              :value="formData.guest_phone"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              maxlength="16"
               type="text"
               class="bg-[#F5F5F5] py-2 px-4 outline-sarva-green"
+              :class="errors.guest_phone ? 'border border-red-500' : ''"
+              @input="(e) => {
+                const v = (e.target as HTMLInputElement).value
+                formData.guest_phone = v.replace(/[^0-9]/g, '')
+                validateField('guest_phone')
+              }"
+              @blur="validateField('guest_phone')"
+              placeholder="08xxxxxxxxxx"
             />
+            <p v-if="errors.guest_phone" class="text-xs text-red-500 mt-1">
+              {{ errors.guest_phone }}
+            </p>
           </div>
           <div class="flex flex-col gap-2">
             <label for="email"
@@ -396,7 +527,14 @@ const voucherDiscount = computed<number>(() => {
               v-model="formData.guest_email"
               type="text"
               class="bg-[#F5F5F5] py-2 px-4 outline-sarva-green"
+              :class="errors.guest_email ? 'border border-red-500' : ''"
+              @input="validateField('guest_email')"
+              @blur="validateField('guest_email')"
+              placeholder="name@email.com"
             />
+            <p v-if="errors.guest_email" class="text-xs text-red-500 mt-1">
+              {{ errors.guest_email }}
+            </p>
           </div>
           <div class="flex flex-col gap-2">
             <label for="lasttName"
@@ -406,7 +544,6 @@ const voucherDiscount = computed<number>(() => {
               v-model="selectedBedType"
               class="bg-[#F5F5F5] py-2 px-4 outline-sarva-green"
             >
-              <option value="" disabled>Select bed type</option>
               <option v-for="bed in bedType" :key="bed" :value="bed">
                 {{ bed }}
               </option>
@@ -484,9 +621,25 @@ const voucherDiscount = computed<number>(() => {
             >
             <input
               v-model="formData.guest_other_phone"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              maxlength="16"
               type="text"
               class="bg-[#F5F5F5] py-2 px-4 outline-sarva-green"
+              :class="errors.guest_other_phone ? 'border border-red-500' : ''"
+              @input="(e) => {
+                const v = (e.target as HTMLInputElement).value
+                formData.guest_other_phone = v.replace(/[^0-9]/g, '')
+                validateField('guest_other_phone')
+              }"
+              @blur="validateField('guest_other_phone')"
             />
+            <p
+              v-if="errors.guest_other_phone"
+              class="text-xs text-red-500 mt-1"
+            >
+              {{ errors.guest_other_phone }}
+            </p>
           </div>
           <div v-if="isBookingForOther" class="flex flex-col gap-2">
             <label for="email"
@@ -497,7 +650,16 @@ const voucherDiscount = computed<number>(() => {
               v-model="formData.guest_other_email"
               type="text"
               class="bg-[#F5F5F5] py-2 px-4 outline-sarva-green"
+              :class="errors.guest_other_email ? 'border border-red-500' : ''"
+              @input="validateField('guest_other_email')"
+              @blur="validateField('guest_other_email')"
             />
+            <p
+              v-if="errors.guest_other_email"
+              class="text-xs text-red-500 mt-1"
+            >
+              {{ errors.guest_other_email }}
+            </p>
           </div>
         </div>
         <div class="p-4 md:p-10 bg-white">
@@ -509,12 +671,22 @@ const voucherDiscount = computed<number>(() => {
               v-for="item in extras"
               class="flex justify-between w-full not-first:mt-10"
             >
-              <div class="flex flex-col gap-2">
+              <div class="flex flex-col gap-2 relative">
                 <div class="flex items-center gap-3">
-                  <span>{{ item.name }}</span>
-                  <div v-if="addedExtra.includes(item)" class="text-sarva-green">
+                  <span
+                    class="text-black"
+                    :class="{
+                      'text-sarva-green font-semibold':
+                        addedExtra.includes(item),
+                    }"
+                    >{{ item.name }}</span
+                  >
+                  <div
+                    v-if="addedExtra.includes(item)"
+                    class="text-sarva-green"
+                  >
                     <Icon name="mynaui:check-circle-one" />
-                    Added
+                    <span class="hidden">Added</span>
                   </div>
                 </div>
                 <p class="text-sm text-gray-400 flex items-center gap-1">
@@ -539,8 +711,12 @@ const voucherDiscount = computed<number>(() => {
                 >
                   Add
                 </button>
-                <button v-else @click="removeExtra(item.id)" class="cursor-pointer flex items-center text-black/80">
-                    Remove <Icon name="mynaui:x" size="1.25rem"/>
+                <button
+                  v-else
+                  @click="removeExtra(item.id)"
+                  class="cursor-pointer flex items-center text-black/80"
+                >
+                  Remove <Icon name="mynaui:x" size="1.25rem" />
                 </button>
               </div>
             </li>
@@ -622,9 +798,18 @@ const voucherDiscount = computed<number>(() => {
               </button>
             </div>
             <ul class="mt-8 flex flex-col gap-4">
-              <li v-for="item in voucherApplied" :key="item.code" class="flex items-center justify-between">
+              <li
+                v-for="item in voucherApplied"
+                :key="item.code"
+                class="flex items-center justify-between"
+              >
                 <span class="uppercase">{{ item.code }}</span>
-                <button @click="removeVoucher(item.code)" class="flex items-center gap-2 cursor-pointer text-white/80">Remove <Icon name="mynaui:x" size="1.25rem"/></button>
+                <button
+                  @click="removeVoucher(item.code)"
+                  class="flex items-center gap-2 cursor-pointer text-white/80"
+                >
+                  Remove <Icon name="mynaui:x" size="1.25rem" />
+                </button>
               </li>
             </ul>
           </div>
@@ -633,7 +818,10 @@ const voucherDiscount = computed<number>(() => {
               <span>Subtotal</span>
               <span>IDR{{ formatCurrency(subTotal) }}</span>
             </div>
-            <div v-if="voucherApplied.length > 0" class="flex justify-between mt-4">
+            <div
+              v-if="voucherApplied.length > 0"
+              class="flex justify-between mt-4"
+            >
               <span>Voucher Discount</span>
               <span>-IDR{{ formatCurrency(voucherDiscount) }}</span>
             </div>
@@ -648,11 +836,20 @@ const voucherDiscount = computed<number>(() => {
             <div class="flex justify-between mt-4">
               <span>Total</span>
               <span class="font-bold text-xl"
-                >IDR{{ formatCurrency(subTotal + subTotalExtra + tax - voucherDiscount) }}</span
+                >IDR{{
+                  formatCurrency(
+                    subTotal + subTotalExtra + tax - voucherDiscount
+                  )
+                }}</span
               >
             </div>
           </div>
-          <div v-if="bookingError"  class="mt-6 bg-amber-100 text-amber-500 px-2 py-1">{{ bookingError }}</div>
+          <div
+            v-if="bookingError"
+            class="mt-6 bg-amber-100 text-amber-500 px-2 py-1"
+          >
+            {{ bookingError }}
+          </div>
           <div class="flex items-center">
             <label class="flex items-start gap-3 mt-6 text-sm">
               <input
@@ -672,10 +869,10 @@ const voucherDiscount = computed<number>(() => {
           </div>
           <button
             @click="booking"
-            :disabled="!agreedToTerms"
+            :disabled="!agreedToTerms || !isFormValid || isLoading"
             class="mt-8 font-bold bg-primary text-center text-xl hover:bg-primary-darker text-white px-6 py-3 cursor-pointer transition-all w-full disabled:opacity-80 disabled:cursor-not-allowed"
           >
-            Pay Now
+            {{ isLoading ? "Processing..." : "Pay Now" }}
           </button>
         </div>
       </div>

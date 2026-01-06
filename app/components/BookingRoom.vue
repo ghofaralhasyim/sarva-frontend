@@ -50,13 +50,16 @@ const emit = defineEmits<{
 }>();
 
 watch(
-  [minQty, maxQty],
-  () => {
-    const min = minQty.value;
-    const max = maxQty.value;
+  minQty,
+  (min) => {
+    qty.value = min;
+  },
+  { immediate: true }
+);
 
-    // clamp: min <= qty <= max
-    if (qty.value < min) qty.value = min;
+watch(
+  maxQty,
+  (max) => {
     if (qty.value > max) qty.value = max;
   },
   { immediate: true }
