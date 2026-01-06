@@ -27,6 +27,7 @@ export interface Voucher {
   expires_at: string
   is_active: boolean
   description?: string
+  max_value: number | null;
 }
 
 export interface Villa {

@@ -131,6 +131,16 @@ const extras = ref<ExtraOption[]>([
 
 const addedExtra = ref<ExtraOption[]>([]);
 
+const removeExtra = (id: number) => {
+  const idx = addedExtra.value.findIndex(
+    (item: ExtraOption) => item.id === id
+  );
+
+  if (idx !== -1) {
+    addedExtra.value.splice(idx, 1);
+  }
+};
+
 const subTotal = computed<number>(() => {
   if (!villa.value) return 0;
 
@@ -177,7 +187,7 @@ interface GuestPayload {
   guest_other_name: string;
   guest_other_email: string;
   guest_other_phone: string;
-  voucher_code: string;
+  voucher_codes: string[];
 }
 
 interface ExtraOptionPayload {
@@ -196,7 +206,7 @@ const formData = reactive<GuestPayload>({
   guest_other_name: "",
   guest_other_email: "",
   guest_other_phone: "",
-  voucher_code: "",
+  voucher_codes: [],
 });
 
 watch([checkIn, checkOut], () => {
@@ -205,12 +215,14 @@ watch([checkIn, checkOut], () => {
 });
 
 const isLoading = ref(false);
+const bookingError = ref<string>("");
 
 const booking = async () => {
   if (!villa.value) return;
   if (!agreedToTerms.value) return;
 
   isLoading.value = true;
+  bookingError.value = "";
 
   const extraOption: ExtraOptionPayload[] = addedExtra.value.map((x) => ({
     extra_option_id: x.id,
@@ -239,7 +251,7 @@ const booking = async () => {
         guest_other_phone: formData.guest_other_phone,
         eta: etaTime.value,
         bed_type: selectedBedType.value,
-        voucher_code: formData.voucher_code,
+        voucher_codes: formData.voucher_codes,
       },
       onResponse({ response }: any) {
         if (response.status !== 201) return;
@@ -247,6 +259,7 @@ const booking = async () => {
       },
     });
   } catch (error: any) {
+    bookingError.value = error.response._data.error
     console.error(error);
   } finally {
     isLoading.value = false;
@@ -255,18 +268,40 @@ const booking = async () => {
 
 const bedType = ["1 Queen-size Bed", "1 King Size"];
 
-const voucherApplied = ref<Voucher | null>(null);
+const voucherApplied = ref<Voucher[]>([]);
 const voucherError = ref<string>("");
+const voucherCode = ref<string>("");
+
+const removeVoucher = ((code: string) => {
+   const idx = voucherApplied.value.findIndex(
+    (item: Voucher) => item.code.toUpperCase() === code.toUpperCase()
+  );
+
+  if (idx !== -1) {
+    voucherApplied.value.splice(idx, 1)
+  }
+})
+
 const validateVoucher = async () => {
+  
+  const exists = voucherApplied.value.some(
+    (item: Voucher) =>
+      item.code.toUpperCase() === voucherCode.value.toUpperCase()
+  );
+
+  if (exists) {
+    voucherError.value = "voucher already applied";
+    return;
+  }
+
   voucherError.value = "";
-  voucherApplied.value = null;
   try {
     await useCsFetch(`/vouchers/validate`, {
       method: "POST",
       body: {
-        code: formData.voucher_code,
+        code: voucherCode.value,
         phone: formData.guest_other_phone,
-        total_amount: subTotal.value,
+        total_amount: subTotal.value + subTotalExtra.value,
         nights: nights.value,
       },
       onResponse({ response }: any) {
@@ -274,7 +309,8 @@ const validateVoucher = async () => {
         if (!response._data.data.valid) {
           voucherError.value = response._data.data.message;
         } else {
-          voucherApplied.value = response._data.data.voucher;
+          formData.voucher_codes.push(voucherCode.value);
+          voucherApplied.value.push(response._data.data.voucher)
         }
       },
     });
@@ -286,14 +322,22 @@ const validateVoucher = async () => {
 };
 
 const voucherDiscount = computed<number>(() => {
-  if (voucherApplied.value == null) return 0;
+  if (voucherApplied.value?.length < 1) return 0;
+
   let discount = 0;
 
-  if (voucherApplied.value.type == "percentage") {
-    discount = subTotal.value * (voucherApplied.value.value / 100);
-  } else {
-    discount = Number(voucherApplied.value);
-  }
+  voucherApplied.value.forEach((item: Voucher) => {
+    if (item.type == "percentage") {
+      let discountPercent = subTotal.value * (item.value / 100);
+      if(item.max_value != null && discountPercent > item.max_value) {
+        discountPercent = item.max_value;
+      }
+      discount += discountPercent
+    } else {
+      discount += Number(item.value);
+    }
+  })
+
   return discount;
 });
 </script>
@@ -466,7 +510,13 @@ const voucherDiscount = computed<number>(() => {
               class="flex justify-between w-full not-first:mt-10"
             >
               <div class="flex flex-col gap-2">
-                <p>{{ item.name }}</p>
+                <div class="flex items-center gap-3">
+                  <span>{{ item.name }}</span>
+                  <div v-if="addedExtra.includes(item)" class="text-sarva-green">
+                    <Icon name="mynaui:check-circle-one" />
+                    Added
+                  </div>
+                </div>
                 <p class="text-sm text-gray-400 flex items-center gap-1">
                   More Info
                   <Icon
@@ -489,10 +539,9 @@ const voucherDiscount = computed<number>(() => {
                 >
                   Add
                 </button>
-                <div v-else class="text-sarva-green">
-                  <Icon name="mynaui:check-circle-one" />
-                  Added
-                </div>
+                <button v-else @click="removeExtra(item.id)" class="cursor-pointer flex items-center text-black/80">
+                    Remove <Icon name="mynaui:x" size="1.25rem"/>
+                </button>
               </div>
             </li>
           </ul>
@@ -557,15 +606,9 @@ const voucherDiscount = computed<number>(() => {
             >
               {{ voucherError }}
             </div>
-            <div
-              v-if="voucherApplied"
-              class="mt-2 text-sm bg-green-100 text-green-500 px-2 py-1"
-            >
-              Voucher {{ voucherApplied.code }} applied.
-            </div>
             <div class="mt-2 flex w-full">
               <input
-                v-model="formData.voucher_code"
+                v-model="voucherCode"
                 type="text"
                 class="bg-white py-2 px-4 outline-sarva-green w-full text-primary"
                 @keyup.enter="validateVoucher"
@@ -578,13 +621,19 @@ const voucherDiscount = computed<number>(() => {
                 Apply
               </button>
             </div>
+            <ul class="mt-8 flex flex-col gap-4">
+              <li v-for="item in voucherApplied" :key="item.code" class="flex items-center justify-between">
+                <span class="uppercase">{{ item.code }}</span>
+                <button @click="removeVoucher(item.code)" class="flex items-center gap-2 cursor-pointer text-white/80">Remove <Icon name="mynaui:x" size="1.25rem"/></button>
+              </li>
+            </ul>
           </div>
           <div class="mt-6 pt-6 border-t border-white/50">
             <div class="flex justify-between">
               <span>Subtotal</span>
               <span>IDR{{ formatCurrency(subTotal) }}</span>
             </div>
-            <div v-if="voucherApplied" class="flex justify-between mt-4">
+            <div v-if="voucherApplied.length > 0" class="flex justify-between mt-4">
               <span>Voucher Discount</span>
               <span>-IDR{{ formatCurrency(voucherDiscount) }}</span>
             </div>
@@ -599,10 +648,11 @@ const voucherDiscount = computed<number>(() => {
             <div class="flex justify-between mt-4">
               <span>Total</span>
               <span class="font-bold text-xl"
-                >IDR{{ formatCurrency(subTotal + tax - voucherDiscount) }}</span
+                >IDR{{ formatCurrency(subTotal + subTotalExtra + tax - voucherDiscount) }}</span
               >
             </div>
           </div>
+          <div v-if="bookingError"  class="mt-6 bg-amber-100 text-amber-500 px-2 py-1">{{ bookingError }}</div>
           <div class="flex items-center">
             <label class="flex items-start gap-3 mt-6 text-sm">
               <input
