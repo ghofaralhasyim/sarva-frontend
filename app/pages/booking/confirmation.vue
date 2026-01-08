@@ -303,6 +303,37 @@ const isFormValid = computed(() => {
   return !!baseOk && !!otherOk;
 });
 
+const fieldIdMap: Record<keyof typeof errors, string> = {
+  guest_name: "guest_name",
+  guest_last_name: "guest_last_name",
+  guest_phone: "guest_phone",
+  guest_email: "guest_email",
+  guest_other_phone: "guest_other_phone",
+  guest_other_email: "guest_other_email",
+};
+
+function scrollToFirstError() {
+  const order: (keyof typeof errors)[] = [
+    "guest_name",
+    "guest_last_name",
+    "guest_phone",
+    "guest_email",
+    "guest_other_phone",
+    "guest_other_email",
+  ];
+
+  const firstInvalid = order.find((k) => !!errors[k]);
+  if (!firstInvalid) return;
+
+  const id = fieldIdMap[firstInvalid] || "";
+  const el = document.getElementById(id) as HTMLElement | null;
+
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    setTimeout(() => (el as HTMLInputElement)?.focus?.(), 200);
+  }
+}
+
 const isLoading = ref(false);
 const bookingError = ref<string>("");
 
@@ -317,10 +348,17 @@ watch(isBookingForOther, (v) => {
 
 const booking = async () => {
   if (!villa.value) return;
-  if (!agreedToTerms.value) return;
 
   const ok = validateAll();
-  if (!ok) return;
+  if (!ok) {
+    scrollToFirstError();
+    return;
+  }
+
+  if (!agreedToTerms.value) {
+    bookingError.value = "Please agree to the Terms and Conditions to proceed.";
+    return;
+  }
 
   isLoading.value = true;
   bookingError.value = "";
@@ -465,6 +503,7 @@ const voucherDiscount = computed<number>(() => {
               ><span class="text-gray-400">First Name</span></label
             >
             <input
+              id="guest_name"
               v-model="formData.guest_name"
               type="text"
               class="bg-[#F5F5F5] py-2 px-4 outline-sarva-green"
@@ -482,6 +521,7 @@ const voucherDiscount = computed<number>(() => {
               ><span class="text-gray-400">Last Name</span></label
             >
             <input
+              id="guest_last_name"
               v-model="formData.guest_last_name"
               type="text"
               class="bg-[#F5F5F5] py-2 px-4 outline-sarva-green"
@@ -499,6 +539,7 @@ const voucherDiscount = computed<number>(() => {
               ><span class="text-gray-400">Phone Number</span></label
             >
             <input
+              id="guest_phone"
               :value="formData.guest_phone"
               inputmode="numeric"
               pattern="[0-9]*"
@@ -524,6 +565,7 @@ const voucherDiscount = computed<number>(() => {
               ><span class="text-gray-400">Email</span></label
             >
             <input
+              id="guest_email"
               v-model="formData.guest_email"
               type="text"
               class="bg-[#F5F5F5] py-2 px-4 outline-sarva-green"
@@ -555,6 +597,7 @@ const voucherDiscount = computed<number>(() => {
                 ><span class="text-gray-400">Adult</span></label
               >
               <input
+                id="guest_other_phone"
                 type="number"
                 class="bg-[#dedede] py-2 px-4 outline-sarva-green"
                 :value="adults"
@@ -566,6 +609,7 @@ const voucherDiscount = computed<number>(() => {
                 ><span class="text-gray-400">Child</span></label
               >
               <input
+                id="guest_other_email"
                 type="number"
                 class="bg-[#dedede] py-2 px-4 outline-sarva-green"
                 :value="children"
@@ -869,7 +913,7 @@ const voucherDiscount = computed<number>(() => {
           </div>
           <button
             @click="booking"
-            :disabled="!agreedToTerms || !isFormValid || isLoading"
+            :disabled="isLoading"
             class="mt-8 font-bold bg-primary text-center text-xl hover:bg-primary-darker text-white px-6 py-3 cursor-pointer transition-all w-full disabled:opacity-80 disabled:cursor-not-allowed"
           >
             {{ isLoading ? "Processing..." : "Pay Now" }}
