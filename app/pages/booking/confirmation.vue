@@ -51,14 +51,14 @@ const adults = computed(() => toInt(route.query.adults, 1));
 const children = computed(() => toInt(route.query.children, 0));
 const qty = computed(() => Math.max(1, toInt(route.query.qty, 1)));
 const isWithBreakfast = computed(() =>
-  toBool(route.query.isWithBreakfast, false)
+  toBool(route.query.isWithBreakfast, false),
 );
 
 const checkIn = computed<Date | undefined>(() =>
-  parseDDMMYYYY(route.query.checkIn)
+  parseDDMMYYYY(route.query.checkIn),
 );
 const checkOut = computed<Date | undefined>(() =>
-  parseDDMMYYYY(route.query.checkOut)
+  parseDDMMYYYY(route.query.checkOut),
 );
 
 const nights = computed(() => {
@@ -82,7 +82,6 @@ const dateRange = ref<DateRange>([
 async function loadRoomById() {
   if (!roomId.value) return;
 
-  // if query has dates, use them; else use current dateRange
   const cin = checkIn.value ?? dateRange.value[0];
   const cout = checkOut.value ?? dateRange.value[1];
 
@@ -91,33 +90,27 @@ async function loadRoomById() {
   try {
     const res = await useCsFetch<{ data: ApiRoom[] }>(
       `/rooms?check_in_date=${toYMD(cin)}&check_out_date=${toYMD(cout)}`,
-      { method: "GET" }
+      { method: "GET" },
     );
 
     const found = res?.data?.find((r) => r.id === roomId.value);
     villa.value = found ? mapApiRoomToVilla(found) : undefined;
-
-    // optional: if not found, redirect or show message
-    // if (!villa.value) router.replace("/rooms")
   } catch (err) {
     console.error(err);
   }
 }
 
-/** call at start + when query changes */
 await loadRoomById();
 
 watch(
   () => route.query,
   async () => {
-    // update dateRange if query changed
     dateRange.value = [checkIn.value ?? today, checkOut.value ?? tomorrow];
     await loadRoomById();
   },
-  { deep: true }
+  { deep: true },
 );
 
-/** -------- computed totals -------- */
 interface ExtraOption {
   id: number;
   name: string;
@@ -133,7 +126,6 @@ const addedExtra = ref<ExtraOption[]>([]);
 
 const removeExtra = (id: number) => {
   const idx = addedExtra.value.findIndex((item: ExtraOption) => item.id === id);
-
   if (idx !== -1) {
     addedExtra.value.splice(idx, 1);
   }
@@ -141,12 +133,10 @@ const removeExtra = (id: number) => {
 
 const subTotal = computed<number>(() => {
   if (!villa.value) return 0;
-
   const base =
     (isWithBreakfast.value
       ? (villa.value as any).priceWithBreakfast
       : (villa.value as any).price) ?? 0;
-
   return base * qty.value * nights.value;
 });
 
@@ -154,9 +144,8 @@ const subTotalExtra = computed<number>(() => {
   if (!villa.value) return 0;
   const totalExtra = addedExtra.value.reduce(
     (sum, item) => sum + item.price,
-    0
+    0,
   );
-
   return totalExtra;
 });
 
@@ -168,7 +157,6 @@ const tax = computed<number>(() => {
   return taxFee + serviceFee;
 });
 
-/** -------- form + booking -------- */
 const selectedBedType = ref("1 Queen-size Bed");
 const isBookingForOther = ref(false);
 const agreedToTerms = ref(false);
@@ -186,6 +174,8 @@ interface GuestPayload {
   guest_other_email: string;
   guest_other_phone: string;
   voucher_codes: string[];
+  guest_other_phone_country: string;
+  guest_phone_country: string;
 }
 
 interface ExtraOptionPayload {
@@ -205,6 +195,8 @@ const formData = reactive<GuestPayload>({
   guest_other_email: "",
   guest_other_phone: "",
   voucher_codes: [],
+  guest_phone_country: "62", // Default Indonesia
+  guest_other_phone_country: "62",
 });
 
 watch([checkIn, checkOut], () => {
@@ -216,8 +208,10 @@ const errors = reactive<Record<string, string>>({
   guest_name: "",
   guest_last_name: "",
   guest_phone: "",
+  guest_phone_country: "",
   guest_email: "",
   guest_other_phone: "",
+  guest_other_phone_country: "",
   guest_other_email: "",
 });
 
@@ -225,8 +219,9 @@ function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 }
 
-function onlyDigits(s: string) {
-  return (s ?? "").replace(/\D/g, "");
+function validatePhoneNumber(phone: string) {
+  const cleaned = phone.replace(/\D/g, "");
+  return cleaned.length >= 8 && cleaned.length <= 15;
 }
 
 function validateField(field: keyof typeof errors) {
@@ -242,27 +237,33 @@ function validateField(field: keyof typeof errors) {
       errors.guest_last_name = "Last name is required";
   }
 
-  if (field === "guest_phone") {
-    formData.guest_phone = onlyDigits(formData.guest_phone);
-    if (!formData.guest_phone.trim()) errors.guest_phone = "Phone is required";
-    else if (formData.guest_phone.length < 9)
-      errors.guest_phone = "Phone number is too short";
-  }
-
   if (field === "guest_email") {
     if (!formData.guest_email.trim()) errors.guest_email = "Email is required";
     else if (!isValidEmail(formData.guest_email))
       errors.guest_email = "Email is invalid";
   }
 
-  if (field === "guest_other_phone") {
-    formData.guest_other_phone = onlyDigits(formData.guest_other_phone);
-    if (isBookingForOther.value) {
-      if (!formData.guest_other_phone.trim())
-        errors.guest_other_phone = "Phone is required";
-      else if (formData.guest_other_phone.length < 9)
-        errors.guest_other_phone = "Phone number is too short";
-    }
+  if (field === "guest_phone_country") {
+    if (!formData.guest_phone_country.trim())
+      errors.guest_phone_country = "Country code is required";
+  }
+
+  if (field === "guest_phone") {
+    if (!formData.guest_phone) errors.guest_phone = "Phone is required";
+    else if (!validatePhoneNumber(formData.guest_phone))
+      errors.guest_phone = "Invalid phone number";
+  }
+
+  if (field === "guest_other_phone_country" && isBookingForOther.value) {
+    if (!formData.guest_other_phone_country.trim())
+      errors.guest_other_phone_country = "Country code is required";
+  }
+
+  if (field === "guest_other_phone" && isBookingForOther.value) {
+    if (!formData.guest_other_phone)
+      errors.guest_other_phone = "Phone is required";
+    else if (!validatePhoneNumber(formData.guest_other_phone))
+      errors.guest_other_phone = "Invalid phone number";
   }
 
   if (field === "guest_other_email") {
@@ -278,11 +279,15 @@ function validateField(field: keyof typeof errors) {
 function validateAll() {
   validateField("guest_name");
   validateField("guest_last_name");
+  validateField("guest_phone_country");
   validateField("guest_phone");
   validateField("guest_email");
 
-  validateField("guest_other_phone");
-  validateField("guest_other_email");
+  if (isBookingForOther.value) {
+    validateField("guest_other_phone_country");
+    validateField("guest_other_phone");
+    validateField("guest_other_email");
+  }
 
   return Object.values(errors).every((v) => !v);
 }
@@ -291,23 +296,27 @@ const isFormValid = computed(() => {
   const baseOk =
     formData.guest_name.trim() &&
     formData.guest_last_name.trim() &&
-    onlyDigits(formData.guest_phone).length >= 9 &&
+    formData.guest_phone_country.trim() &&
+    validatePhoneNumber(formData.guest_phone) &&
     isValidEmail(formData.guest_email);
 
   if (!isBookingForOther.value) return !!baseOk;
 
-  const otherOk =
-    onlyDigits(formData.guest_other_phone).length >= 9 &&
-    isValidEmail(formData.guest_other_email);
-
-  return !!baseOk && !!otherOk;
+  return (
+    baseOk &&
+    formData.guest_other_phone_country.trim() &&
+    validatePhoneNumber(formData.guest_other_phone) &&
+    isValidEmail(formData.guest_other_email)
+  );
 });
 
 const fieldIdMap: Record<keyof typeof errors, string> = {
   guest_name: "guest_name",
   guest_last_name: "guest_last_name",
+  guest_phone_country: "guest_phone_country",
   guest_phone: "guest_phone",
   guest_email: "guest_email",
+  guest_other_phone_country: "guest_other_phone_country",
   guest_other_phone: "guest_other_phone",
   guest_other_email: "guest_other_email",
 };
@@ -316,8 +325,10 @@ function scrollToFirstError() {
   const order: (keyof typeof errors)[] = [
     "guest_name",
     "guest_last_name",
+    "guest_phone_country",
     "guest_phone",
     "guest_email",
+    "guest_other_phone_country",
     "guest_other_phone",
     "guest_other_email",
   ];
@@ -340,8 +351,10 @@ const bookingError = ref<string>("");
 watch(isBookingForOther, (v) => {
   if (!v) {
     formData.guest_other_phone = "";
+    formData.guest_other_phone_country = "62";
     formData.guest_other_email = "";
     errors.guest_other_phone = "";
+    errors.guest_other_phone_country = "";
     errors.guest_other_email = "";
   }
 });
@@ -368,6 +381,12 @@ const booking = async () => {
     quantity: 1,
   }));
 
+  // Combine country code with phone number for API payload
+  const fullGuestPhone = `+${formData.guest_phone_country}${formData.guest_phone}`;
+  const fullOtherGuestPhone = isBookingForOther.value
+    ? `+${formData.guest_other_phone_country}${formData.guest_other_phone}`
+    : "";
+
   try {
     await useCsFetch(`/bookings`, {
       method: "POST",
@@ -376,12 +395,15 @@ const booking = async () => {
         room_quantity: qty.value,
         include_breakfast: isWithBreakfast.value,
         extra_options: extraOption,
+
         guest_name: `${formData.guest_name} ${formData.guest_last_name}`.trim(),
         guest_email: formData.guest_email,
-        guest_phone: formData.guest_phone,
+        guest_phone: fullGuestPhone,
+
         check_in_date: toYMD(formData.check_in_date) + "T23:59:59Z",
         check_out_date: toYMD(formData.check_out_date) + "T23:59:59Z",
         notes: formData.notes,
+
         is_for_other: isBookingForOther.value,
         guest_other_name: isBookingForOther.value
           ? formData.guest_other_name.trim()
@@ -389,9 +411,8 @@ const booking = async () => {
         guest_other_email: isBookingForOther.value
           ? formData.guest_other_email.trim()
           : "",
-        guest_other_phone: isBookingForOther.value
-          ? formData.guest_other_phone.trim()
-          : "",
+        guest_other_phone: fullOtherGuestPhone,
+
         eta: etaTime.value,
         bed_type: selectedBedType.value,
         voucher_codes: formData.voucher_codes,
@@ -417,7 +438,7 @@ const voucherCode = ref<string>("");
 
 const removeVoucher = (code: string) => {
   const idx = voucherApplied.value.findIndex(
-    (item: Voucher) => item.code.toUpperCase() === code.toUpperCase()
+    (item: Voucher) => item.code.toUpperCase() === code.toUpperCase(),
   );
 
   if (idx !== -1) {
@@ -428,7 +449,7 @@ const removeVoucher = (code: string) => {
 const validateVoucher = async () => {
   const exists = voucherApplied.value.some(
     (item: Voucher) =>
-      item.code.toUpperCase() === voucherCode.value.toUpperCase()
+      item.code.toUpperCase() === voucherCode.value.toUpperCase(),
   );
 
   if (exists) {
@@ -483,6 +504,169 @@ const voucherDiscount = computed<number>(() => {
 
   return discount;
 });
+
+// Country code options
+const countryCodes = [
+  { code: "93", country: "Afghanistan", flag: "🇦🇫" },
+  { code: "355", country: "Albania", flag: "🇦🇱" },
+  { code: "213", country: "Algeria", flag: "🇩🇿" },
+  { code: "376", country: "Andorra", flag: "🇦🇩" },
+  { code: "244", country: "Angola", flag: "🇦🇴" },
+  { code: "54", country: "Argentina", flag: "🇦🇷" },
+  { code: "374", country: "Armenia", flag: "🇦🇲" },
+  { code: "61", country: "Australia", flag: "🇦🇺" },
+  { code: "43", country: "Austria", flag: "🇦🇹" },
+  { code: "994", country: "Azerbaijan", flag: "🇦🇿" },
+
+  { code: "973", country: "Bahrain", flag: "🇧🇭" },
+  { code: "880", country: "Bangladesh", flag: "🇧🇩" },
+  { code: "375", country: "Belarus", flag: "🇧🇾" },
+  { code: "32", country: "Belgium", flag: "🇧🇪" },
+  { code: "501", country: "Belize", flag: "🇧🇿" },
+  { code: "229", country: "Benin", flag: "🇧🇯" },
+  { code: "975", country: "Bhutan", flag: "🇧🇹" },
+  { code: "591", country: "Bolivia", flag: "🇧🇴" },
+  { code: "387", country: "Bosnia and Herzegovina", flag: "🇧🇦" },
+  { code: "55", country: "Brazil", flag: "🇧🇷" },
+  { code: "673", country: "Brunei", flag: "🇧🇳" },
+  { code: "359", country: "Bulgaria", flag: "🇧🇬" },
+
+  { code: "855", country: "Cambodia", flag: "🇰🇭" },
+  { code: "237", country: "Cameroon", flag: "🇨🇲" },
+  { code: "1", country: "Canada", flag: "🇨🇦" },
+  { code: "56", country: "Chile", flag: "🇨🇱" },
+  { code: "86", country: "China", flag: "🇨🇳" },
+  { code: "57", country: "Colombia", flag: "🇨🇴" },
+  { code: "506", country: "Costa Rica", flag: "🇨🇷" },
+  { code: "385", country: "Croatia", flag: "🇭🇷" },
+  { code: "53", country: "Cuba", flag: "🇨🇺" },
+  { code: "357", country: "Cyprus", flag: "🇨🇾" },
+  { code: "420", country: "Czech Republic", flag: "🇨🇿" },
+
+  { code: "45", country: "Denmark", flag: "🇩🇰" },
+  { code: "20", country: "Egypt", flag: "🇪🇬" },
+  { code: "372", country: "Estonia", flag: "🇪🇪" },
+  { code: "251", country: "Ethiopia", flag: "🇪🇹" },
+
+  { code: "358", country: "Finland", flag: "🇫🇮" },
+  { code: "33", country: "France", flag: "🇫🇷" },
+
+  { code: "49", country: "Germany", flag: "🇩🇪" },
+  { code: "30", country: "Greece", flag: "🇬🇷" },
+  { code: "995", country: "Georgia", flag: "🇬🇪" },
+
+  { code: "852", country: "Hong Kong", flag: "🇭🇰" },
+  { code: "36", country: "Hungary", flag: "🇭🇺" },
+
+  { code: "62", country: "Indonesia", flag: "🇮🇩" },
+  { code: "91", country: "India", flag: "🇮🇳" },
+  { code: "98", country: "Iran", flag: "🇮🇷" },
+  { code: "964", country: "Iraq", flag: "🇮🇶" },
+  { code: "353", country: "Ireland", flag: "🇮🇪" },
+  { code: "972", country: "Israel", flag: "🇮🇱" },
+  { code: "39", country: "Italy", flag: "🇮🇹" },
+
+  { code: "81", country: "Japan", flag: "🇯🇵" },
+  { code: "962", country: "Jordan", flag: "🇯🇴" },
+
+  { code: "7", country: "Kazakhstan", flag: "🇰🇿" },
+  { code: "965", country: "Kuwait", flag: "🇰🇼" },
+  { code: "82", country: "South Korea", flag: "🇰🇷" },
+
+  { code: "856", country: "Laos", flag: "🇱🇦" },
+  { code: "371", country: "Latvia", flag: "🇱🇻" },
+  { code: "961", country: "Lebanon", flag: "🇱🇧" },
+  { code: "370", country: "Lithuania", flag: "🇱🇹" },
+
+  { code: "60", country: "Malaysia", flag: "🇲🇾" },
+  { code: "960", country: "Maldives", flag: "🇲🇻" },
+  { code: "356", country: "Malta", flag: "🇲🇹" },
+  { code: "52", country: "Mexico", flag: "🇲🇽" },
+  { code: "212", country: "Morocco", flag: "🇲🇦" },
+
+  { code: "977", country: "Nepal", flag: "🇳🇵" },
+  { code: "31", country: "Netherlands", flag: "🇳🇱" },
+  { code: "64", country: "New Zealand", flag: "🇳🇿" },
+  { code: "234", country: "Nigeria", flag: "🇳🇬" },
+  { code: "47", country: "Norway", flag: "🇳🇴" },
+
+  { code: "970", country: "Palestine", flag: "🇵🇸" },
+  { code: "92", country: "Pakistan", flag: "🇵🇰" },
+  { code: "63", country: "Philippines", flag: "🇵🇭" },
+  { code: "48", country: "Poland", flag: "🇵🇱" },
+  { code: "351", country: "Portugal", flag: "🇵🇹" },
+
+  { code: "974", country: "Qatar", flag: "🇶🇦" },
+
+  { code: "40", country: "Romania", flag: "🇷🇴" },
+  { code: "7", country: "Russia", flag: "🇷🇺" },
+
+  { code: "966", country: "Saudi Arabia", flag: "🇸🇦" },
+  { code: "65", country: "Singapore", flag: "🇸🇬" },
+  { code: "421", country: "Slovakia", flag: "🇸🇰" },
+  { code: "386", country: "Slovenia", flag: "🇸🇮" },
+  { code: "27", country: "South Africa", flag: "🇿🇦" },
+  { code: "34", country: "Spain", flag: "🇪🇸" },
+  { code: "94", country: "Sri Lanka", flag: "🇱🇰" },
+  { code: "46", country: "Sweden", flag: "🇸🇪" },
+  { code: "41", country: "Switzerland", flag: "🇨🇭" },
+
+  { code: "886", country: "Taiwan", flag: "🇹🇼" },
+  { code: "66", country: "Thailand", flag: "🇹🇭" },
+  { code: "90", country: "Turkey", flag: "🇹🇷" },
+
+  { code: "971", country: "United Arab Emirates", flag: "🇦🇪" },
+  { code: "44", country: "United Kingdom", flag: "🇬🇧" },
+  { code: "1", country: "United States", flag: "🇺🇸" },
+  { code: "998", country: "Uzbekistan", flag: "🇺🇿" },
+
+  { code: "58", country: "Venezuela", flag: "🇻🇪" },
+  { code: "84", country: "Vietnam", flag: "🇻🇳" },
+
+  { code: "967", country: "Yemen", flag: "🇾🇪" },
+];
+
+const showCountryDropdown = ref(false);
+const showOtherCountryDropdown = ref(false);
+
+const selectedCountry = computed(() =>
+  countryCodes.find((c) => c.code === formData.guest_phone_country),
+);
+
+const selectedOtherCountry = computed(() =>
+  countryCodes.find((c) => c.code === formData.guest_other_phone_country),
+);
+
+const selectCountry = (code: string) => {
+  formData.guest_phone_country = code;
+  showCountryDropdown.value = false;
+  validateField("guest_phone_country");
+};
+
+const selectOtherCountry = (code: string) => {
+  formData.guest_other_phone_country = code;
+  showOtherCountryDropdown.value = false;
+  validateField("guest_other_phone_country");
+};
+
+// Close dropdown when clicking outside
+if (process.client) {
+  const handleClickOutside = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (!target.closest(".country-dropdown")) {
+      showCountryDropdown.value = false;
+      showOtherCountryDropdown.value = false;
+    }
+  };
+
+  onMounted(() => {
+    document.addEventListener("click", handleClickOutside);
+  });
+
+  onUnmounted(() => {
+    document.removeEventListener("click", handleClickOutside);
+  });
+}
 </script>
 
 <template>
@@ -533,28 +717,70 @@ const voucherDiscount = computed<number>(() => {
               {{ errors.guest_last_name }}
             </p>
           </div>
-          <div class="flex flex-col gap-2 relative">
+          <div class="flex flex-col gap-2">
             <label for="phone"
               ><span class="text-red-500">*</span
               ><span class="text-gray-400">Phone Number</span></label
             >
-            <input
-              id="guest_phone"
-              :value="formData.guest_phone"
-              inputmode="numeric"
-              pattern="[0-9]*"
-              maxlength="16"
-              type="text"
-              class="bg-[#F5F5F5] py-2 px-4 outline-sarva-green"
-              :class="errors.guest_phone ? 'border border-red-500' : ''"
-              @input="(e) => {
-                const v = (e.target as HTMLInputElement).value
-                formData.guest_phone = v.replace(/[^0-9]/g, '')
-                validateField('guest_phone')
-              }"
-              @blur="validateField('guest_phone')"
-              placeholder="08xxxxxxxxxx"
-            />
+            <div class="flex gap-2">
+              <div class="relative country-dropdown">
+                <button
+                  type="button"
+                  id="guest_phone_country"
+                  class="bg-[#F5F5F5] py-2 px-3 outline-sarva-green w-28 flex items-center justify-between"
+                  :class="
+                    errors.guest_phone_country ? 'border border-red-500' : ''
+                  "
+                  @click="showCountryDropdown = !showCountryDropdown"
+                >
+                  <span
+                    >{{ selectedCountry?.flag }} +{{
+                      formData.guest_phone_country
+                    }}</span
+                  >
+                  <Icon name="mynaui:chevron-down" size="1.2rem" />
+                </button>
+                <div
+                  v-if="showCountryDropdown"
+                  class="absolute z-50 top-full left-0 mt-1 bg-white border border-gray-200 shadow-lg max-h-64 overflow-y-auto w-72"
+                >
+                  <button
+                    v-for="item in countryCodes"
+                    :key="item.code"
+                    type="button"
+                    class="w-full px-4 py-2 hover:bg-gray-100 flex items-center gap-3 text-left"
+                    @click="selectCountry(item.code)"
+                  >
+                    <span class="text-xl">{{ item.flag }}</span>
+                    <span class="flex-1">{{ item.country }}</span>
+                    <span class="text-gray-500">+{{ item.code }}</span>
+                  </button>
+                </div>
+              </div>
+              <input
+                id="guest_phone"
+                v-model="formData.guest_phone"
+                type="tel"
+                placeholder="Enter phone number"
+                class="bg-[#F5F5F5] py-2 px-4 outline-sarva-green flex-1"
+                :class="errors.guest_phone ? 'border border-red-500' : ''"
+                @input="
+                  (e) => {
+                    formData.guest_phone = (
+                      e.target as HTMLInputElement
+                    ).value.replace(/\D/g, '');
+                    validateField('guest_phone');
+                  }
+                "
+                @blur="validateField('guest_phone')"
+              />
+            </div>
+            <p
+              v-if="errors.guest_phone_country"
+              class="text-xs text-red-500 mt-1"
+            >
+              {{ errors.guest_phone_country }}
+            </p>
             <p v-if="errors.guest_phone" class="text-xs text-red-500 mt-1">
               {{ errors.guest_phone }}
             </p>
@@ -597,7 +823,7 @@ const voucherDiscount = computed<number>(() => {
                 ><span class="text-gray-400">Adult</span></label
               >
               <input
-                id="guest_other_phone"
+                id="adults"
                 type="number"
                 class="bg-[#dedede] py-2 px-4 outline-sarva-green"
                 :value="adults"
@@ -609,7 +835,7 @@ const voucherDiscount = computed<number>(() => {
                 ><span class="text-gray-400">Child</span></label
               >
               <input
-                id="guest_other_email"
+                id="children"
                 type="number"
                 class="bg-[#dedede] py-2 px-4 outline-sarva-green"
                 :value="children"
@@ -655,29 +881,75 @@ const voucherDiscount = computed<number>(() => {
                 :class="isBookingForOther ? 'translate-x-4' : 'translate-x-1'"
               />
             </button>
-
             <span class="text-gray-600"> I'm booking for someone else </span>
           </div>
+
           <div v-if="isBookingForOther" class="flex flex-col gap-2">
             <label for="phone"
               ><span class="text-red-500">*</span
               ><span class="text-gray-400">Phone Number</span></label
             >
-            <input
-              v-model="formData.guest_other_phone"
-              inputmode="numeric"
-              pattern="[0-9]*"
-              maxlength="16"
-              type="text"
-              class="bg-[#F5F5F5] py-2 px-4 outline-sarva-green"
-              :class="errors.guest_other_phone ? 'border border-red-500' : ''"
-              @input="(e) => {
-                const v = (e.target as HTMLInputElement).value
-                formData.guest_other_phone = v.replace(/[^0-9]/g, '')
-                validateField('guest_other_phone')
-              }"
-              @blur="validateField('guest_other_phone')"
-            />
+            <div class="flex gap-2">
+              <div class="relative country-dropdown">
+                <button
+                  type="button"
+                  id="guest_other_phone_country"
+                  class="bg-[#F5F5F5] py-2 px-3 outline-sarva-green w-28 flex items-center justify-between"
+                  :class="
+                    errors.guest_other_phone_country
+                      ? 'border border-red-500'
+                      : ''
+                  "
+                  @click="showOtherCountryDropdown = !showOtherCountryDropdown"
+                >
+                  <span
+                    >{{ selectedOtherCountry?.flag }} +{{
+                      formData.guest_other_phone_country
+                    }}</span
+                  >
+                  <Icon name="mynaui:chevron-down" size="1.2rem" />
+                </button>
+                <div
+                  v-if="showOtherCountryDropdown"
+                  class="absolute z-50 top-full left-0 mt-1 bg-white border border-gray-200 shadow-lg max-h-64 overflow-y-auto w-72"
+                >
+                  <button
+                    v-for="item in countryCodes"
+                    :key="item.code"
+                    type="button"
+                    class="w-full px-4 py-2 hover:bg-gray-100 flex items-center gap-3 text-left"
+                    @click="selectOtherCountry(item.code)"
+                  >
+                    <span class="text-xl">{{ item.flag }}</span>
+                    <span class="flex-1">{{ item.country }}</span>
+                    <span class="text-gray-500">+{{ item.code }}</span>
+                  </button>
+                </div>
+              </div>
+              <input
+                id="guest_other_phone"
+                v-model="formData.guest_other_phone"
+                type="tel"
+                placeholder="Enter phone number"
+                class="bg-[#F5F5F5] py-2 px-4 outline-sarva-green flex-1"
+                :class="errors.guest_other_phone ? 'border border-red-500' : ''"
+                @input="
+                  (e) => {
+                    formData.guest_other_phone = (
+                      e.target as HTMLInputElement
+                    ).value.replace(/\D/g, '');
+                    validateField('guest_other_phone');
+                  }
+                "
+                @blur="validateField('guest_other_phone')"
+              />
+            </div>
+            <p
+              v-if="errors.guest_other_phone_country"
+              class="text-xs text-red-500 mt-1"
+            >
+              {{ errors.guest_other_phone_country }}
+            </p>
             <p
               v-if="errors.guest_other_phone"
               class="text-xs text-red-500 mt-1"
@@ -685,12 +957,14 @@ const voucherDiscount = computed<number>(() => {
               {{ errors.guest_other_phone }}
             </p>
           </div>
+
           <div v-if="isBookingForOther" class="flex flex-col gap-2">
             <label for="email"
               ><span class="text-red-500">*</span
               ><span class="text-gray-400">Email</span></label
             >
             <input
+              id="guest_other_email"
               v-model="formData.guest_other_email"
               type="text"
               class="bg-[#F5F5F5] py-2 px-4 outline-sarva-green"
@@ -706,6 +980,7 @@ const voucherDiscount = computed<number>(() => {
             </p>
           </div>
         </div>
+
         <div class="p-4 md:p-10 bg-white">
           <p class="font-bold text-lg md:text-xl mt-2 md:col-span-2">
             Optional Extras
@@ -713,6 +988,7 @@ const voucherDiscount = computed<number>(() => {
           <ul class="w-full mt-6">
             <li
               v-for="item in extras"
+              :key="item.id"
               class="flex justify-between w-full not-first:mt-10"
             >
               <div class="flex flex-col gap-2 relative">
@@ -882,7 +1158,7 @@ const voucherDiscount = computed<number>(() => {
               <span class="font-bold text-xl"
                 >IDR{{
                   formatCurrency(
-                    subTotal + subTotalExtra + tax - voucherDiscount
+                    subTotal + subTotalExtra + tax - voucherDiscount,
                   )
                 }}</span
               >

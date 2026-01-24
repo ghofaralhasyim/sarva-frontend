@@ -82,6 +82,9 @@ const selectRoom = (withBreakfast: boolean) => {
     )}&checkOut=${formatDate(props.checkOut, "queryDate")}&qty=${qty.value}`
   );
 };
+
+const activeImg = ref<number>(0);
+const isModalOpen = ref<boolean>(false);
 </script>
 
 <template>
@@ -142,9 +145,13 @@ const selectRoom = (withBreakfast: boolean) => {
             <span>{{ room.pool }}</span>
           </li>
           <li>
-            <NuxtLink class="underline text-primary cursor-pointer"
-              >More Info</NuxtLink
+            <button
+              type="button"
+              @click="isModalOpen = true"
+              class="underline text-primary cursor-pointer"
             >
+              More Info
+            </button>
           </li>
         </ul>
       </div>
@@ -152,7 +159,9 @@ const selectRoom = (withBreakfast: boolean) => {
     <div class="pt-6 flex gap-4 items-center">
       <p class="font-medium md:text-lg">Room Only</p>
       <NuxtLink
+        :to="`/villas/${room.slug}`"
         class="text-xs md:text-sm text-sarva-green flex items-center gap-2"
+        target="blank"
         >View Details <Icon name="mynaui:arrow-up-right"
       /></NuxtLink>
     </div>
@@ -200,7 +209,9 @@ const selectRoom = (withBreakfast: boolean) => {
     <div class="pt-6 flex gap-4 items-center">
       <p class="font-medium md:text-lg">Breakfast Package</p>
       <NuxtLink
+        :to="`/villas/${room.slug}`"
         class="text-xs md:text-sm text-sarva-green flex items-center gap-2"
+        target="blank"
         >View Details <Icon name="mynaui:arrow-up-right"
       /></NuxtLink>
     </div>
@@ -246,4 +257,101 @@ const selectRoom = (withBreakfast: boolean) => {
       </div>
     </div>
   </li>
+  <div
+    v-if="isModalOpen"
+    class="fixed inset-0 z-99 bg-black/50 flex items-center justify-center lg:pt-24 px-5 lg:px-0"
+    @click.self="isModalOpen = false"
+  >
+    <div
+      class="bg-white p-4 rounded md:p-8 md:pr-16 max-w-6xl mx-auto w-full flex flex-col lg:flex-row lg:gap-8 max-h-[640px] overflow-y-auto relative"
+    >
+      <button type="button" class="absolute right-5">
+        <Icon name="mynaui:x" size="1.5rem" />
+      </button>
+      <div class="lg:pb-32">
+        <p class="font-medium text-xl">
+          {{ room.title }}
+        </p>
+        <ul class="grid grid-cols-2 mt-6 gap-3">
+          <li class="flex items-center gap-3">
+            <div class="w-4.5 h-4.5 aspect-square">
+              <img
+                src="@/assets/img/icon/square.png"
+                class="w-full h-full object-cover"
+                alt=""
+              />
+            </div>
+            <span>{{ room?.space }} sqm</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <div class="w-4.5 h-4.5 aspect-square">
+              <img
+                src="@/assets/img/icon/users.png"
+                class="w-full h-full object-cover"
+                alt=""
+              />
+            </div>
+            <span>{{ room?.capacity }} Adults</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <div class="w-4.5 h-4.5 aspect-square">
+              <img
+                src="@/assets/img/icon/bed.png"
+                class="w-full h-full object-cover"
+                alt=""
+              />
+            </div>
+            <span>{{ room?.bedType }}</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <div class="w-4.5 h-4.5 aspect-square">
+              <img
+                src="@/assets/img/icon/pool.png"
+                class="w-full h-full object-cover"
+                alt=""
+              />
+            </div>
+            <span>{{ room?.pool }}</span>
+          </li>
+        </ul>
+        <div class="text-sm mt-6" v-html="room.description"></div>
+        <p class="mt-6 font-bold text-sm">Villa Features</p>
+        <ul class="list-disc pl-5 mt-3 text-sm">
+          <li v-for="item in room?.features" class="">{{ item }}</li>
+        </ul>
+        <p class="mt-6 font-bold text-sm">Villa Amenities:</p>
+        <p class="text-sm mt-2 mb-4">{{ room?.amenities.join(", ") }}.</p>
+        <p>&nbsp;</p>
+      </div>
+      <div class="w-full max-w-[500px] pb-12 lg:pb-0">
+        <div class="aspect-video lg:h-[300px] w-full">
+          <img
+            :src="`/img/villas/sliders/${room.images[activeImg]}`"
+            class="w-full h-full object-cover"
+            alt=""
+          />
+        </div>
+        <div class="grid grid-cols-3 gap-3 mt-3">
+          <button
+            type="button"
+            v-for="(item, idx) in room.images"
+            :key="room.id"
+            class="aspect-video cursor-pointer relative"
+            @click="activeImg = idx"
+          >
+            <div
+              v-if="activeImg != idx"
+              class="bg-black/40 absolute inset-0 z-10"
+            ></div>
+            <img
+              :src="`/img/villas/sliders/${item}`"
+              class="w-full h-full object-cover"
+              :class="{ 'border-4 border-primary ': idx == activeImg }"
+              alt=""
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>

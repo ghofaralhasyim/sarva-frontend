@@ -288,7 +288,7 @@ const checkAvailability = async () => {
 </script>
 
 <template>
-  <div class="bg-[#f1f1f1] md:pt-38">
+  <div class="bg-[#f1f1f1] md:pt-20 lg:pt-38">
     <section
       class="container px-5 xl:px-0 mx-auto max-w-[1256px] relative min-h-[300px]"
     >
