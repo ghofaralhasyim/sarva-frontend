@@ -180,7 +180,7 @@ const villasData: Villa[] = [
 const route = useRoute();
 
 const data = computed(() =>
-  villasData.find((item) => item.slug === route.params.slug)
+  villasData.find((item) => item.slug === route.params.slug),
 );
 
 const activeImage = ref(data?.value?.images[0] || "1.jpg");
@@ -218,6 +218,8 @@ function prevSlide() {
 function nextSlide() {
   if (slider) slider.next();
 }
+
+const { $gsap } = useNuxtApp();
 </script>
 
 <template>

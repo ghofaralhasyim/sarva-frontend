@@ -54,7 +54,7 @@ watch(
   (min) => {
     qty.value = min;
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 watch(
@@ -62,7 +62,7 @@ watch(
   (max) => {
     if (qty.value > max) qty.value = max;
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 watch(qty, (newQty) => {
@@ -78,8 +78,8 @@ const selectRoom = (withBreakfast: boolean) => {
       props.children
     }&adults=${props.adults}&checkIn=${formatDate(
       props.checkIn,
-      "queryDate"
-    )}&checkOut=${formatDate(props.checkOut, "queryDate")}&qty=${qty.value}`
+      "queryDate",
+    )}&checkOut=${formatDate(props.checkOut, "queryDate")}&qty=${qty.value}`,
   );
 };
 
@@ -265,7 +265,11 @@ const isModalOpen = ref<boolean>(false);
     <div
       class="bg-white p-4 rounded md:p-8 md:pr-16 max-w-6xl mx-auto w-full flex flex-col lg:flex-row lg:gap-8 max-h-[640px] overflow-y-auto relative"
     >
-      <button type="button" class="absolute right-5">
+      <button
+        type="button"
+        class="absolute right-5 cursor-pointer"
+        @click="isModalOpen = false"
+      >
         <Icon name="mynaui:x" size="1.5rem" />
       </button>
       <div class="lg:pb-32">

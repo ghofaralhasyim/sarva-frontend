@@ -7,7 +7,7 @@ const menus = [
   { text: "Facilities", url: "/services-and-facilities" },
   { text: "Wellness", url: "/spa-and-wellness" },
   { text: "Dining", url: "/restaurant" },
-  { text: "Events", url: "/events" },
+  // { text: "Events", url: "/events" },
   { text: "Gallery", url: "/gallery" },
   { text: "Special Offers", url: "/special-offers" },
   { text: "Contact Us", url: "/contact-us" },
@@ -27,7 +27,7 @@ const showNav = () => {
     "#nav",
     { opacity: 0, display: "flex" },
     { opacity: 1, duration: 0.3 },
-    0
+    0,
   )
     .to(".nav-item", { opacity: 1, duration: 0.3, delay: 0.3 }, 0)
     .to("#bgNav", { opacity: 1, duration: 0.3 }, 0);
@@ -115,7 +115,7 @@ function isActive(url: string) {
       <div
         id="bgNav"
         class="absolute inset-0 bg-cover bg-center opacity-0"
-        style="background-image: url('img/bg-nav.webp')"
+        style="background-image: url(&quot;img/bg-nav.webp&quot;)"
       ></div>
 
       <!-- Top bar -->

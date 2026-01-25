@@ -1,4 +1,16 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const { $gsap } = useNuxtApp();
+
+onMounted(() => {
+  const tl = $gsap.timeline();
+  tl.fromTo(
+    "#t1",
+    { opacity: 0, y: 50 },
+    { opacity: 1, y: 0, duration: 1, delay: 0.5 },
+  );
+  tl.fromTo("#t2", { opacity: 0 }, { opacity: 1, duration: 0.2 });
+});
+</script>
 
 <template>
   <section id="home" class="relative h-lvh max-h-[980px]">
@@ -18,30 +30,24 @@
     <div
       class="container mx-auto px-5 xl:px-0 flex flex-col items-center justify-center pt-10 text-center relative text-white h-full z-10"
     >
-      <div
-        data-aos="fade"
-        data-aos-delay="100"
-        data-aos-duration="1000"
-        data-aos-once="true"
-      >
+      <div>
         <p class="font-serif text-2xl italic mb-8">Welcome to</p>
-        <img
-          src="@/assets/img/sarva-ubud-text.png"
-          class="h-[55px] object-contain"
-          alt="sarva ubud"
-        />
-        <p
-          class="mt-5 lg:mt-10 leading-7 lg:text-xl text-center max-w-[420px] lg:max-w-[620px] mx-auto"
-        >
-          Nestled in Bali’s lush highlands, Sarva Villa offers an elegant escape
-          where luxury meets nature’s serene embrace.
-        </p>
+        <div id="t1" class="">
+          <img
+            src="@/assets/img/sarva-ubud-text.png"
+            class="h-[55px] object-contain"
+            alt="sarva ubud"
+          />
+          <p
+            class="mt-5 lg:mt-10 leading-7 lg:text-xl text-center max-w-[420px] lg:max-w-[620px] mx-auto"
+          >
+            Nestled in Bali’s lush highlands, Sarva Villa offers an elegant
+            escape where luxury meets nature’s serene embrace.
+          </p>
+        </div>
       </div>
       <NuxtLink
-        data-aos="fade"
-        data-aos-delay="100"
-        data-aos-duration="1000"
-        data-aos-once="true"
+        id="t2"
         to="/#activities"
         class="bg-primary px-14 lg:px-10 text-white mt-[100px] lg:mt-20 py-3 lg:text-lg cursor-pointer hover:bg-primary-darker hover:transition-color duration-300"
       >

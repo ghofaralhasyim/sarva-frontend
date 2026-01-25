@@ -45,6 +45,13 @@ const data: RestaurantPackage[] = [
     image: "/img/resto/4.jpg",
   },
 ];
+
+const { $gsap } = useNuxtApp();
+
+onMounted(() => {
+  const tl = $gsap.timeline();
+  tl.fromTo("#t1", { opacity: 0 }, { opacity: 1, duration: 0.5, delay: 0.3 });
+});
 </script>
 
 <template>
@@ -55,6 +62,7 @@ const data: RestaurantPackage[] = [
       alt=""
     />
     <div
+      id="t1"
       class="container min-h-[520px] px-5 xl:px-0 mx-auto max-w-[700px] text-center relative text-white flex flex-col justify-center items-center"
     >
       <h2 class="font-serif text-[52px] lg:text-[64px] font-bold">
