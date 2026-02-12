@@ -176,6 +176,7 @@ interface GuestPayload {
   voucher_codes: string[];
   guest_other_phone_country: string;
   guest_phone_country: string;
+  dietary_restriction: string;
 }
 
 interface ExtraOptionPayload {
@@ -197,6 +198,7 @@ const formData = reactive<GuestPayload>({
   voucher_codes: [],
   guest_phone_country: "62", // Default Indonesia
   guest_other_phone_country: "62",
+  dietary_restriction: "",
 });
 
 watch([checkIn, checkOut], () => {
@@ -416,6 +418,9 @@ const booking = async () => {
         eta: etaTime.value,
         bed_type: selectedBedType.value,
         voucher_codes: formData.voucher_codes,
+        dietary_restriction: isHaveDietRestric
+          ? formData.dietary_restriction
+          : "none",
       },
       onResponse({ response }: any) {
         if (response.status !== 201) return;
@@ -431,6 +436,8 @@ const booking = async () => {
 };
 
 const bedType = ["1 Queen-size Bed", "1 King Size"];
+
+const isHaveDietRestric = ref<boolean>(false);
 
 const voucherApplied = ref<Voucher[]>([]);
 const voucherError = ref<string>("");
@@ -862,6 +869,37 @@ if (process.client) {
               v-model="etaTime"
               class="bg-[#F5F5F5] py-2 px-4 outline-sarva-green"
             />
+          </div>
+
+          <!-- Dietary Restriction -->
+          <div class="flex flex-col gap-2 w-full md:col-span-2">
+            <label for="dietary"
+              ><span class="text-gray-400">Dietary Restriction</span></label
+            >
+            <div class="flex gap-2 items-center">
+              <UIToggle
+                v-model="isHaveDietRestric"
+                off-label="None"
+                on-label="Yes"
+              />
+            </div>
+
+            <textarea
+              v-if="isHaveDietRestric"
+              v-model="formData.dietary_restriction"
+              maxlength="255"
+              rows="3"
+              class="mt-2 p-2 border rounded w-full bg-[#F5F5F5] outline-sarva-green"
+              placeholder="Please specify your dietary restrictions (max 255 characters)"
+            ></textarea>
+
+            <!-- Optional character counter -->
+            <div
+              v-if="isHaveDietRestric"
+              class="text-sm text-gray-400 text-right"
+            >
+              {{ formData.dietary_restriction?.length || 0 }}/255
+            </div>
           </div>
         </div>
 
